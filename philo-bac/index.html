@@ -3,1123 +3,1202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiches Philo BAC - Terminale</title>
+<title>Philo BAC Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0f0; min-height: 100vh; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0a0a12;color:#e0e0f0;display:flex;min-height:100vh;overflow-x:hidden}
 
-  /* NAV */
-  nav { background: #1a1a2e; padding: 16px 24px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; border-bottom: 2px solid #6c63ff; position: sticky; top: 0; z-index: 100; }
-  nav h1 { color: #6c63ff; font-size: 1.2rem; margin-right: auto; }
-  nav button { background: #16213e; border: 1px solid #6c63ff55; color: #c0c0e0; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-  nav button:hover, nav button.active { background: #6c63ff; color: white; }
+/* SIDEBAR */
+#sidebar{width:240px;min-height:100vh;background:#0f0f1c;border-right:1px solid #1e1e35;display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:200;transition:width .3s}
+.sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid #1e1e35}
+.sidebar-logo h1{font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar-logo p{font-size:.72rem;color:#555;margin-top:2px}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 20px;cursor:pointer;transition:all .2s;color:#888;font-size:.88rem;border-left:3px solid transparent}
+.nav-item:hover{color:#c0c0e0;background:#ffffff08}
+.nav-item.active{color:#a78bfa;background:linear-gradient(90deg,#a78bfa18,transparent);border-left-color:#a78bfa}
+.nav-item .icon{font-size:1.1rem;width:22px;text-align:center}
+.nav-badge{margin-left:auto;background:#a78bfa22;color:#a78bfa;font-size:.7rem;padding:2px 7px;border-radius:10px}
+.sidebar-footer{padding:16px 20px;border-top:1px solid #1e1e35;font-size:.75rem;color:#444}
 
-  /* SECTIONS */
-  .section { display: none; padding: 24px; max-width: 900px; margin: 0 auto; }
-  .section.active { display: block; }
+/* MAIN */
+#main{margin-left:240px;flex:1;min-height:100vh}
+.section{display:none;padding:32px;max-width:1100px;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-header{margin-bottom:28px}
+.page-header h2{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.page-header p{color:#666;font-size:.9rem;margin-top:6px}
 
-  h2 { color: #6c63ff; font-size: 1.5rem; margin-bottom: 20px; border-bottom: 1px solid #6c63ff44; padding-bottom: 10px; }
-  h3 { color: #a78bfa; margin-bottom: 10px; font-size: 1.1rem; }
+/* CARDS */
+.card{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:24px;margin-bottom:16px;transition:all .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#a78bfa,#60a5fa);opacity:0;transition:.2s}
+.card:hover{border-color:#a78bfa44;transform:translateY(-1px);box-shadow:0 8px 32px #a78bfa11}
+.card:hover::before{opacity:1}
 
-  /* CARDS */
-  .card { background: #1a1a2e; border: 1px solid #6c63ff33; border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: border-color 0.2s; }
-  .card:hover { border-color: #6c63ff99; }
-  .card h3 { color: #a78bfa; }
+/* NOTION CARDS */
+.notion-header{display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none}
+.notion-letter{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#a78bfa,#60a5fa);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:white;flex-shrink:0}
+.notion-title{font-size:1.1rem;font-weight:600;color:#e0e0f0}
+.notion-subtitle{font-size:.8rem;color:#666;margin-top:2px}
+.notion-arrow{margin-left:auto;color:#555;transition:transform .3s;font-size:.9rem}
+.notion-body{display:none;margin-top:20px;padding-top:20px;border-top:1px solid #1e1e35}
+.notion-body.open{display:block;animation:fadeIn .2s ease}
 
-  .notion-letter { display: inline-block; background: #6c63ff; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 10px; font-size: 0.9rem; }
+.section-block{margin-bottom:18px}
+.section-block h4{font-size:.8rem;font-weight:600;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.sens-row{display:flex;gap:10px;margin-bottom:8px;font-size:.88rem;line-height:1.6}
+.sens-label{background:#a78bfa22;color:#a78bfa;border-radius:6px;padding:2px 10px;font-size:.75rem;font-weight:600;flex-shrink:0;height:fit-content;margin-top:1px}
+.sens-text{color:#c0c0e0}
 
-  .tag { display: inline-block; background: #6c63ff22; border: 1px solid #6c63ff55; color: #a78bfa; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; margin: 3px; }
+.philo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-bottom:4px}
+.philo-item{background:#ffffff05;border:1px solid #1e1e35;border-radius:10px;padding:12px 14px}
+.philo-name{font-weight:600;color:#60a5fa;font-size:.85rem;margin-bottom:4px}
+.philo-idea{font-size:.82rem;color:#aaa;line-height:1.5}
 
-  .sens-block { background: #0f0f1a; border-left: 3px solid #6c63ff; padding: 10px 14px; margin: 8px 0; border-radius: 0 8px 8px 0; font-size: 0.92rem; }
-  .sens-label { font-weight: bold; color: #a78bfa; }
+.quote-block{background:linear-gradient(135deg,#a78bfa0d,#60a5fa0d);border-left:3px solid #a78bfa;border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:10px}
+.quote-text{font-style:italic;font-size:.88rem;color:#d0d0e0;line-height:1.6}
+.quote-author{font-size:.78rem;color:#a78bfa;margin-top:6px;font-weight:500}
 
-  /* AUTEURS */
-  .auteur-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-  .auteur-card { background: #1a1a2e; border: 1px solid #6c63ff33; border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.2s; }
-  .auteur-card:hover { border-color: #6c63ff; transform: translateY(-2px); }
-  .auteur-card .era { color: #6c63ff; font-size: 0.8rem; margin-bottom: 6px; }
-  .auteur-detail { display: none; margin-top: 12px; font-size: 0.88rem; color: #c0c0e0; }
-  .auteur-card.open .auteur-detail { display: block; }
+.tag-row{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:#ffffff08;border:1px solid #2a2a45;color:#888;padding:3px 12px;border-radius:20px;font-size:.75rem}
+.tag.warn{background:#ef444411;border-color:#ef444433;color:#fca5a5}
+.tag.link{background:#60a5fa11;border-color:#60a5fa33;color:#93c5fd}
 
-  /* TEXTES */
-  .texte-block { background: #1a1a2e; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
-  .texte-block blockquote { background: #0f0f1a; border-left: 3px solid #a78bfa; padding: 14px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; font-style: italic; font-size: 0.88rem; line-height: 1.6; color: #d0d0e8; }
-  .analyse { background: #6c63ff11; border: 1px solid #6c63ff33; border-radius: 8px; padding: 14px; margin-top: 12px; font-size: 0.88rem; line-height: 1.6; }
-  .analyse-title { color: #6c63ff; font-weight: bold; margin-bottom: 6px; font-size: 0.85rem; }
+/* AUTEURS */
+.auteur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.auteur-card{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:20px;cursor:pointer;transition:all .2s}
+.auteur-card:hover{border-color:#a78bfa44;transform:translateY(-2px)}
+.auteur-era{font-size:.75rem;color:#60a5fa;margin-bottom:6px;font-weight:500}
+.auteur-name{font-size:1.1rem;font-weight:700;color:#e0e0f0;margin-bottom:4px}
+.auteur-lang{font-size:.75rem;color:#555}
+.auteur-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #1e1e35}
+.auteur-card.open .auteur-body{display:block;animation:fadeIn .2s}
 
-  /* QCM */
-  .qcm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .score-badge { background: #6c63ff; color: white; padding: 6px 16px; border-radius: 20px; font-weight: bold; }
-  .question-box { background: #1a1a2e; border-radius: 12px; padding: 24px; }
-  .question-text { font-size: 1.05rem; margin-bottom: 20px; line-height: 1.5; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn { background: #16213e; border: 1px solid #6c63ff44; color: #e0e0f0; padding: 12px 18px; border-radius: 10px; cursor: pointer; text-align: left; font-size: 0.92rem; transition: all 0.2s; }
-  .option-btn:hover:not(:disabled) { border-color: #6c63ff; background: #6c63ff22; }
-  .option-btn.correct { background: #064e3b; border-color: #10b981; color: #10b981; }
-  .option-btn.wrong { background: #4c0519; border-color: #ef4444; color: #ef4444; }
-  .option-btn:disabled { cursor: default; }
-  .feedback { margin-top: 16px; padding: 14px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; display: none; }
-  .feedback.show { display: block; }
-  .feedback.ok { background: #064e3b44; border: 1px solid #10b98155; color: #6ee7b7; }
-  .feedback.ko { background: #4c051944; border: 1px solid #ef444455; color: #fca5a5; }
-  .qcm-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-  .qcm-nav button { background: #6c63ff; border: none; color: white; padding: 10px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-  .qcm-nav button:hover { background: #7c3aed; }
-  .qcm-nav button:disabled { background: #333; cursor: default; }
-  .progress-bar { height: 4px; background: #16213e; border-radius: 2px; margin-bottom: 20px; }
-  .progress-fill { height: 100%; background: #6c63ff; border-radius: 2px; transition: width 0.3s; }
+/* TEXTES */
+.texte-card{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:24px;margin-bottom:20px}
+.texte-card blockquote{background:#ffffff05;border-left:3px solid #60a5fa;padding:16px;margin:14px 0;border-radius:0 10px 10px 0;font-style:italic;font-size:.88rem;line-height:1.7;color:#c0c0e0}
+.analyse-box{background:linear-gradient(135deg,#a78bfa0a,#60a5fa0a);border:1px solid #a78bfa22;border-radius:12px;padding:16px;margin-top:14px}
+.analyse-box h4{color:#a78bfa;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.analyse-box ul{margin-left:16px;font-size:.87rem;line-height:1.9;color:#c0c0e0}
 
-  /* FLASHCARDS */
-  .flashcard-container { perspective: 1000px; width: 100%; max-width: 500px; margin: 0 auto; height: 220px; cursor: pointer; }
-  .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
-  .flashcard.flipped { transform: rotateY(180deg); }
-  .fc-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; }
-  .fc-front { background: #1a1a2e; border: 2px solid #6c63ff; font-size: 1.3rem; font-weight: bold; color: #a78bfa; }
-  .fc-back { background: #16213e; border: 2px solid #a78bfa; transform: rotateY(180deg); font-size: 0.9rem; color: #e0e0f0; line-height: 1.6; }
-  .fc-controls { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
-  .fc-controls button { background: #16213e; border: 1px solid #6c63ff55; color: #c0c0e0; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
-  .fc-controls button:hover { background: #6c63ff; color: white; }
-  .fc-counter { text-align: center; color: #6c63ff; margin-top: 12px; font-size: 0.85rem; }
-  .fc-hint { text-align: center; color: #555; font-size: 0.8rem; margin-top: 8px; }
+/* QCM */
+.qcm-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.score-pill{background:linear-gradient(135deg,#a78bfa,#60a5fa);color:white;padding:6px 18px;border-radius:20px;font-weight:600;font-size:.9rem}
+.progress-bar{height:5px;background:#1e1e35;border-radius:3px;margin-bottom:20px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#60a5fa);border-radius:3px;transition:width .4s ease}
+.question-card{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:28px}
+.question-text{font-size:1.05rem;line-height:1.6;margin-bottom:24px;color:#e0e0f0}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{background:#ffffff05;border:1px solid #2a2a45;color:#c0c0e0;padding:13px 18px;border-radius:12px;cursor:pointer;text-align:left;font-size:.9rem;transition:all .2s;font-family:inherit}
+.opt-btn:hover:not(:disabled){border-color:#a78bfa;background:#a78bfa11}
+.opt-btn.correct{background:#06402211;border-color:#10b981;color:#34d399}
+.opt-btn.wrong{background:#4c051911;border-color:#ef4444;color:#f87171}
+.feedback-box{margin-top:16px;padding:14px;border-radius:10px;font-size:.87rem;line-height:1.6;display:none}
+.feedback-box.show{display:block}
+.feedback-box.ok{background:#06402211;border:1px solid #10b98133;color:#6ee7b7}
+.feedback-box.ko{background:#4c051911;border:1px solid #ef444433;color:#fca5a5}
+.qcm-footer{display:flex;justify-content:flex-end;margin-top:16px}
+.btn-primary{background:linear-gradient(135deg,#a78bfa,#7c3aed);border:none;color:white;padding:11px 28px;border-radius:24px;cursor:pointer;font-size:.9rem;font-family:inherit;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-primary:disabled{background:#333;cursor:default;opacity:1}
+.btn-secondary{background:#1a1a2e;border:1px solid #2a2a45;color:#c0c0e0;padding:9px 20px;border-radius:20px;cursor:pointer;font-size:.85rem;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:#a78bfa;color:#a78bfa}
 
-  /* JEUX */
-  .game-select { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .game-card { background: #1a1a2e; border: 2px solid #6c63ff33; border-radius: 12px; padding: 20px; cursor: pointer; text-align: center; transition: all 0.2s; }
-  .game-card:hover { border-color: #6c63ff; transform: translateY(-2px); }
-  .game-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
-  .game-card h4 { color: #a78bfa; margin-bottom: 6px; }
-  .game-card p { font-size: 0.82rem; color: #888; }
+/* FLASHCARDS */
+.deck-selector{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.deck-btn{background:#1a1a2e;border:1px solid #2a2a45;color:#888;padding:8px 20px;border-radius:20px;cursor:pointer;font-size:.85rem;transition:all .2s;font-family:inherit}
+.deck-btn.active{background:linear-gradient(135deg,#a78bfa,#7c3aed);border-color:transparent;color:white}
+.fc-wrapper{perspective:1200px;max-width:520px;margin:0 auto;height:230px;cursor:pointer}
+.flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.flashcard.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center}
+.fc-front{background:linear-gradient(135deg,#0f0f1c,#1a1035);border:2px solid #a78bfa44;font-size:1.2rem;font-weight:600;color:#d0b4fe}
+.fc-back{background:linear-gradient(135deg,#0f1c1f,#101a2e);border:2px solid #60a5fa44;transform:rotateY(180deg);font-size:.88rem;color:#c0d8f0;line-height:1.6}
+.fc-hint{text-align:center;color:#444;font-size:.78rem;margin-top:10px}
+.fc-counter{text-align:center;color:#a78bfa;font-size:.85rem;margin-top:8px;font-weight:500}
+.fc-controls{display:flex;justify-content:center;gap:12px;margin-top:16px}
 
-  /* ASSOCIATION */
-  .assoc-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .assoc-col { display: flex; flex-direction: column; gap: 10px; }
-  .assoc-item { background: #1a1a2e; border: 2px solid #6c63ff33; border-radius: 10px; padding: 12px 16px; cursor: pointer; font-size: 0.88rem; transition: all 0.2s; }
-  .assoc-item:hover { border-color: #6c63ff; }
-  .assoc-item.selected { border-color: #6c63ff; background: #6c63ff22; }
-  .assoc-item.matched { border-color: #10b981; background: #064e3b44; color: #6ee7b7; cursor: default; }
-  .assoc-item.wrong-flash { border-color: #ef4444; background: #4c051944; animation: flash 0.4s; }
-  @keyframes flash { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+/* GAMES */
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:28px}
+.game-tile{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:24px;cursor:pointer;text-align:center;transition:all .25s}
+.game-tile:hover{border-color:#a78bfa;transform:translateY(-3px);box-shadow:0 12px 40px #a78bfa18}
+.game-tile .icon{font-size:2.8rem;margin-bottom:12px}
+.game-tile h4{color:#e0e0f0;font-size:.95rem;margin-bottom:6px}
+.game-tile p{color:#666;font-size:.78rem;line-height:1.4}
+.back-btn{background:#1a1a2e;border:1px solid #2a2a45;color:#888;padding:8px 18px;border-radius:20px;cursor:pointer;font-size:.82rem;margin-bottom:20px;font-family:inherit;transition:all .2s}
+.back-btn:hover{color:#a78bfa;border-color:#a78bfa}
 
-  /* RÉSULTAT FINAL */
-  .result-box { text-align: center; padding: 40px; }
-  .result-box .big-score { font-size: 4rem; font-weight: bold; color: #6c63ff; }
-  .result-box p { color: #c0c0e0; margin: 10px 0; font-size: 1.1rem; }
-  .result-box button { background: #6c63ff; border: none; color: white; padding: 12px 28px; border-radius: 24px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+/* ASSOC */
+.assoc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.assoc-col{display:flex;flex-direction:column;gap:8px}
+.assoc-item{background:#0f0f1c;border:2px solid #1e1e35;border-radius:10px;padding:12px 14px;cursor:pointer;font-size:.84rem;transition:all .2s;color:#c0c0e0}
+.assoc-item:hover{border-color:#a78bfa55}
+.assoc-item.selected{border-color:#a78bfa;background:#a78bfa11}
+.assoc-item.matched{border-color:#10b981;background:#06402211;color:#34d399;cursor:default}
+.assoc-item.error{animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
-  .badge { display: inline-block; background: #6c63ff33; border: 1px solid #6c63ff; color: #a78bfa; padding: 3px 12px; border-radius: 12px; font-size: 0.78rem; margin-bottom: 8px; }
+/* RESULT */
+.result-screen{text-align:center;padding:48px 24px}
+.result-score{font-size:5rem;font-weight:800;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.result-msg{font-size:1.2rem;margin:16px 0 8px;color:#e0e0f0}
+.result-sub{color:#666;font-size:.88rem}
+
+/* MODE SELECTOR */
+.mode-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.mode-btn{background:#1a1a2e;border:1px solid #2a2a45;color:#888;padding:7px 18px;border-radius:16px;cursor:pointer;font-size:.82rem;font-family:inherit;transition:all .2s}
+.mode-btn.active,.mode-btn:hover{background:#a78bfa22;border-color:#a78bfa;color:#a78bfa}
+
+/* HOME */
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:#0f0f1c;border:1px solid #1e1e35;border-radius:16px;padding:20px;text-align:center}
+.stat-num{font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.8rem;color:#666;margin-top:4px}
+.quick-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.quick-link{background:#0f0f1c;border:1px solid #1e1e35;border-radius:14px;padding:18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s}
+.quick-link:hover{border-color:#a78bfa44;background:#a78bfa08}
+.quick-link .ql-icon{font-size:1.8rem}
+.quick-link h4{font-size:.9rem;color:#e0e0f0;margin-bottom:2px}
+.quick-link p{font-size:.75rem;color:#666}
+
+@media(max-width:700px){
+  #sidebar{width:60px}
+  #sidebar .nav-item span,.sidebar-logo p,.sidebar-logo h1,.nav-badge,.sidebar-footer{display:none}
+  #main{margin-left:60px}
+  .section{padding:20px 16px}
+  .assoc-grid{grid-template-columns:1fr}
+  .philo-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <h1>📚 Philo BAC</h1>
-  <button class="active" onclick="showSection('notions')">Notions</button>
-  <button onclick="showSection('auteurs')">Auteurs</button>
-  <button onclick="showSection('textes')">Textes clés</button>
-  <button onclick="showSection('flashcards')">Flashcards</button>
-  <button onclick="showSection('qcm')">QCM</button>
-  <button onclick="showSection('jeux')">Jeux</button>
-</nav>
-
-<!-- ===================== NOTIONS ===================== -->
-<div id="notions" class="section active">
-  <h2>📖 Les 17 Notions du BAC</h2>
-
-  <div class="card">
-    <h3><span class="notion-letter">A</span>Art / Technique</h3>
-    <div class="sens-block"><span class="sens-label">Sens 1 — Historique :</span> « Art » = même sens que « Technique ». En grec <em>téchnê</em>, en latin <em>ars</em> : les deux désignent un savoir-faire organisé visant une fin.</div>
-    <div class="sens-block"><span class="sens-label">Sens 2 — Moderne (≥ XVIIIe s.) :</span> Les <em>Beaux-arts</em> → toute production d'objet à effet <strong>esthétique</strong> (sensations + sentiments).</div>
-    <div class="tag">Technique</div><div class="tag">Esthétique</div><div class="tag">Savoir-faire</div>
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <h1>📚 Philo BAC</h1>
+    <p>Terminale Générale</p>
   </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="show('home',this)"><span class="icon">🏠</span><span>Accueil</span></div>
+    <div class="nav-item" onclick="show('notions',this)"><span class="icon">📖</span><span>Notions</span><span class="nav-badge">17</span></div>
+    <div class="nav-item" onclick="show('auteurs',this)"><span class="icon">🧠</span><span>Auteurs</span><span class="nav-badge">10</span></div>
+    <div class="nav-item" onclick="show('textes',this)"><span class="icon">📜</span><span>Textes clés</span></div>
+    <div class="nav-item" onclick="show('flashcards',this)"><span class="icon">🃏</span><span>Flashcards</span></div>
+    <div class="nav-item" onclick="show('qcm',this)"><span class="icon">✏️</span><span>QCM</span></div>
+    <div class="nav-item" onclick="show('jeux',this)"><span class="icon">🎮</span><span>Jeux</span></div>
+  </nav>
+  <div class="sidebar-footer">M. Lefetz · 2025-2026</div>
+</div>
 
-  <div class="card">
-    <h3><span class="notion-letter">B</span>Bonheur</h3>
-    <div class="sens-block"><span class="sens-label">Sens faible :</span> État de satisfaction ponctuelle (« je suis heureux d'être là »).</div>
-    <div class="sens-block"><span class="sens-label">Sens fort :</span> État de satisfaction <strong>stable et durable</strong>. C'est le sens philosophique principal (eudaimonia chez Aristote).</div>
-    <div class="tag">Eudaimonia</div><div class="tag">Plaisir vs Bonheur</div>
+<div id="main">
+
+<!-- HOME -->
+<div id="home" class="section active">
+  <div class="page-header">
+    <h2>Tableau de bord</h2>
+    <p>Tout ce qu'il faut pour réussir la philo au BAC</p>
   </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">C</span>Conscience</h3>
-    <div class="sens-block"><span class="sens-label">A — Psychologique :</span> Intuition qu'a l'esprit de ses propres états et actes (≠ sommeil, coma).</div>
-    <div class="sens-block"><span class="sens-label">B — Morale :</span> « Avoir mauvaise conscience », le sens moral intérieur.</div>
-    <div class="sens-block"><span class="sens-label">C — Connaissance :</span> « Être conscient du danger » = en avoir connaissance.</div>
-    <div class="tag">Cogito</div><div class="tag">Descartes</div><div class="tag">Freud (inconscient)</div>
+  <div class="home-grid">
+    <div class="stat-card"><div class="stat-num">17</div><div class="stat-label">Notions à maîtriser</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Auteurs au programme</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Textes étudiés</div></div>
+    <div class="stat-card"><div class="stat-num">20+</div><div class="stat-label">Questions QCM</div></div>
   </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">D</span>Devoir</h3>
-    <div class="sens-block"><span class="sens-label">Sens A — Moral (Kant) :</span> L'obligation morale qui s'impose indépendamment de nos désirs.</div>
-    <div class="sens-block"><span class="sens-label">Sens B — Fonctionnel :</span> Règle d'action liée à un rôle (« le devoir du médecin »).</div>
-    <div class="tag">Impératif catégorique</div><div class="tag">Kant</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">É</span>État</h3>
-    <div class="sens-block"><span class="sens-label">Sens A — Politique :</span> Mode d'organisation politique centralisée + ses institutions (gouverner, légiférer, rendre justice).</div>
-    <div class="sens-block"><span class="sens-label">Sens B — Administratif :</span> Ensemble des services généraux d'une nation (« entreprise d'État »).</div>
-    <div class="tag">Souveraineté</div><div class="tag">Hobbes</div><div class="tag">Rousseau</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">I</span>Inconscient</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Qui ne possède aucune conscience (sens descriptif).</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Être irréfléchi, agir sans réfléchir.</div>
-    <div class="sens-block"><span class="sens-label">C — L'Inconscient :</span> Tout ce qui n'est pas conscient et <strong>détermine</strong> l'action et la pensée du sujet (Schopenhauer, Nietzsche, Freud).</div>
-    <div class="tag">Freud</div><div class="tag">Ça / Moi / Surmoi</div><div class="tag">Refoulement</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">J</span>Justice</h3>
-    <div class="sens-block">Ce qui est conforme au droit. Étymologie : <em>justus</em> de <em>jus</em> (la loi en latin) → d'abord synonyme de <em>légal</em>. Aujourd'hui : ce qui est <strong>équitable</strong>, peut renvoyer à un ordre moral.</div>
-    <div class="tag">Droit naturel</div><div class="tag">Droit positif</div><div class="tag">Équité</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">L</span>Langage</h3>
-    <div class="sens-block">Faculté de parler des langues. Le langage est le propre de l'homme : il permet la pensée abstraite, la communication, la vie sociale.</div>
-    <div class="tag">Logos</div><div class="tag">Signe</div><div class="tag">Signifiant / Signifié</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">N</span>Nature</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Principe de production des éléments naturels (physis en grec).</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Caractère essentiel d'une chose (« la nature de l'homme »).</div>
-    <div class="sens-block"><span class="sens-label">C :</span> Ensemble des choses qui suivent des lois (≠ miracle, ≠ monstre).</div>
-    <div class="tag">Physis</div><div class="tag">Naturel vs Artificiel</div><div class="tag">Rousseau</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">L</span>Liberté</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Agir comme on le veut (≠ contrainte de l'esclave, du prisonnier).</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Agir et penser <strong>en connaissance de cause</strong> (≠ impulsion, folie). Liberté éclairée.</div>
-    <div class="tag">Libre-arbitre</div><div class="tag">Déterminisme</div><div class="tag">Spinoza / Sartre</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">R</span>Raison</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Faculté de raisonner = articuler des concepts entre eux.</div>
-    <div class="sens-block"><span class="sens-label">B :</span> L'explication (« la raison d'être de quelque chose »).</div>
-    <div class="sens-block"><span class="sens-label">C — Normatif :</span> Ce qui légitime, ce qui justifie.</div>
-    <div class="tag">Logos</div><div class="tag">Kant</div><div class="tag">Descartes</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">R</span>Religion</h3>
-    <div class="sens-block"><span class="sens-label">A — Institutionnel :</span> Communauté unie par des rites réguliers, une croyance en une valeur absolue et un rapport avec une puissance spirituelle supérieure (Dieu).</div>
-    <div class="sens-block"><span class="sens-label">B — Individuel :</span> Système personnel de sentiments et croyances ayant Dieu pour objet.</div>
-    <div class="sens-block"><span class="sens-label">C — Étymologique :</span> Respect scrupuleux d'une règle ou d'un sentiment.</div>
-    <div class="tag">Rite</div><div class="tag">Transcendance</div><div class="tag">Foi</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">S</span>Science</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Synonyme de savoir.</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Toute connaissance rationnelle obtenue par <strong>démonstration</strong> ou par <strong>observation et vérification</strong>.</div>
-    <div class="tag">Épistémologie</div><div class="tag">Méthode scientifique</div><div class="tag">Descartes</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">T</span>Temps</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Période entre deux événements ; époque historique.</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Changement continuel par lequel le présent devient le passé (Temps ≠ éternité).</div>
-    <div class="sens-block"><span class="sens-label">C :</span> Milieu indéfini analogue à l'espace (Newton : temps absolu ; Kant : forme a priori de la sensibilité).</div>
-    <div class="tag">Chronos</div><div class="tag">Bergson</div><div class="tag">Kant</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">T</span>Travail</h3>
-    <div class="sens-block"><span class="sens-label">A :</span> Transformation de la nature en vue de la satisfaction des besoins (≠ loisirs).</div>
-    <div class="sens-block"><span class="sens-label">B :</span> Activité de production dont la fin est <strong>extérieure</strong> à elle-même (≠ action / contemplation / jeu).</div>
-    <div class="tag">Marx</div><div class="tag">Hegel</div><div class="tag">Aliénation</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">T</span>Technique</h3>
-    <div class="sens-block">Ensemble des entreprises qui augmentent la puissance par l'<strong>organisation de moyens en vue d'une fin</strong>.</div>
-    <div class="tag">Outil</div><div class="tag">Prométhée</div><div class="tag">Descartes (maîtres/possesseurs)</div>
-  </div>
-
-  <div class="card">
-    <h3><span class="notion-letter">V</span>Vérité</h3>
-    <div class="sens-block"><span class="sens-label">Vérité comme adéquation :</span> Accord entre ce qui est dit et ce qui <em>est</em> (correspondance énoncé / réalité).</div>
-    <div class="tag">Adéquation</div><div class="tag">Cohérence</div><div class="tag">Démonstration</div>
+  <div class="page-header" style="margin-top:8px"><h2 style="font-size:1.2rem">Accès rapide</h2></div>
+  <div class="quick-links">
+    <div class="quick-link" onclick="show('notions',document.querySelectorAll('.nav-item')[1])"><div class="ql-icon">📖</div><div><h4>Fiches Notions</h4><p>17 notions avec philosophes, citations et pièges</p></div></div>
+    <div class="quick-link" onclick="show('flashcards',document.querySelectorAll('.nav-item')[4])"><div class="ql-icon">🃏</div><div><h4>Flashcards</h4><p>Mémorise notions, auteurs et citations</p></div></div>
+    <div class="quick-link" onclick="show('qcm',document.querySelectorAll('.nav-item')[5])"><div class="ql-icon">✏️</div><div><h4>QCM</h4><p>Teste tes connaissances avec explications</p></div></div>
+    <div class="quick-link" onclick="show('jeux',document.querySelectorAll('.nav-item')[6])"><div class="ql-icon">🎮</div><div><h4>Jeux</h4><p>Association, Vrai/Faux, Chrono Quiz</p></div></div>
+    <div class="quick-link" onclick="show('textes',document.querySelectorAll('.nav-item')[3])"><div class="ql-icon">📜</div><div><h4>Textes clés</h4><p>Platon, Rousseau, Descartes analysés</p></div></div>
+    <div class="quick-link" onclick="show('auteurs',document.querySelectorAll('.nav-item')[2])"><div class="ql-icon">🧠</div><div><h4>Auteurs</h4><p>Fiches détaillées des 10 auteurs</p></div></div>
   </div>
 </div>
 
-<!-- ===================== AUTEURS ===================== -->
+<!-- NOTIONS -->
+<div id="notions" class="section">
+  <div class="page-header"><h2>Les 17 Notions du BAC</h2><p>Clique sur une notion pour déployer la fiche complète</p></div>
+  <div id="notions-list"></div>
+</div>
+
+<!-- AUTEURS -->
 <div id="auteurs" class="section">
-  <h2>🧠 Les Auteurs de l'Année</h2>
-  <div class="auteur-grid">
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">Ve–IVe s. av. J.-C. · Grec ancien</div>
-      <h3>PLATON</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres clés :</strong> La République, Le Banquet, Phédon, Protagoras, Phèdre.</p>
-        <p style="margin-top:8px"><strong>Idées centrales :</strong></p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Monde des Idées (réalité vraie) ≠ monde sensible (apparences)</li>
-          <li>Mythe de la Caverne : l'ignorance comme prison</li>
-          <li><em>Protagoras</em> : l'homme est nu à sa naissance → la technique compense ses manques naturels (mythe de Prométhée)</li>
-          <li>La Justice et la Vergogne sont données à <strong>tous</strong> (≠ autres arts réservés à des spécialistes)</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">IVe s. av. J.-C. · Grec ancien</div>
-      <h3>ARISTOTE</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres clés :</strong> Éthique à Nicomaque, Politique, Métaphysique.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>L'homme est un <em>animal politique</em> (zôon politikon)</li>
-          <li>Bonheur = eudaimonia (activité selon la vertu)</li>
-          <li>Distinction acte / puissance, forme / matière</li>
-          <li>La fin ultime de l'homme : la vie contemplative</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIe s. (1533–1592) · Français</div>
-      <h3>MONTAIGNE</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvre :</strong> Les Essais.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Scepticisme doux : « Que sais-je ? »</li>
-          <li>L'introspection comme méthode philosophique</li>
-          <li>Relativisme culturel : critique de l'ethnocentrisme</li>
-          <li>« Chaque homme porte la forme entière de l'humaine condition »</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIIe s. (1596–1650) · Latin & Français</div>
-      <h3>DESCARTES</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> Discours de la méthode, Méditations métaphysiques.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Cogito ergo sum : première certitude</li>
-          <li>Doute méthodique : douter pour trouver le certain</li>
-          <li>Dualisme corps/âme</li>
-          <li><em>Discours VI</em> : grâce à la science, nous rendre « comme <strong>maîtres et possesseurs de la nature</strong> » → technique au service de la santé et du bien-être</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIIe s. (1632–1677) · Latin</div>
-      <h3>SPINOZA</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvre :</strong> Éthique, Traité théologico-politique.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Monisme : une seule substance (Dieu = Nature)</li>
-          <li>Déterminisme strict : tout est nécessaire</li>
-          <li>La liberté = compréhension de notre propre nécessité</li>
-          <li>Le <em>conatus</em> : persévérance de l'être dans l'être</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIIIe s. (1712–1778) · Français</div>
-      <h3>ROUSSEAU</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> Discours sur les sciences et les arts, Du contrat social, Émile.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>L'homme est naturellement bon → la société le corrompt</li>
-          <li><em>Discours 1750</em> : les arts et sciences corrompent les mœurs, créent une « uniformité trompeuse »</li>
-          <li>L'état de nature : transparence et authenticité</li>
-          <li>Contrat social : volonté générale comme fondement de la loi</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIIIe s. (1713–1784) · Français</div>
-      <h3>DIDEROT</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> Encyclopédie, Le Neveu de Rameau, Jacques le fataliste.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Encyclopédiste : valorisation de la technique et du savoir</li>
-          <li>Matérialisme : la matière pense</li>
-          <li>Critique de la religion et des préjugés</li>
-          <li>Défenseur de la liberté de penser</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XVIIIe s. (1724–1804) · Allemand</div>
-      <h3>KANT</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> Critique de la raison pure, Fondements de la métaphysique des mœurs.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Révolution copernicienne : l'objet se conforme au sujet (pas l'inverse)</li>
-          <li>Impératif catégorique : « Agis comme si la maxime de ton action devait devenir loi universelle »</li>
-          <li>Distingue légalité (acte conforme au devoir) et moralité (acte par devoir)</li>
-          <li>Le temps et l'espace = formes a priori de la sensibilité</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XXe s. (1905–1980) · Français</div>
-      <h3>SARTRE</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> L'Être et le Néant, L'existentialisme est un humanisme.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>« L'existence précède l'essence » → l'homme se définit par ses actes</li>
-          <li>Liberté radicale et responsabilité totale</li>
-          <li>Mauvaise foi : fuir sa liberté en se définissant par un rôle</li>
-          <li>L'angoisse : conscience de sa liberté absolue</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="auteur-card" onclick="toggleAuteur(this)">
-      <div class="era">XXe s. (1908–2009) · Français</div>
-      <h3>LÉVI-STRAUSS</h3>
-      <div class="auteur-detail">
-        <p><strong>Œuvres :</strong> Tristes Tropiques, La Pensée sauvage, Race et Histoire.</p>
-        <ul style="margin-left:16px;margin-top:4px;font-size:0.86rem;line-height:1.7">
-          <li>Père de l'anthropologie structurale</li>
-          <li>Critique de l'ethnocentrisme occidental</li>
-          <li>Les sociétés « primitives » ont une pensée aussi rigoureuse (pensée sauvage ≠ pensée primitive)</li>
-          <li>La distinction nature/culture est universelle (prohibition de l'inceste)</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
+  <div class="page-header"><h2>Les Auteurs de l'Année</h2><p>Clique sur un auteur pour voir sa fiche</p></div>
+  <div class="auteur-grid" id="auteur-grid"></div>
 </div>
 
-<!-- ===================== TEXTES ===================== -->
+<!-- TEXTES -->
 <div id="textes" class="section">
-  <h2>📜 Textes Clés — Naturel vs Artificiel</h2>
-
-  <div class="texte-block">
-    <h3>PLATON — Protagoras (320d)</h3>
-    <div class="badge">Technique comme compensation naturelle</div>
-    <blockquote>
-      « Épiméthée avait dépensé toutes les capacités pour les bêtes ; il restait encore la race humaine, qui n'avait rien reçu. […] Prométhée dérobe le savoir technique d'Héphaïstos et d'Athéna, ainsi que le feu, et c'est ainsi qu'il en fait présent à l'homme. »
-    </blockquote>
-    <div class="analyse">
-      <div class="analyse-title">💡 Ce qu'il faut retenir :</div>
-      <ul style="margin-left:16px;line-height:1.8">
-        <li><strong>L'homme est naturellement démuni</strong> : pas de griffes, pas de fourrure, pas de vitesse.</li>
-        <li>La <strong>technique (artificiel) compense ce manque naturel</strong> → elle est nécessaire à la survie humaine.</li>
-        <li>La Justice et la Vergogne (sens moral) sont données à <strong>tous</strong>, pas réservées aux experts : elles fondent la vie en cité.</li>
-        <li><strong>Thèse :</strong> L'artificiel (technique) n'est pas contraire à la nature humaine — il en est le complément indispensable.</li>
+  <div class="page-header"><h2>Textes Clés — Naturel vs Artificiel</h2><p>Les 3 textes du programme avec analyse complète</p></div>
+  <div class="texte-card">
+    <h3 style="color:#a78bfa;margin-bottom:4px">PLATON — Protagoras (320d)</h3>
+    <p style="color:#60a5fa;font-size:.8rem;margin-bottom:14px">Thème : La technique comme compensation naturelle</p>
+    <blockquote>« Épiméthée avait dépensé toutes les capacités pour les bêtes ; il restait encore la race humaine, qui n'avait rien reçu. […] Prométhée dérobe le savoir technique d'Héphaïstos et d'Athéna, ainsi que le feu, et c'est ainsi qu'il en fait présent à l'homme. »</blockquote>
+    <div class="analyse-box">
+      <h4>💡 Analyse et idées clés</h4>
+      <ul>
+        <li><strong>L'homme est naturellement démuni</strong> : pas de griffes, pas de fourrure, pas de vitesse naturelle.</li>
+        <li>La <strong>technique (l'artificiel) compense ce manque naturel</strong> — elle est nécessaire à la survie humaine.</li>
+        <li>La Justice et la Vergogne (sens moral) sont données à <strong>tous</strong> les hommes par Zeus, pas aux spécialistes seulement.</li>
+        <li><strong>Thèse de Platon :</strong> L'artificiel n'est pas contraire à la nature humaine — il en est le complément indispensable.</li>
+        <li><strong>Pour la dissert :</strong> Argument contre "il faut préférer le naturel" — sans technique l'homme mourrait.</li>
       </ul>
     </div>
   </div>
-
-  <div class="texte-block">
-    <h3>ROUSSEAU — Discours sur les sciences et les arts (1750)</h3>
-    <div class="badge">L'artificiel corrompt les mœurs naturelles</div>
-    <blockquote>
-      « Avant que l'art eût façonné nos manières […] nos mœurs étaient rustiques, mais naturelles. […] Aujourd'hui il règne dans nos mœurs une vile et trompeuse uniformité, et tous les esprits semblent avoir été jetés dans un même moule. »
-    </blockquote>
-    <div class="analyse">
-      <div class="analyse-title">💡 Ce qu'il faut retenir :</div>
-      <ul style="margin-left:16px;line-height:1.8">
-        <li><strong>Nature = authenticité, transparence, sincérité</strong> (on pouvait « se pénétrer réciproquement »).</li>
-        <li><strong>Art / culture = masque social</strong> : politesse, bienséance → hypocrisie.</li>
-        <li>L'artificiel crée l'uniformité : on suit les usages, « jamais son propre génie ».</li>
-        <li><strong>Thèse :</strong> Oui, il faut préférer le naturel car l'artificiel corrompt la véritable humanité.</li>
+  <div class="texte-card">
+    <h3 style="color:#a78bfa;margin-bottom:4px">ROUSSEAU — Discours sur les sciences et les arts (1750)</h3>
+    <p style="color:#60a5fa;font-size:.8rem;margin-bottom:14px">Thème : L'artificiel corrompt les mœurs naturelles</p>
+    <blockquote>« Avant que l'art eût façonné nos manières […] nos mœurs étaient rustiques, mais naturelles. […] Aujourd'hui il règne dans nos mœurs une vile et trompeuse uniformité, et tous les esprits semblent avoir été jetés dans un même moule. »</blockquote>
+    <div class="analyse-box">
+      <h4>💡 Analyse et idées clés</h4>
+      <ul>
+        <li><strong>Nature = authenticité, transparence, sincérité</strong> — on pouvait se "pénétrer réciproquement".</li>
+        <li><strong>Art/culture = masque social</strong> : politesse, bienséance → hypocrisie généralisée.</li>
+        <li>L'artificiel crée l'uniformité des esprits : "jamais son propre génie".</li>
+        <li><strong>Thèse :</strong> Oui, il faut préférer le naturel — l'artificiel corrompt la véritable humanité.</li>
+        <li><strong>Contexte :</strong> Rousseau répond à la question de l'Académie de Dijon — il prend la position scandaleuse : NON aux sciences.</li>
       </ul>
     </div>
   </div>
-
-  <div class="texte-block">
-    <h3>DESCARTES — Discours de la méthode, Partie VI (1637)</h3>
-    <div class="badge">La technique comme maîtrise de la nature</div>
-    <blockquote>
-      « […] nous pourrions employer en même façon à tous les usages auxquels ils sont propres, et ainsi nous rendre comme maîtres et possesseurs de la nature. Ce qui n'est pas seulement à désirer pour l'invention d'une infinité d'artifices, mais principalement aussi pour la conservation de la santé. »
-    </blockquote>
-    <div class="analyse">
-      <div class="analyse-title">💡 Ce qu'il faut retenir :</div>
-      <ul style="margin-left:16px;line-height:1.8">
-        <li>La <strong>science et la technique permettent de comprendre la nature</strong> pour mieux s'en servir.</li>
-        <li>Objectif : l'amélioration de la <strong>santé humaine</strong> (premier des biens).</li>
+  <div class="texte-card">
+    <h3 style="color:#a78bfa;margin-bottom:4px">DESCARTES — Discours de la méthode, Partie VI (1637)</h3>
+    <p style="color:#60a5fa;font-size:.8rem;margin-bottom:14px">Thème : La technique comme maîtrise rationnelle de la nature</p>
+    <blockquote>« […] nous pourrions employer en même façon à tous les usages auxquels ils sont propres, et ainsi nous rendre comme maîtres et possesseurs de la nature. Ce qui n'est pas seulement à désirer pour l'invention d'une infinité d'artifices, mais principalement aussi pour la conservation de la santé. »</blockquote>
+    <div class="analyse-box">
+      <h4>💡 Analyse et idées clés</h4>
+      <ul>
+        <li>La <strong>science permet de comprendre les lois de la nature</strong> pour mieux s'en servir.</li>
+        <li>Objectif principal : la <strong>conservation de la santé</strong> (premier des biens).</li>
         <li>La technique est au service du <strong>bien général de tous les hommes</strong>.</li>
-        <li><strong>Thèse :</strong> Non, il ne faut pas préférer le naturel brut — l'artificiel (maîtrise technique) est le moyen du progrès et du bonheur humain.</li>
+        <li><strong>Thèse :</strong> Non, il ne faut pas préférer le naturel brut — l'artificiel guidé par la raison est le moyen du progrès.</li>
+        <li><strong>Nuance :</strong> "comme maîtres" (nuance modale) — Descartes ne dit pas qu'on est vraiment maîtres absolus.</li>
       </ul>
     </div>
   </div>
-
-  <div class="texte-block">
-    <h3>Synthèse — Plan de dissertation possible</h3>
-    <div class="analyse">
-      <div class="analyse-title">Faut-il préférer le naturel à l'artificiel ?</div>
-      <p style="margin-top:8px;line-height:1.8;font-size:0.9rem">
-        <strong>I. OUI — Le naturel est supérieur (Rousseau)</strong><br>
-        L'artificiel corrompt : hypocrisie sociale, perte d'authenticité, uniformisation des esprits.
-      </p>
-      <p style="margin-top:10px;line-height:1.8;font-size:0.9rem">
-        <strong>II. NON — L'artificiel est nécessaire (Platon)</strong><br>
-        L'homme est naturellement incomplet. La technique est sa nature profonde. Sans elle, il ne survivrait pas.
-      </p>
-      <p style="margin-top:10px;line-height:1.8;font-size:0.9rem">
-        <strong>III. DÉPASSEMENT — L'artificiel au service de l'humain (Descartes)</strong><br>
-        Ce n'est pas l'opposition qui compte mais l'usage : une technique guidée par la raison et le bien commun est préférable à une nature brute impuissante.
-      </p>
+  <div class="texte-card" style="border-color:#a78bfa33">
+    <h3 style="color:#a78bfa;margin-bottom:14px">Plan de dissertation — Faut-il préférer le naturel à l'artificiel ?</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      <div style="background:#a78bfa0a;border:1px solid #a78bfa22;border-radius:10px;padding:14px">
+        <div style="color:#a78bfa;font-weight:600;margin-bottom:8px;font-size:.88rem">I. OUI — Le naturel est supérieur</div>
+        <div style="font-size:.82rem;color:#aaa;line-height:1.7">L'artificiel corrompt (Rousseau). La société dénature l'homme bon par nature. La politesse cache l'hypocrisie.</div>
+      </div>
+      <div style="background:#60a5fa0a;border:1px solid #60a5fa22;border-radius:10px;padding:14px">
+        <div style="color:#60a5fa;font-weight:600;margin-bottom:8px;font-size:.88rem">II. NON — L'artificiel est nécessaire</div>
+        <div style="font-size:.82rem;color:#aaa;line-height:1.7">L'homme est naturellement incomplet (Platon). La technique est sa nature. Sans elle, il ne survivrait pas.</div>
+      </div>
+      <div style="background:#34d39910;border:1px solid #34d39922;border-radius:10px;padding:14px">
+        <div style="color:#34d399;font-weight:600;margin-bottom:8px;font-size:.88rem">III. DÉPASSEMENT</div>
+        <div style="font-size:.82rem;color:#aaa;line-height:1.7">Ce n'est pas l'opposition qui compte mais l'usage (Descartes). Une technique guidée par la raison et le bien commun dépasse l'opposition.</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ===================== FLASHCARDS ===================== -->
+<!-- FLASHCARDS -->
 <div id="flashcards" class="section">
-  <h2>🃏 Flashcards — Mémorisation</h2>
-
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
-    <button onclick="setDeck('notions')" id="deck-notions" style="background:#6c63ff;border:none;color:white;padding:8px 20px;border-radius:20px;cursor:pointer">Notions</button>
-    <button onclick="setDeck('auteurs')" id="deck-auteurs" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer">Auteurs</button>
-    <button onclick="setDeck('citations')" id="deck-citations" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer">Citations</button>
+  <div class="page-header"><h2>Flashcards</h2><p>Clique sur la carte pour la retourner</p></div>
+  <div class="deck-selector">
+    <button class="deck-btn active" onclick="setDeck('notions',this)">📖 Notions</button>
+    <button class="deck-btn" onclick="setDeck('auteurs',this)">🧠 Auteurs</button>
+    <button class="deck-btn" onclick="setDeck('citations',this)">💬 Citations</button>
   </div>
-
-  <div class="flashcard-container" onclick="flipCard()">
+  <div class="fc-wrapper" onclick="flipCard()">
     <div class="flashcard" id="flashcard">
-      <div class="fc-face fc-front" id="fc-front">Chargement...</div>
-      <div class="fc-face fc-back" id="fc-back">Chargement...</div>
+      <div class="fc-face fc-front" id="fc-front"></div>
+      <div class="fc-face fc-back" id="fc-back"></div>
     </div>
   </div>
   <div class="fc-hint">Clique sur la carte pour la retourner</div>
   <div class="fc-counter" id="fc-counter">1 / 1</div>
   <div class="fc-controls">
-    <button onclick="prevCard()">◀ Précédente</button>
-    <button onclick="shuffleCards()">🔀 Mélanger</button>
-    <button onclick="nextCard()">Suivante ▶</button>
+    <button class="btn-secondary" onclick="prevCard()">◀ Préc.</button>
+    <button class="btn-secondary" onclick="shuffleCards()">🔀 Mélanger</button>
+    <button class="btn-secondary" onclick="nextCard()">Suiv. ▶</button>
   </div>
 </div>
 
-<!-- ===================== QCM ===================== -->
+<!-- QCM -->
 <div id="qcm" class="section">
-  <h2>✏️ QCM Interactif</h2>
-
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
-    <button onclick="startQCM('all')" style="background:#6c63ff;border:none;color:white;padding:8px 20px;border-radius:20px;cursor:pointer">Tout</button>
-    <button onclick="startQCM('notions')" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer">Notions</button>
-    <button onclick="startQCM('auteurs')" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer">Auteurs</button>
-    <button onclick="startQCM('textes')" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer">Textes</button>
+  <div class="page-header"><h2>QCM Interactif</h2><p>Réponds aux questions pour tester tes connaissances</p></div>
+  <div class="mode-selector" id="qcm-modes">
+    <button class="mode-btn active" onclick="startQCM('all',this)">Tout</button>
+    <button class="mode-btn" onclick="startQCM('notions',this)">Notions</button>
+    <button class="mode-btn" onclick="startQCM('auteurs',this)">Auteurs</button>
+    <button class="mode-btn" onclick="startQCM('textes',this)">Textes</button>
   </div>
-
-  <div id="qcm-container">
-    <div class="qcm-header">
-      <span id="qcm-label" style="color:#888;font-size:0.9rem">Question 1/10</span>
-      <span class="score-badge" id="qcm-score">Score : 0</span>
+  <div id="qcm-play">
+    <div class="qcm-top">
+      <span id="qcm-label" style="color:#666;font-size:.88rem">Question 1/10</span>
+      <span class="score-pill" id="qcm-score">0 pts</span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="qcm-progress" style="width:0%"></div></div>
-    <div class="question-box" id="qcm-box">
-      <p class="question-text" id="qcm-question">Clique sur un mode pour commencer !</p>
-      <div class="options" id="qcm-options"></div>
-      <div class="feedback" id="qcm-feedback"></div>
+    <div class="progress-bar"><div class="progress-fill" id="qcm-prog" style="width:0%"></div></div>
+    <div class="question-card">
+      <div class="question-text" id="qcm-q">Choisis un mode et commence !</div>
+      <div class="options" id="qcm-opts"></div>
+      <div class="feedback-box" id="qcm-fb"></div>
     </div>
-    <div class="qcm-nav">
-      <span></span>
-      <button onclick="nextQuestion()" id="qcm-next" disabled>Question suivante →</button>
-    </div>
+    <div class="qcm-footer"><button class="btn-primary" id="qcm-next" onclick="nextQ()" disabled>Question suivante →</button></div>
   </div>
-
   <div id="qcm-result" style="display:none">
-    <div class="result-box">
-      <div class="big-score" id="final-score">0/10</div>
-      <p id="final-msg">Résultat</p>
-      <p style="color:#666;font-size:0.85rem;margin-top:8px" id="final-detail"></p>
-      <button onclick="restartQCM()">Recommencer</button>
+    <div class="result-screen">
+      <div class="result-score" id="res-score">0/10</div>
+      <div class="result-msg" id="res-msg"></div>
+      <div class="result-sub" id="res-sub"></div>
+      <button class="btn-primary" style="margin-top:24px" onclick="restartQCM()">Recommencer</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== JEUX ===================== -->
+<!-- JEUX -->
 <div id="jeux" class="section">
-  <h2>🎮 Jeux de Révision</h2>
-
+  <div class="page-header"><h2>Jeux de Révision</h2><p>Apprends en t'amusant</p></div>
   <div id="game-menu">
-    <div class="game-select">
-      <div class="game-card" onclick="startGame('association')">
-        <div class="icon">🔗</div>
-        <h4>Association</h4>
-        <p>Relie chaque auteur à sa thèse ou sa notion clé</p>
-      </div>
-      <div class="game-card" onclick="startGame('definition')">
-        <div class="icon">📝</div>
-        <h4>Devine la Notion</h4>
-        <p>On te donne la définition, trouve la notion correspondante</p>
-      </div>
-      <div class="game-card" onclick="startGame('vrai-faux')">
-        <div class="icon">⚖️</div>
-        <h4>Vrai ou Faux ?</h4>
-        <p>Des affirmations sur les auteurs et les notions — vrai ou faux ?</p>
-      </div>
-      <div class="game-card" onclick="startGame('chrono')">
-        <div class="icon">⏰</div>
-        <h4>Chrono Quiz</h4>
-        <p>10 questions, 15 secondes chacune — contre la montre !</p>
-      </div>
+    <div class="game-grid">
+      <div class="game-tile" onclick="launchGame('assoc')"><div class="icon">🔗</div><h4>Association</h4><p>Relie chaque auteur à sa thèse</p></div>
+      <div class="game-tile" onclick="launchGame('def')"><div class="icon">📝</div><h4>Devine la Notion</h4><p>Définition → trouve la notion</p></div>
+      <div class="game-tile" onclick="launchGame('vf')"><div class="icon">⚖️</div><h4>Vrai ou Faux</h4><p>Affirmations sur les auteurs et notions</p></div>
+      <div class="game-tile" onclick="launchGame('chrono')"><div class="icon">⏰</div><h4>Chrono Quiz</h4><p>15 secondes par question !</p></div>
     </div>
   </div>
-
   <div id="game-area" style="display:none">
-    <button onclick="backToMenu()" style="background:#16213e;border:1px solid #6c63ff55;color:#c0c0e0;padding:8px 20px;border-radius:20px;cursor:pointer;margin-bottom:20px">← Retour aux jeux</button>
+    <button class="back-btn" onclick="backMenu()">← Retour aux jeux</button>
     <div id="game-content"></div>
   </div>
 </div>
 
+</div><!-- /main -->
 <script>
-// ===================== NAVIGATION =====================
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+// ===== NAV =====
+function show(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
+  if(el) el.classList.add('active');
 }
 
-// ===================== AUTEURS =====================
-function toggleAuteur(el) {
-  el.classList.toggle('open');
+// ===== NOTIONS DATA =====
+const notions=[
+{letter:'A',title:'Art',subtitle:'et Technique',
+senses:[
+  {l:'Historique',t:'« Art » = même sens que Technique. En grec téchnê, en latin ars : savoir-faire organisé vers une fin.'},
+  {l:'Moderne (XVIIIe)',t:'Les Beaux-arts → toute production à effet esthétique (sensations + sentiments). L\'artiste crée pour le beau, pas pour l\'utile.'}
+],
+philos:[
+  {n:'Kant',i:'Le génie artistique crée sans règles conscientes (≠ artisan qui suit des règles). « Le génie est le talent qui donne ses règles à l\'art. »'},
+  {n:'Hegel',i:'L\'art est la manifestation sensible de l\'Idée — stade dépassé par la religion puis la philosophie.'},
+  {n:'Platon',i:'Méfiance envers l\'art : imitation de l\'imitation, il éloigne du vrai (allégorie de la caverne).'},
+  {n:'Aristote',i:'L\'art comme catharsis : il purifie les passions du spectateur (tragédie).'}
+],
+quotes:[
+  {t:'« Le génie est le talent qui donne ses règles à l\'art »',a:'Kant, Critique de la faculté de juger'},
+  {t:'« L\'art est la manifestation sensible de l\'Idée »',a:'Hegel, Cours d\'esthétique'}
+],
+piege:'⚠️ Ne pas confondre technique (moyen en vue d\'une fin utile) et art (fin en soi pour le beau).',
+liens:['Travail','Nature','Vérité','Technique']},
+
+{letter:'B',title:'Bonheur',subtitle:'Eudaimonia',
+senses:[
+  {l:'Sens faible',t:'État de satisfaction ponctuelle (« je suis heureux d\'être là »).'},
+  {l:'Sens fort',t:'État de satisfaction stable et durable — c\'est le sens philosophique principal.'}
+],
+philos:[
+  {n:'Épicure',i:'Bonheur = ataraxie (absence de troubles) + aponie (absence de douleur). Hiérarchie des désirs : naturels/nécessaires (manger), naturels/non-nécessaires (festin), vains (richesse).'},
+  {n:'Aristote',i:'Eudaimonia = activité de l\'âme selon la vertu. Pas un état mais une ACTIVITÉ. Bonheur de la vie contemplative.'},
+  {n:'Kant',i:'Le bonheur est un idéal de l\'imagination, pas de la raison — on ne peut pas le définir précisément. Il ne peut être le fondement de la morale.'},
+  {n:'Schopenhauer',i:'Le bonheur parfait est impossible : le désir est souffrance, sa satisfaction ennui (pendule du désir).'}
+],
+quotes:[
+  {t:'« Il n\'est jamais trop tard pour être heureux »',a:'Épicure, Lettre à Ménécée'},
+  {t:'« Le bonheur est une activité de l\'âme conforme à la vertu »',a:'Aristote, Éthique à Nicomaque'}
+],
+piege:'⚠️ Confondre bonheur (durable) et plaisir (ponctuel). Kant : le bonheur ne peut pas fonder la morale.',
+liens:['Liberté','Devoir','Raison','Conscience']},
+
+{letter:'C',title:'Conscience',subtitle:'Psychologique · Morale · Connaissance',
+senses:[
+  {l:'A — Psychologique',t:'Intuition qu\'a l\'esprit de ses états et actes. S\'oppose au sommeil, au coma (« perdre conscience »).'},
+  {l:'B — Morale',t:'Sentiment intérieur du bien et du mal (« avoir mauvaise conscience »).'},
+  {l:'C — Connaissance',t:'« Être conscient du danger » = en avoir connaissance.'}
+],
+philos:[
+  {n:'Descartes',i:'Cogito ergo sum : la conscience de penser est la SEULE certitude absolue, même face au doute hyperbolique.'},
+  {n:'Hegel',i:'La conscience se développe dialectiquement. Dialectique maître/esclave : la conscience de soi naît du regard de l\'autre.'},
+  {n:'Freud',i:'Remet en cause la toute-puissance de la conscience : l\'inconscient la déborde. « Le moi n\'est pas maître dans sa propre maison. »'},
+  {n:'Sartre',i:'La conscience est toujours conscience DE quelque chose (intentionnalité). Elle est néant, liberté pure.'}
+],
+quotes:[
+  {t:'« Je pense, donc je suis »',a:'Descartes, Discours de la méthode'},
+  {t:'« Le moi n\'est pas maître dans sa propre maison »',a:'Freud, Introduction à la psychanalyse'}
+],
+piege:'⚠️ Croire que la conscience nous donne un accès total à nous-mêmes. Freud le contredit radicalement.',
+liens:['Inconscient','Liberté','Vérité','Raison']},
+
+{letter:'D',title:'Devoir',subtitle:'Obligation morale · Kant',
+senses:[
+  {l:'Sens A — Moral (Kant)',t:'L\'obligation que la raison s\'impose à elle-même, indépendamment des désirs et intérêts.'},
+  {l:'Sens B — Fonctionnel',t:'Règle d\'action liée à un rôle ou une fonction (« le devoir du médecin »).'}
+],
+philos:[
+  {n:'Kant',i:'Impératif catégorique (sans condition) vs hypothétique (si tu veux X, fais Y). Formule : « Agis comme si la maxime de ton action devait devenir loi universelle. » Autonomie = se donner sa propre loi (≠ hétéronomie).'},
+  {n:'Hegel',i:'Critique de Kant : le devoir kantien est formel et vide. Il faut un contenu concret incarné dans les mœurs (Sittlichkeit).'},
+  {n:'Sartre',i:'Suivre le devoir sans se l\'approprier librement, c\'est de la mauvaise foi.'}
+],
+quotes:[
+  {t:'« Agis uniquement d\'après la maxime qui fait que tu peux vouloir en même temps qu\'elle devienne une loi universelle »',a:'Kant, Fondements de la métaphysique des mœurs'},
+  {t:'« Deux choses remplissent mon esprit d\'admiration : le ciel étoilé au-dessus de moi et la loi morale en moi »',a:'Kant, Critique de la raison pratique'}
+],
+piege:'⚠️ Confondre légalité (acte conforme au devoir) et moralité (acte accompli PAR devoir, par respect de la loi).',
+liens:['Liberté','Raison','Justice','État']},
+
+{letter:'É',title:'État',subtitle:'Organisation politique',
+senses:[
+  {l:'Sens A — Politique',t:'Mode d\'organisation politique centralisée + ses institutions (gouverner, légiférer, rendre justice).'},
+  {l:'Sens B — Administratif',t:'Ensemble des services généraux d\'une nation (« entreprise d\'État »).'}
+],
+philos:[
+  {n:'Hobbes',i:'Sans État, vie « solitaire, misérable, dangereuse, animale et brève ». Le contrat social crée un souverain absolu (Léviathan).'},
+  {n:'Locke',i:'État libéral : protège les droits naturels (vie, liberté, propriété). Droit à la révolution si l\'État trahit sa mission.'},
+  {n:'Rousseau',i:'Volonté générale ≠ volonté de tous. Le contrat social aliène la liberté naturelle pour une liberté civile supérieure.'},
+  {n:'Marx',i:'L\'État est l\'instrument de la classe dominante. Il doit « dépérir » avec l\'avènement du communisme.'},
+  {n:'Weber',i:'L\'État = monopole de la violence physique légitime sur un territoire donné.'}
+],
+quotes:[
+  {t:'« L\'homme est un loup pour l\'homme »',a:'Hobbes, Léviathan'},
+  {t:'« L\'État est la seule communauté qui revendique le monopole de la violence physique légitime »',a:'Weber, Le savant et le politique'}
+],
+piege:'⚠️ Confondre État (organisation politique) et Nation (communauté culturelle). L\'État peut exister sans nation homogène.',
+liens:['Justice','Liberté','Devoir','Nature']},
+
+{letter:'I',title:'Inconscient',subtitle:'Freud · Ça / Moi / Surmoi',
+senses:[
+  {l:'A — Descriptif',t:'Qui ne possède aucune conscience (sens banal).'},
+  {l:'B — Vulgaire',t:'Être irréfléchi, agir sans réfléchir.'},
+  {l:'C — Freudien',t:'Tout ce qui n\'est pas conscient et DÉTERMINE l\'action et la pensée du sujet.'}
+],
+philos:[
+  {n:'Freud',i:'1ère topique : Conscient / Préconscient / Inconscient. 2ème topique : Ça (pulsions : Éros/Thanatos) / Moi (médiation) / Surmoi (interdits intériorisés). Preuves : lapsus, actes manqués, rêves (« voie royale »).'},
+  {n:'Nietzsche',i:'Précurseur : les valeurs morales sont des rationalisations d\'instincts. La volonté de puissance est inconsciente.'},
+  {n:'Sartre',i:'Critique : la « mauvaise foi » n\'est pas l\'inconscient — c\'est un mensonge à soi-même conscient. On ne peut pas s\'ignorer vraiment.'}
+],
+quotes:[
+  {t:'« Le rêve est la voie royale vers l\'inconscient »',a:'Freud, L\'interprétation des rêves'},
+  {t:'« Là où était le Ça, le Moi doit advenir »',a:'Freud, Nouvelles conférences de psychanalyse'}
+],
+piege:'⚠️ Réduire l\'inconscient à « agir sans réfléchir » (sens vulgaire). L\'inconscient freudien est une INSTANCE structurée, pas juste de l\'irréflexion.',
+liens:['Conscience','Liberté','Vérité']},
+
+{letter:'J',title:'Justice',subtitle:'Droit · Équité · Morale',
+senses:[
+  {l:'Étymologie',t:'Du latin jus (la loi) → d\'abord synonyme de légal. Aujourd\'hui : ce qui est équitable, peut renvoyer à un ordre moral au-delà de la loi.'},
+  {l:'Droit naturel',t:'Justice universelle fondée sur la nature humaine — existe avant et au-dessus des lois humaines.'},
+  {l:'Droit positif',t:'Lois établies par les hommes, variables selon les sociétés et les époques.'}
+],
+philos:[
+  {n:'Platon',i:'Justice = harmonie entre les parties : dans l\'âme (raison/courage/désir) et dans la cité (philosophes/guerriers/artisans).'},
+  {n:'Aristote',i:'Justice distributive (proportionnelle au mérite) vs justice corrective (égalité stricte dans les échanges).'},
+  {n:'Rawls',i:'Justice comme équité : derrière le « voile d\'ignorance », on choisirait l\'égale liberté + le principe de différence (inégalités acceptables si elles profitent aux plus défavorisés).'},
+  {n:'Nietzsche',i:'La justice est une invention des faibles pour brider les forts. Elle masque une volonté de puissance du ressentiment.'}
+],
+quotes:[
+  {t:'« Justice sans force est impuissante ; force sans justice est tyrannique »',a:'Pascal, Pensées'},
+  {t:'« Les inégalités sont justes si elles profitent aux membres les moins avantagés »',a:'Rawls, Théorie de la justice'}
+],
+piege:'⚠️ Confondre juste (moral) et légal (conforme à la loi). Une loi peut être légale mais injuste (ex : lois de Nuremberg).',
+liens:['État','Liberté','Devoir','Raison']},
+
+{letter:'L',title:'Langage',subtitle:'Logos · Signe · Communication',
+senses:[
+  {l:'Définition',t:'Faculté de parler des langues. Propre de l\'homme : permet la pensée abstraite, la communication, la vie sociale.'},
+  {l:'Signe (Saussure)',t:'Signifiant (image acoustique) + signifié (concept). Le signe est arbitraire : aucun rapport naturel entre les deux.'}
+],
+philos:[
+  {n:'Saussure',i:'Linguistique structurale : la langue est un système de différences. Le sens naît des rapports entre les signes.'},
+  {n:'Wittgenstein',i:'« Les limites de mon langage sont les limites de mon monde. » Le langage ne décrit pas seulement la réalité, il la constitue.'},
+  {n:'Chomsky',i:'Grammaire universelle innée : structure profonde commune à toutes les langues humaines.'},
+  {n:'Heidegger',i:'« Le langage est la maison de l\'être. » L\'être se dévoile dans et par le langage.'}
+],
+quotes:[
+  {t:'« Les limites de mon langage sont les limites de mon monde »',a:'Wittgenstein, Tractatus logico-philosophicus'},
+  {t:'« Le langage est la maison de l\'être »',a:'Heidegger, Lettre sur l\'humanisme'}
+],
+piege:'⚠️ Croire que le langage est un simple outil neutre et transparent. Il structure la pensée — on ne pense pas "avant" le langage.',
+liens:['Raison','Vérité','Conscience']},
+
+{letter:'N',title:'Nature',subtitle:'Physis · Essence · Ordre',
+senses:[
+  {l:'A — Principe',t:'Principe de production et d\'auto-organisation des éléments naturels (physis en grec).'},
+  {l:'B — Essence',t:'Caractère essentiel d\'une chose (« la nature de l\'homme », « la nature du feu »).'},
+  {l:'C — Ordre',t:'Ensemble des choses qui suivent des lois régulières (≠ miracle, ≠ monstre, ≠ technique).'}
+],
+philos:[
+  {n:'Rousseau',i:'L\'homme naturel est bon, innocent, autosuffisant. La société et la technique le corrompent.'},
+  {n:'Hobbes',i:'La nature (état de nature) = guerre de tous contre tous. L\'État y remédie.'},
+  {n:'Aristote',i:'La nature a une finalité (téléologie) : « La nature ne fait rien en vain. » Tout être naturel tend vers sa fin propre.'},
+  {n:'Lévi-Strauss',i:'La frontière nature/culture est universelle : la prohibition de l\'inceste est naturelle dans sa forme mais culturelle dans son contenu.'},
+  {n:'Kant',i:'La nature suit des lois mécaniques (causalité nécessaire). La liberté humaine y échappe (noumène).'}
+],
+quotes:[
+  {t:'« L\'homme est né libre, et partout il est dans les fers »',a:'Rousseau, Du contrat social'},
+  {t:'« La nature ne fait rien en vain »',a:'Aristote, Politique'}
+],
+piege:'⚠️ Sophisme naturaliste : « c\'est naturel donc c\'est bien. » La nature peut être cruelle — le naturel n\'implique pas le bon.',
+liens:['Technique','Art','Liberté','État']},
+
+{letter:'L',title:'Liberté',subtitle:'Libre arbitre · Déterminisme · Autonomie',
+senses:[
+  {l:'A — Négative (Berlin)',t:'Absence d\'obstacles extérieurs (liberté de faire sans contrainte). Ex : liberté d\'expression.'},
+  {l:'B — Positive',t:'Capacité réelle d\'agir, autonomie réelle. Agir en connaissance de cause (≠ impulsion, folie).'}
+],
+philos:[
+  {n:'Descartes',i:'Liberté du for intérieur : même enchaîné, on peut penser librement. Le libre arbitre est la marque de Dieu en nous.'},
+  {n:'Spinoza',i:'Déterminisme : la liberté est une illusion de la conscience ignorante de ses causes. « Les hommes se croient libres parce qu\'ils sont conscients de leurs volitions… »'},
+  {n:'Kant',i:'Liberté transcendantale : hors du monde phénoménal (monde des lois), la volonté est libre (noumène).'},
+  {n:'Sartre',i:'Liberté radicale : « condamné à être libre » — même ne pas choisir est un choix. Responsabilité totale.'},
+  {n:'Compatibilisme (Hume)',i:'Liberté compatible avec le déterminisme : être libre = agir selon ses désirs sans contrainte externe.'}
+],
+quotes:[
+  {t:'« L\'existence précède l\'essence » / « Nous sommes condamnés à être libres »',a:'Sartre, L\'existentialisme est un humanisme'},
+  {t:'« Les hommes se croient libres parce qu\'ils sont conscients de leurs volitions et de leurs appétits, et ne pensent pas aux causes qui les disposent à désirer »',a:'Spinoza, Éthique'}
+],
+piege:'⚠️ Croire qu\'une liberté absolue existe. Sartre lui-même reconnaît la « facticité » (corps, passé, situation) qui limite ma liberté.',
+liens:['Conscience','Déterminisme','Devoir','Raison']},
+
+{letter:'R',title:'Raison',subtitle:'Logos · Faculté de raisonner',
+senses:[
+  {l:'A — Faculté',t:'Faculté de raisonner = articuler des concepts entre eux de façon logique.'},
+  {l:'B — Explication',t:'« La raison d\'être de quelque chose » = son explication, sa cause.'},
+  {l:'C — Normatif',t:'Ce qui légitime et justifie (« avoir raison », « rendre raison de »).'}
+],
+philos:[
+  {n:'Descartes',i:'Rationalisme : seule la raison peut atteindre la vérité. Méthode : clarté + distinction. « Le bon sens est la chose du monde la mieux partagée. »'},
+  {n:'Hume',i:'Empirisme : la raison est limitée — seule l\'expérience donne la connaissance. Problème de l\'induction.'},
+  {n:'Kant',i:'Critique de la raison : elle a des limites (antinomies, paralogismes) mais structure l\'expérience (catégories a priori). « Sapere aude ! »'},
+  {n:'Hegel',i:'La raison est historique : « Ce qui est rationnel est réel, ce qui est réel est rationnel. »'}
+],
+quotes:[
+  {t:'« Le bon sens est la chose du monde la mieux partagée »',a:'Descartes, Discours de la méthode'},
+  {t:'« Sapere aude ! Aie le courage de te servir de ton propre entendement »',a:'Kant, Qu\'est-ce que les Lumières ?'}
+],
+piege:'⚠️ Croire que la raison est toute-puissante. Kant montre ses limites : elle ne peut pas connaître Dieu, l\'âme ou le monde comme totalité.',
+liens:['Science','Vérité','Conscience','Liberté']},
+
+{letter:'R',title:'Religion',subtitle:'Rites · Transcendance · Foi',
+senses:[
+  {l:'A — Institutionnel',t:'Communauté unie par des rites réguliers, une croyance en une valeur absolue, et un rapport à une puissance spirituelle supérieure (Dieu).'},
+  {l:'B — Individuel',t:'Système personnel de sentiments et croyances ayant Dieu pour objet.'},
+  {l:'C — Étymologique',t:'Du latin religio : respect scrupuleux d\'une règle, d\'une coutume ou d\'un sentiment.'}
+],
+philos:[
+  {n:'Durkheim',i:'La religion est un fait social — elle soude la communauté. Distinction sacré/profane. « La religion, c\'est la société qui s\'adore elle-même. »'},
+  {n:'Marx',i:'« La religion est l\'opium du peuple » — consolation illusoire qui détourne de la lutte sociale.'},
+  {n:'Freud',i:'La religion est une névrose obsessionnelle collective — projection du père mort (totem).'},
+  {n:'Nietzsche',i:'« Dieu est mort » — c\'est la culture occidentale elle-même (science, morale) qui a tué ses propres fondements divins.'},
+  {n:'Pascal',i:'Le pari : même incertain, croire en Dieu est rationnel (calcul des espérances : si Dieu existe et je crois, je gagne tout).'}
+],
+quotes:[
+  {t:'« La religion est l\'opium du peuple »',a:'Marx, Critique de la philosophie du droit de Hegel'},
+  {t:'« Dieu est mort ! Dieu reste mort ! Et c\'est nous qui l\'avons tué ! »',a:'Nietzsche, Le Gai Savoir'}
+],
+piege:'⚠️ Réduire la religion à la superstition ou à la foi irrationnelle. Durkheim montre sa fonction sociale indépendamment de la vérité de ses croyances.',
+liens:['Raison','Science','Devoir','État']},
+
+{letter:'S',title:'Science',subtitle:'Savoir rationnel · Méthode',
+senses:[
+  {l:'A — Large',t:'Synonyme de savoir (toute connaissance organisée).'},
+  {l:'B — Strict',t:'Connaissance rationnelle obtenue par démonstration ou par observation et vérification expérimentale.'}
+],
+philos:[
+  {n:'Bachelard',i:'La science progresse par ruptures épistémologiques avec le sens commun. « Toute connaissance est une réponse à une question. » Notion d\'obstacle épistémologique.'},
+  {n:'Popper',i:'Critère de réfutabilité (falsifiabilité) : une théorie est scientifique si et seulement si elle peut être réfutée par l\'expérience.'},
+  {n:'Kuhn',i:'Révolutions scientifiques : la science évolue par paradigmes (périodes de science normale) et révolutions (changements de paradigme).'},
+  {n:'Hume',i:'Problème de l\'induction : aucune observation ne peut prouver logiquement une loi universelle.'}
+],
+quotes:[
+  {t:'« Toute connaissance est une réponse à une question »',a:'Bachelard, La formation de l\'esprit scientifique'},
+  {t:'« Une théorie qui n\'est pas réfutable par aucun événement concevable est non scientifique »',a:'Popper, La logique de la découverte scientifique'}
+],
+piege:'⚠️ Confondre science (connaissance rationnelle) et technique (application pratique). La bombe atomique est une technique, pas une science.',
+liens:['Vérité','Raison','Technique','Nature']},
+
+{letter:'T',title:'Temps',subtitle:'Chronos · Durée · Éternité',
+senses:[
+  {l:'A',t:'Période entre deux événements ; époque historique (« le temps des moissons »).'},
+  {l:'B',t:'Changement continuel par lequel le présent devient le passé (Temps ≠ éternité).'},
+  {l:'C',t:'Milieu indéfini analogue à l\'espace dans lequel se déroulent les événements (Newton : temps absolu ; Kant : forme a priori).'}
+],
+philos:[
+  {n:'Aristote',i:'Le temps est le nombre du mouvement selon l\'avant et l\'après. Sans mouvement, pas de temps.'},
+  {n:'Augustin',i:'Le temps est subjectif : passé = mémoire, présent = attention, futur = attente. « Qu\'est-ce donc que le temps ? Si personne ne me le demande, je le sais ; si je veux l\'expliquer… je ne le sais plus. »'},
+  {n:'Bergson',i:'Durée (vécu interne, qualitatif, continu) vs temps spatialisé (mesuré, quantitatif, discontinu). La science spatialise le temps et perd la durée vécue.'},
+  {n:'Heidegger',i:'L\'être-pour-la-mort structure le temps humain (Dasein). L\'angoisse révèle la finitude et la temporalité authentique.'}
+],
+quotes:[
+  {t:'« Qu\'est-ce donc que le temps ? Si personne ne me le demande, je le sais ; si je veux l\'expliquer à qui me le demande, je ne le sais plus »',a:'Augustin, Confessions'},
+  {t:'« Le temps est invention ou il n\'est rien du tout »',a:'Bergson, L\'évolution créatrice'}
+],
+piege:'⚠️ Confondre temps objectif (mesuré par l\'horloge) et durée vécue (subjective). Une heure de plaisir et une heure d\'ennui ne durent pas « le même temps » vécu.',
+liens:['Conscience','Liberté','Science']},
+
+{letter:'T',title:'Travail',subtitle:'Transformation · Production · Aliénation',
+senses:[
+  {l:'A',t:'Transformation de la nature en vue de la satisfaction des besoins (≠ loisirs).'},
+  {l:'B',t:'Activité de production dont la fin est extérieure à elle-même (≠ action politique, contemplation, jeu).'}
+],
+philos:[
+  {n:'Hegel',i:'Dialectique maître/esclave : le travail humanise l\'esclave. En transformant le monde, il se transforme lui-même et acquiert la conscience de soi.'},
+  {n:'Marx',i:'Le travail est l\'essence de l\'homme. Mais le capitalisme produit l\'aliénation : 1) du produit (ne lui appartient pas), 2) de l\'activité (contrôlée), 3) du genre humain (perd son humanité), 4) d\'autrui.'},
+  {n:'Aristote',i:'Hiérarchie : contemplation (theoria) > action (praxis) > travail (poiésis). Le travail est le moins noble car il vise l\'utile.'},
+  {n:'Hannah Arendt',i:'Triptyque : labour (travail biologique) / work (œuvre durable) / action (vie politique). La modernité réduit tout au labour.'}
+],
+quotes:[
+  {t:'« Le travail aliéné arrache à l\'homme l\'objet de sa production »',a:'Marx, Manuscrits de 1844'},
+  {t:'« C\'est en travaillant que l\'esclave acquiert sa liberté »',a:'Hegel, Phénoménologie de l\'esprit'}
+],
+piege:'⚠️ Valoriser le travail sans questionner ses conditions. Marx montre que le travail peut aliéner plutôt que libérer selon les rapports sociaux.',
+liens:['Technique','Art','Liberté','Nature']},
+
+{letter:'T',title:'Technique',subtitle:'Moyens · Puissance · Artificiel',
+senses:[
+  {l:'Définition',t:'Ensemble des entreprises qui augmentent la puissance par l\'organisation de moyens en vue d\'une fin.'}
+],
+philos:[
+  {n:'Heidegger',i:'La technique moderne n\'est pas un simple outil — elle impose une vision du monde (Gestell = arraisonnement). Elle transforme la nature en « fonds » exploitable. « L\'essence de la technique n\'est rien de technique. »'},
+  {n:'Descartes',i:'La technique nous rend « maîtres et possesseurs de la nature » au service du bien commun et de la santé.'},
+  {n:'Platon',i:'La technique (don de Prométhée) compense les manques naturels de l\'homme — elle est constitutive de l\'humanité.'},
+  {n:'Ellul',i:'La technique a sa propre logique autonome qui échappe à l\'homme. Elle se développe pour elle-même.'},
+  {n:'Marx',i:'La technique est un moyen de production. Elle peut libérer (réduire le travail) ou aliéner selon les rapports sociaux.'}
+],
+quotes:[
+  {t:'« L\'essence de la technique n\'est rien de technique »',a:'Heidegger, La question de la technique'},
+  {t:'« Nous rendre comme maîtres et possesseurs de la nature »',a:'Descartes, Discours de la méthode'}
+],
+piege:'⚠️ Croire que la technique est neutre (un simple outil qu\'on utilise bien ou mal). Heidegger montre qu\'elle transforme notre rapport au monde indépendamment de son usage.',
+liens:['Nature','Art','Travail','Science']},
+
+{letter:'V',title:'Vérité',subtitle:'Adéquation · Cohérence · Pragmatisme',
+senses:[
+  {l:'Adéquation',t:'Accord entre ce qui est dit et ce qui est réellement (correspondance énoncé/réalité). Définition classique.'},
+  {l:'Cohérence',t:'Système d\'énoncés non-contradictoires (mathématiques, logique).'},
+  {l:'Pragmatique',t:'Est vrai ce qui est utile, ce qui « marche » (James, Dewey).'}
+],
+philos:[
+  {n:'Platon',i:'La vérité est dans le monde des Idées — le monde sensible n\'est qu\'apparence (allégorie de la caverne). La philosophie = sortir de la caverne.'},
+  {n:'Descartes',i:'Critères du vrai : clarté + distinction. Le doute méthodique permet d\'atteindre des vérités indéniables.'},
+  {n:'Nietzsche',i:'« Il n\'y a pas de faits, seulement des interprétations. » La vérité est une illusion utile que l\'on a oublié être une illusion.'},
+  {n:'Bachelard',i:'La vérité scientifique est provisoire et toujours susceptible d\'être révisée. La science avance par erreurs rectifiées.'}
+],
+quotes:[
+  {t:'« Il n\'y a pas de faits, seulement des interprétations »',a:'Nietzsche, Fragments posthumes'},
+  {t:'« La vérité est fille du temps, non de l\'autorité »',a:'Bacon, Novum Organum'}
+],
+piege:'⚠️ Confondre vérité (objective) et certitude (subjective). Je peux être certain d\'une chose fausse. Le consensus ne fait pas la vérité.',
+liens:['Raison','Science','Conscience','Langage']}
+];
+
+// Render notions
+const nl=document.getElementById('notions-list');
+notions.forEach((n,i)=>{
+  const c=document.createElement('div');
+  c.className='card';
+  c.innerHTML=`
+    <div class="notion-header" onclick="toggleNotion(${i})">
+      <div class="notion-letter">${n.letter}</div>
+      <div><div class="notion-title">${n.title}</div><div class="notion-subtitle">${n.subtitle}</div></div>
+      <div class="notion-arrow" id="arr${i}">▼</div>
+    </div>
+    <div class="notion-body" id="nb${i}">
+      <div class="section-block">
+        <h4>📌 Définitions</h4>
+        ${n.senses.map(s=>`<div class="sens-row"><span class="sens-label">${s.l}</span><span class="sens-text">${s.t}</span></div>`).join('')}
+      </div>
+      <div class="section-block">
+        <h4>🧠 Philosophes clés</h4>
+        <div class="philo-grid">${n.philos.map(p=>`<div class="philo-item"><div class="philo-name">${p.n}</div><div class="philo-idea">${p.i}</div></div>`).join('')}</div>
+      </div>
+      <div class="section-block">
+        <h4>💬 Citations à retenir</h4>
+        ${n.quotes.map(q=>`<div class="quote-block"><div class="quote-text">"${q.t}"</div><div class="quote-author">— ${q.a}</div></div>`).join('')}
+      </div>
+      <div class="section-block">
+        <h4>⚠️ Piège au BAC</h4>
+        <div style="background:#ef444411;border:1px solid #ef444433;border-radius:10px;padding:12px 14px;font-size:.87rem;color:#fca5a5;line-height:1.6">${n.piege}</div>
+      </div>
+      <div class="section-block">
+        <h4>🔗 Notions liées</h4>
+        <div class="tag-row">${n.liens.map(l=>`<span class="tag link">${l}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  nl.appendChild(c);
+});
+
+function toggleNotion(i){
+  const b=document.getElementById('nb'+i);
+  const a=document.getElementById('arr'+i);
+  b.classList.toggle('open');
+  a.style.transform=b.classList.contains('open')?'rotate(180deg)':'';
 }
 
-// ===================== FLASHCARDS =====================
-const decks = {
-  notions: [
-    { front: 'Art (sens moderne)', back: 'Toute production d\'objet à effet esthétique (sensations + sentiments). Apparu au XVIIIe siècle, distingué de la Technique.' },
-    { front: 'Bonheur (sens fort)', back: 'État de satisfaction stable et durable. En grec : eudaimonia (Aristote). ≠ simple plaisir ponctuel.' },
-    { front: 'Conscience psychologique', back: 'Intuition qu\'a l\'esprit de ses propres états et actes. S\'oppose au sommeil ou au coma (« perdre conscience »).' },
-    { front: 'Conscience morale', back: 'Sentiment intérieur du bien et du mal. Ex : « avoir mauvaise conscience », « peser sur la conscience ».' },
-    { front: 'Devoir (Kant)', back: 'Obligation morale qui s\'impose indépendamment de nos désirs et intérêts. Fondement de l\'impératif catégorique.' },
-    { front: 'État (sens politique)', back: 'Mode d\'organisation politique centralisée et ses institutions, créées pour administrer la communauté et faire respecter les règles.' },
-    { front: 'L\'Inconscient (Freud)', back: 'Tout ce qui n\'est pas conscient et détermine l\'action et la pensée du sujet. Contient les désirs refoulés.' },
-    { front: 'Justice', back: 'Ce qui est conforme au droit (légal). Aujourd\'hui : ce qui est équitable, juste moralement. Du latin jus (la loi).' },
-    { front: 'Langage', back: 'Faculté de parler des langues. Propre de l\'homme, il permet la pensée abstraite et la vie sociale.' },
-    { front: 'Nature (sens C)', back: 'Ensemble des choses qui suivent des lois régulières. S\'oppose au divin (miracle) et à l\'artificiel (technique).' },
-    { front: 'Liberté (sens B)', back: 'Agir et penser en connaissance de cause. S\'oppose à l\'impulsion, la folie, l\'irresponsabilité.' },
-    { front: 'Raison (sens A)', back: 'Faculté de raisonner, c\'est-à-dire d\'articuler des concepts entre eux de façon logique.' },
-    { front: 'Religion (sens A)', back: 'Institution sociale : communauté unie par des rites, une croyance en une valeur absolue, et un rapport à une puissance spirituelle supérieure.' },
-    { front: 'Science (sens B)', back: 'Toute connaissance rationnelle obtenue par démonstration ou par observation et vérification.' },
-    { front: 'Temps (sens B)', back: 'Changement continuel par lequel le présent devient le passé. S\'oppose à l\'éternité.' },
-    { front: 'Travail', back: 'Transformation de la nature en vue de la satisfaction des besoins. Fin extérieure à l\'activité elle-même (≠ jeu, contemplation).' },
-    { front: 'Technique', back: 'Ensemble des entreprises qui augmentent la puissance par l\'organisation de moyens en vue d\'une fin.' },
-    { front: 'Vérité', back: 'Adéquation : accord entre ce qui est dit et ce qui est (correspondance énoncé/réalité).' },
+// ===== AUTEURS DATA =====
+const auteurs=[
+  {era:'Ve–IVe s. av. J.-C.',name:'PLATON',lang:'Grec ancien',
+   oeuvres:'La République, Le Banquet, Phédon, Protagoras, Phèdre, Le Sophiste',
+   idees:[
+     'Monde des Idées (vrai réel) ≠ monde sensible (apparences trompeuses)',
+     'Allégorie de la Caverne : l\'ignorance comme prison — la philosophie = sortir vers la lumière',
+     'Protagoras : l\'homme est nu à sa naissance → la technique compense ses manques naturels',
+     'La Justice et la Vergogne données à TOUS les hommes (≠ autres arts réservés aux spécialistes)',
+     'L\'amour platonique (Banquet) : désir de l\'Idée du Beau en soi',
+     'Le philosopher est un apprentissage de la mort'
+   ],
+   citation:'"La philosophie est un apprentissage de la mort"'},
+  {era:'IVe s. av. J.-C.',name:'ARISTOTE',lang:'Grec ancien',
+   oeuvres:'Éthique à Nicomaque, Politique, Métaphysique, Poétique, De l\'âme',
+   idees:[
+     'L\'homme est un animal politique (zôon politikon) — la cité est naturelle',
+     'Bonheur = eudaimonia : activité de l\'âme selon la vertu (pas un état, une activité)',
+     'Distinction acte / puissance, forme / matière',
+     'Téléologie : la nature a une finalité. « La nature ne fait rien en vain »',
+     'Catharsis : l\'art (tragédie) purifie les passions',
+     'La vie contemplative (theoria) est la plus haute forme de bonheur'
+   ],
+   citation:'"L\'homme est un animal politique"'},
+  {era:'XVIe s. (1533–1592)',name:'MONTAIGNE',lang:'Français',
+   oeuvres:'Les Essais (3 livres)',
+   idees:[
+     '« Que sais-je ? » — scepticisme modéré : reconnaître les limites de notre savoir',
+     'L\'introspection comme méthode : « Chaque homme porte la forme entière de l\'humaine condition »',
+     'Relativisme culturel : les cannibales ne sont pas moins civilisés que nous — critique de l\'ethnocentrisme',
+     'La mort : s\'y préparer en vivant pleinement (« philosopher, c\'est apprendre à mourir »)',
+     'La coutume et l\'habitude façonnent nos opinions au lieu de la raison'
+   ],
+   citation:'"Que sais-je ?"'},
+  {era:'XVIIe s. (1596–1650)',name:'DESCARTES',lang:'Latin & Français',
+   oeuvres:'Discours de la méthode, Méditations métaphysiques, Règles pour la direction de l\'esprit',
+   idees:[
+     'Doute méthodique : douter de tout ce qui peut être mis en doute pour trouver le certain',
+     'Cogito ergo sum : première certitude absolue',
+     'Dualisme corps/âme (res extensa / res cogitans)',
+     'Règles de la méthode : évidence, analyse, synthèse, dénombrement',
+     'Discours VI : « maîtres et possesseurs de la nature » grâce à la science — pour la santé et le bien commun',
+     'Critères du vrai : clarté + distinction'
+   ],
+   citation:'"Je pense, donc je suis"'},
+  {era:'XVIIe s. (1632–1677)',name:'SPINOZA',lang:'Latin',
+   oeuvres:'Éthique, Traité théologico-politique, Traité de la réforme de l\'entendement',
+   idees:[
+     'Monisme : une seule substance = Dieu = Nature (Deus sive Natura)',
+     'Déterminisme strict : tout est nécessaire, rien n\'est contingent',
+     'La liberté n\'est pas l\'absence de déterminisme mais la compréhension de sa propre nécessité',
+     'Le conatus : chaque être persévère dans son être',
+     'Les passions comme servitude : la vraie liberté = comprendre les causes de ses passions',
+     'Critique de la religion comme source d\'aliénation et de superstition'
+   ],
+   citation:'"Les hommes se croient libres parce qu\'ils sont conscients de leurs volitions"'},
+  {era:'XVIIIe s. (1712–1778)',name:'ROUSSEAU',lang:'Français',
+   oeuvres:'Discours sur les sciences et les arts (1750), Du contrat social, Émile, Les Confessions',
+   idees:[
+     'L\'homme est naturellement bon → la société et la propriété le corrompent',
+     'Discours 1750 : les arts et sciences corrompent les mœurs — uniformité trompeuse et hypocrisie',
+     'État de nature : transparence, authenticité, autosuffisance',
+     'Contrat social : volonté générale (bien commun) ≠ volonté de tous (somme des intérêts particuliers)',
+     'Émile : éducation selon la nature — laisser l\'enfant se développer sans contraindre',
+     '« L\'homme est né libre, et partout il est dans les fers »'
+   ],
+   citation:'"L\'homme est né libre, et partout il est dans les fers"'},
+  {era:'XVIIIe s. (1713–1784)',name:'DIDEROT',lang:'Français',
+   oeuvres:'Encyclopédie (co-directeur), Le Neveu de Rameau, Jacques le fataliste, La Religieuse',
+   idees:[
+     'Encyclopédiste : valorisation de la technique, du savoir artisanal et des métiers',
+     'Matérialisme : la matière peut penser — critique du dualisme cartésien',
+     'Critique de la religion et des préjugés : liberté de penser contre le dogme',
+     'Fatalisme dans Jacques le fataliste : tout est écrit, mais la liberté est vécue',
+     'L\'Encyclopédie : changer la façon commune de penser — projet des Lumières'
+   ],
+   citation:'"Mes pensées sont mes catins"'},
+  {era:'XVIIIe s. (1724–1804)',name:'KANT',lang:'Allemand',
+   oeuvres:'Critique de la raison pure, Fondements de la métaphysique des mœurs, Critique de la faculté de juger',
+   idees:[
+     'Révolution copernicienne : l\'objet se conforme au sujet (catégories a priori de l\'entendement)',
+     'Impératif catégorique : « Agis comme si la maxime de ton action devait devenir loi universelle »',
+     'Légalité (conforme au devoir) vs moralité (par devoir)',
+     'Les limites de la raison : elle ne peut connaître Dieu, l\'âme, le monde comme totalité (antinomies)',
+     'Le temps et l\'espace = formes a priori de la sensibilité (pas des réalités en soi)',
+     '« Sapere aude ! » — ose te servir de ton propre entendement (Lumières)'
+   ],
+   citation:'"Sapere aude ! Aie le courage de te servir de ton propre entendement"'},
+  {era:'XXe s. (1905–1980)',name:'SARTRE',lang:'Français',
+   oeuvres:'L\'Être et le Néant, L\'existentialisme est un humanisme, Huis Clos, La Nausée',
+   idees:[
+     '« L\'existence précède l\'essence » : l\'homme n\'a pas de nature prédéfinie, il se crée par ses actes',
+     'Liberté radicale et responsabilité totale : « Nous sommes condamnés à être libres »',
+     'Mauvaise foi : fuir sa liberté en se définissant par un rôle (le garçon de café)',
+     'L\'angoisse : conscience de sa liberté absolue face au vide',
+     'Autrui comme enfer : « L\'enfer, c\'est les autres » (regard qui me fige en objet)',
+     'Engagement : l\'intellectuel doit s\'engager politiquement'
+   ],
+   citation:'"L\'enfer, c\'est les autres"'},
+  {era:'XXe s. (1908–2009)',name:'LÉVI-STRAUSS',lang:'Français',
+   oeuvres:'Tristes Tropiques, La Pensée sauvage, Les Structures élémentaires de la parenté, Race et Histoire',
+   idees:[
+     'Père de l\'anthropologie structurale : les sociétés obéissent à des structures inconscientes',
+     'Critique de l\'ethnocentrisme occidental : nos valeurs ne sont pas universelles',
+     'La pensée sauvage est aussi rigoureuse que la pensée scientifique occidentale',
+     'La prohibition de l\'inceste : frontière universelle nature/culture (naturelle dans sa forme, culturelle dans son contenu)',
+     'Le mythe a une structure logique — il résout des contradictions fondamentales',
+     'Race et Histoire : le progrès est cumulatif et aléatoire, pas linéaire'
+   ],
+   citation:'"La barbarie, c\'est de croire à la barbarie"'}
+];
+
+const ag=document.getElementById('auteur-grid');
+auteurs.forEach((a,i)=>{
+  const d=document.createElement('div');
+  d.className='auteur-card';
+  d.innerHTML=`
+    <div class="auteur-era">${a.era}</div>
+    <div class="auteur-name">${a.name}</div>
+    <div class="auteur-lang">Langue : ${a.lang}</div>
+    <div class="auteur-body">
+      <div style="margin-bottom:12px"><span style="color:#a78bfa;font-size:.78rem;font-weight:600;text-transform:uppercase">Œuvres</span><div style="font-size:.82rem;color:#aaa;margin-top:4px">${a.oeuvres}</div></div>
+      <div style="margin-bottom:12px"><span style="color:#a78bfa;font-size:.78rem;font-weight:600;text-transform:uppercase">Idées clés</span><ul style="margin-left:16px;margin-top:6px">${a.idees.map(i=>`<li style="font-size:.82rem;color:#c0c0e0;line-height:1.7;margin-bottom:2px">${i}</li>`).join('')}</ul></div>
+      <div class="quote-block"><div class="quote-text">${a.citation}</div><div class="quote-author">— ${a.name}</div></div>
+    </div>`;
+  d.onclick=()=>d.classList.toggle('open');
+  ag.appendChild(d);
+});
+
+// ===== FLASHCARDS =====
+const decks={
+  notions:[
+    {f:'Art (sens moderne)',b:'Toute production d\'objet à effet esthétique (sensations + sentiments). XVIIIe s. Distincts de la technique (savoir-faire utilitaire).'},
+    {f:'Bonheur (sens fort)',b:'État de satisfaction STABLE ET DURABLE = eudaimonia (Aristote). ≠ plaisir ponctuel.'},
+    {f:'Conscience psychologique',b:'Intuition qu\'a l\'esprit de ses états et actes. Opposée au sommeil/coma. Descartes : cogito ergo sum.'},
+    {f:'Conscience morale',b:'Sentiment intérieur du bien et du mal. « Avoir mauvaise conscience ». ≠ conscience psychologique.'},
+    {f:'Devoir (Kant)',b:'Obligation morale que la raison s\'impose à elle-même. Impératif catégorique (sans condition). ≠ hypothétique.'},
+    {f:'État (Weber)',b:'Monopole de la violence physique LÉGITIME sur un territoire. Hobbes : créé par contrat pour sortir de l\'état de nature.'},
+    {f:'L\'Inconscient (Freud)',b:'Ça / Moi / Surmoi. Preuves : lapsus, actes manqués, rêves (voie royale). Détermine nos actions à notre insu.'},
+    {f:'Justice distributive (Aristote)',b:'Proportionnelle au mérite — chacun selon sa contribution. ≠ justice corrective (égalité stricte).'},
+    {f:'Langage (Saussure)',b:'Signe = signifiant (image acoustique) + signifié (concept). Arbitraire du signe. Langue = système de différences.'},
+    {f:'Nature (sophisme naturaliste)',b:'⚠️ Ce qui est naturel n\'est pas forcément bon. La maladie est naturelle. Erreur : croire que naturel = bien.'},
+    {f:'Liberté négative vs positive',b:'Négative (Berlin) : absence d\'obstacles extérieurs. Positive : capacité réelle d\'agir, autonomie, connaissance de cause.'},
+    {f:'Raison (Kant)',b:'A des limites : ne peut connaître Dieu, l\'âme, le monde comme totalité. Mais structure l\'expérience (catégories a priori).'},
+    {f:'Religion (Durkheim)',b:'Fait social qui soude la communauté. Distinction sacré/profane. « La société s\'adore elle-même. »'},
+    {f:'Science (Popper)',b:'Critère de RÉFUTABILITÉ : scientifique = peut être réfuté par l\'expérience. ≠ pseudo-science (astrologie).'},
+    {f:'Temps (Bergson)',b:'Durée vécue (qualitative, continue) ≠ temps spatialisé (mesuré, quantitatif). La science ne capture pas la durée.'},
+    {f:'Travail (Marx)',b:'4 aliénations : du produit (m\'appartient pas), de l\'activité (contrôlée), du genre (perd l\'humanité), d\'autrui.'},
+    {f:'Technique (Heidegger)',b:'Gestell = arraisonnement : transforme la nature en fonds exploitable. L\'essence de la technique n\'est rien de technique.'},
+    {f:'Vérité-adéquation',b:'Accord entre ce qui est dit et ce qui EST. Définition classique (Aristote). ≠ vérité-cohérence, ≠ pragmatique.'}
   ],
-  auteurs: [
-    { front: 'PLATON — Thèse clé (Protagoras)', back: 'L\'homme est naturellement démuni. La technique (artificiel) compense ses manques naturels et est nécessaire à sa survie. La Justice et la Vergogne sont données à tous.' },
-    { front: 'ARISTOTE — Concept central', back: 'Eudaimonia (bonheur) = activité selon la vertu. L\'homme est un animal politique (zôon politikon). La fin ultime : la vie contemplative.' },
-    { front: 'DESCARTES — Thèse clé', back: '« Maîtres et possesseurs de la nature » : grâce à la science, l\'homme peut comprendre et maîtriser la nature pour améliorer sa santé et son bien-être.' },
-    { front: 'ROUSSEAU — Thèse clé (1750)', back: 'Les arts et sciences corrompent les mœurs. Avant l\'art : mœurs rustiques mais authentiques. Après : uniformité trompeuse, hypocrisie sociale. L\'homme est naturellement bon.' },
-    { front: 'SPINOZA — Idée centrale', back: 'Monisme : Dieu = Nature (une seule substance). Déterminisme strict. La liberté = comprendre sa propre nécessité. Le conatus : persévérance dans l\'être.' },
-    { front: 'KANT — Impératif catégorique', back: '« Agis comme si la maxime de ton action devait devenir loi universelle ». Distingue légalité (acte conforme au devoir) et moralité (acte par devoir).' },
-    { front: 'SARTRE — Formule clé', back: '« L\'existence précède l\'essence » : l\'homme n\'a pas de nature fixe, il se définit par ses actes. Liberté radicale et responsabilité totale.' },
-    { front: 'MONTAIGNE — Question centrale', back: '« Que sais-je ? » Scepticisme doux. Introspection. Relativisme culturel : les autres cultures ne sont pas inférieures, juste différentes.' },
-    { front: 'DIDEROT — Rôle historique', back: 'Co-directeur de l\'Encyclopédie. Valorise la technique et le savoir artisanal. Matérialiste : la matière pense. Critique de la religion.' },
-    { front: 'LÉVI-STRAUSS — Apport', back: 'Anthropologie structurale. La pensée « sauvage » est aussi rigoureuse que la pensée occidentale. La prohibition de l\'inceste = frontière universelle nature/culture.' },
+  auteurs:[
+    {f:'PLATON — Thèse Protagoras',b:'L\'homme est naturellement démuni (Épiméthée oublie l\'homme). Prométhée vole le feu et les arts. La technique EST la nature humaine.'},
+    {f:'ARISTOTE — Eudaimonia',b:'Bonheur = activité de l\'âme selon la vertu. Pas un état mais une pratique. Vie contemplative = bonheur suprême.'},
+    {f:'MONTAIGNE — Scepticisme',b:'« Que sais-je ? » Reconnaître les limites du savoir. Relativisme culturel : les « barbares » nous sont peut-être supérieurs.'},
+    {f:'DESCARTES — Cogito',b:'Doute méthodique → « Je pense, donc je suis » = première certitude absolue. Dualisme corps/âme.'},
+    {f:'SPINOZA — Liberté',b:'Déterminisme strict. Liberté = comprendre sa propre nécessité. Le conatus : persévérance dans l\'être.'},
+    {f:'ROUSSEAU — Discours 1750',b:'Arts et sciences corrompent les mœurs. Mœurs naturelles = rustiques mais authentiques. ≠ uniformité trompeuse actuelle.'},
+    {f:'DIDEROT — Encyclopédie',b:'Valorisation du savoir technique et artisanal. Matérialisme. Critique de la religion. Changer « la façon commune de penser ».'},
+    {f:'KANT — Impératif catégorique',b:'« Agis comme si la maxime de ton action devait devenir loi universelle. » Légalité ≠ moralité. Autonomie de la volonté.'},
+    {f:'SARTRE — Existentialisme',b:'« L\'existence précède l\'essence. » Condamné à être libre. Mauvaise foi = fuir sa liberté. Angoisse = conscience de la liberté.'},
+    {f:'LÉVI-STRAUSS — Anthropologie',b:'Pensée sauvage aussi rigoureuse que la nôtre. Prohibition de l\'inceste = frontière universelle nature/culture.'}
   ],
-  citations: [
-    { front: '« Nous rendre comme maîtres et possesseurs de la nature »', back: 'DESCARTES, Discours de la méthode (1637), Partie VI. La technique scientifique doit servir le bien commun, notamment la santé.' },
-    { front: '« Nos mœurs étaient rustiques, mais naturelles »', back: 'ROUSSEAU, Discours sur les sciences et les arts (1750). Avant l\'art et la culture, les hommes étaient authentiques.' },
-    { front: '« Il règne dans nos mœurs une vile et trompeuse uniformité »', back: 'ROUSSEAU, Discours sur les sciences et les arts. La culture crée l\'hypocrisie et l\'uniformisation des esprits.' },
-    { front: '« Que sais-je ? »', back: 'MONTAIGNE, Les Essais. Formule du scepticisme modéré : reconnaître les limites de notre savoir.' },
-    { front: '« L\'existence précède l\'essence »', back: 'SARTRE, L\'existentialisme est un humanisme. L\'homme n\'a pas de nature prédéfinie, il se crée par ses choix.' },
-    { front: '« Agis comme si la maxime de ton action devait devenir une loi universelle »', back: 'KANT, Fondements de la métaphysique des mœurs. C\'est l\'impératif catégorique, principe de la morale kantienne.' },
-    { front: '« L\'homme est un animal politique »', back: 'ARISTOTE, Politique. L\'homme est naturellement fait pour vivre en cité (polis).' },
-    { front: 'Prométhée dérobe le feu pour l\'offrir aux hommes', back: 'PLATON, Protagoras. Mythe expliquant l\'origine de la technique : elle compense la nudité naturelle de l\'homme.' },
+  citations:[
+    {f:'« Je pense, donc je suis »',b:'DESCARTES, Discours de la méthode (1637). Première certitude après le doute méthodique.'},
+    {f:'« L\'existence précède l\'essence »',b:'SARTRE, L\'existentialisme est un humanisme (1945). L\'homme se définit par ses actes, il n\'a pas de nature prédéfinie.'},
+    {f:'« Nous sommes condamnés à être libres »',b:'SARTRE. Même ne pas choisir est un choix. La liberté est totale et la responsabilité aussi.'},
+    {f:'« Nos mœurs étaient rustiques, mais naturelles »',b:'ROUSSEAU, Discours sur les sciences et les arts (1750). Avant la culture : authenticité. Après : hypocrisie.'},
+    {f:'« Maîtres et possesseurs de la nature »',b:'DESCARTES, Discours de la méthode, Partie VI. La science permet de maîtriser la nature pour la santé et le bien commun.'},
+    {f:'« Dieu est mort »',b:'NIETZSCHE, Le Gai Savoir. La culture occidentale a elle-même détruit ses propres fondements. Crise des valeurs.'},
+    {f:'« La religion est l\'opium du peuple »',b:'MARX, Critique de la philosophie du droit de Hegel. Consolation illusoire détournant de la lutte sociale.'},
+    {f:'« L\'homme est un animal politique »',b:'ARISTOTE, Politique. L\'homme est NATURELLEMENT fait pour la vie en cité (polis). ≠ Hobbes.'},
+    {f:'« Sapere aude ! »',b:'KANT, Qu\'est-ce que les Lumières ? « Ose te servir de ton propre entendement. » Devise des Lumières.'},
+    {f:'« Les limites de mon langage sont les limites de mon monde »',b:'WITTGENSTEIN, Tractatus (1921). Le langage constitue le monde vécu, pas seulement le décrit.'},
+    {f:'« Le rêve est la voie royale vers l\'inconscient »',b:'FREUD, L\'interprétation des rêves (1900). L\'analyse des rêves révèle le contenu inconscient refoulé.'},
+    {f:'« Sapere aude » — Kant : quelle époque ?',b:'XVIIIe siècle (1784). Contexte : les Lumières (Aufklärung). Appel à sortir de la minorité intellectuelle.'},
+    {f:'« Justice sans force est impuissante »',b:'PASCAL, Pensées. La suite : « Force sans justice est tyrannique. » Il faut unir les deux.'},
+    {f:'« Le temps est invention ou il n\'est rien »',b:'BERGSON, L\'évolution créatrice. Le temps vrai = durée créatrice. La science spatialise et tue le temps.'},
+    {f:'« L\'essence de la technique n\'est rien de technique »',b:'HEIDEGGER, La question de la technique. La technique impose une vision du monde (Gestell) qui dépasse les simples outils.'}
   ]
 };
 
-let currentDeck = 'notions';
-let currentCards = [];
-let currentCardIdx = 0;
-let isFlipped = false;
+let curDeck='notions', curCards=[], curIdx=0, isFlipped=false;
 
-function setDeck(name) {
-  currentDeck = name;
-  document.querySelectorAll('[id^="deck-"]').forEach(b => {
-    b.style.background = '#16213e';
-    b.style.border = '1px solid #6c63ff55';
-    b.style.color = '#c0c0e0';
-  });
-  const btn = document.getElementById('deck-' + name);
-  if (btn) { btn.style.background = '#6c63ff'; btn.style.border = 'none'; btn.style.color = 'white'; }
-  currentCards = [...decks[name]];
-  currentCardIdx = 0;
-  isFlipped = false;
-  updateCard();
+function setDeck(name,btn){
+  curDeck=name; curCards=[...decks[name]]; curIdx=0; isFlipped=false;
+  document.querySelectorAll('.deck-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  updateFC();
 }
-
-function updateCard() {
-  const card = currentCards[currentCardIdx];
-  document.getElementById('fc-front').textContent = card.front;
-  document.getElementById('fc-back').textContent = card.back;
-  document.getElementById('fc-counter').textContent = (currentCardIdx + 1) + ' / ' + currentCards.length;
+function updateFC(){
+  const c=curCards[curIdx];
+  document.getElementById('fc-front').textContent=c.f;
+  document.getElementById('fc-back').textContent=c.b;
+  document.getElementById('fc-counter').textContent=(curIdx+1)+' / '+curCards.length;
   document.getElementById('flashcard').classList.remove('flipped');
-  isFlipped = false;
+  isFlipped=false;
 }
-
-function flipCard() {
-  isFlipped = !isFlipped;
-  document.getElementById('flashcard').classList.toggle('flipped', isFlipped);
-}
-
-function nextCard() {
-  if (currentCardIdx < currentCards.length - 1) {
-    currentCardIdx++;
-    updateCard();
-  }
-}
-
-function prevCard() {
-  if (currentCardIdx > 0) {
-    currentCardIdx--;
-    updateCard();
-  }
-}
-
-function shuffleCards() {
-  for (let i = currentCards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
-  }
-  currentCardIdx = 0;
-  updateCard();
-}
-
-// Init flashcards
+function flipCard(){isFlipped=!isFlipped;document.getElementById('flashcard').classList.toggle('flipped',isFlipped);}
+function nextCard(){if(curIdx<curCards.length-1){curIdx++;updateFC();}}
+function prevCard(){if(curIdx>0){curIdx--;updateFC();}}
+function shuffleCards(){for(let i=curCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[curCards[i],curCards[j]]=[curCards[j],curCards[i]];}curIdx=0;updateFC();}
 setDeck('notions');
 
-// ===================== QCM =====================
-const allQuestions = [
-  // NOTIONS
-  { q: 'Quelle est la définition du « bonheur » au sens fort en philosophie ?', opts: ['État de satisfaction ponctuelle', 'État de satisfaction stable et durable', 'Absence de souffrance', 'Plaisir des sens'], ans: 1, exp: 'Le sens fort du bonheur (eudaimonia chez Aristote) désigne un état de satisfaction STABLE et DURABLE. Le sens faible est simplement une satisfaction ponctuelle (« je suis heureux d\'être là »).' },
-  { q: 'En grec et en latin, quel mot désignait à la fois « art » et « technique » ?', opts: ['Logos / Ratio', 'Téchnê / Ars', 'Poiésis / Fabrica', 'Epistémê / Scientia'], ans: 1, exp: 'En grec ancien : téchnê. En latin : ars. Ces deux mots désignaient indifféremment l\'art et la technique. C\'est seulement au XVIIIe siècle que les « Beaux-arts » se distinguent de la technique.' },
-  { q: 'La conscience psychologique s\'oppose à quoi ?', opts: ['La raison', 'Le rêve', 'Le sommeil ou le coma', 'L\'inconscient moral'], ans: 2, exp: 'La conscience psychologique = l\'intuition qu\'a l\'esprit de ses états et actes. Elle s\'oppose au sommeil ou au coma (« perdre conscience »).' },
-  { q: 'Pour Kant, qu\'est-ce que le « devoir » au sens moral ?', opts: ['Une règle professionnelle', 'Une obligation légale imposée par l\'État', 'Une obligation morale qui s\'impose indépendamment de nos désirs', 'Un contrat social'], ans: 2, exp: 'Pour Kant, le devoir moral est l\'obligation que la raison s\'impose à elle-même, indépendamment de nos désirs, penchants ou intérêts. C\'est la base de l\'impératif catégorique.' },
-  { q: 'Quelle est la définition de la « technique » selon les définitions minimales du cours ?', opts: ['Toute production d\'objet à effet esthétique', 'Ensemble des entreprises qui augmentent la puissance par l\'organisation de moyens en vue d\'une fin', 'Transformation de la nature en vue du plaisir', 'Faculté de raisonner sur des outils'], ans: 1, exp: 'La technique = ensemble des entreprises qui augmentent la puissance par l\'organisation de MOYENS en vue d\'une FIN. Elle se distingue de l\'art (esthétique) et du travail (satisfaction des besoins).' },
-  { q: 'Quelle est la définition minimale de la « vérité » vue en cours ?', opts: ['Ce qui est universellement reconnu', 'La cohérence interne d\'un discours', 'L\'adéquation entre ce qui est dit et ce qui est', 'Ce que la science confirme'], ans: 2, exp: 'Vérité comme adéquation : accord entre l\'énoncé et la réalité. C\'est la définition classique depuis Aristote (adaequatio rei et intellectus).' },
-  { q: 'L\'inconscient au sens de Freud, c\'est :', opts: ['Agir sans réfléchir', 'Être dans le coma', 'Tout ce qui n\'est pas conscient et détermine l\'action et la pensée du sujet', 'Un état de rêve éveillé'], ans: 2, exp: 'L\'Inconscient freudien (avec majuscule) = tout ce qui n\'est PAS conscient mais DÉTERMINE les actions et pensées. Il contient les désirs refoulés, les traumatismes. Distincts de « être inconscient » (= irréfléchi).' },
-  { q: 'La « liberté » au sens B (sens éclairé) signifie :', opts: ['Faire ce qu\'on veut sans contrainte', 'Agir et penser en connaissance de cause', 'L\'absence de lois', 'L\'indépendance économique'], ans: 1, exp: 'La liberté au sens fort (B) = agir et penser EN CONNAISSANCE DE CAUSE. S\'oppose à l\'impulsion, la folie, l\'irresponsabilité. C\'est la liberté éclairée par la raison.' },
-  // AUTEURS
-  { q: 'Dans le Protagoras de Platon, pourquoi Prométhée vole-t-il le feu ?', opts: ['Pour punir Zeus', 'Parce que l\'homme n\'a reçu aucune capacité naturelle d\'Épiméthée', 'Pour créer la justice dans les cités', 'Pour permettre aux hommes de construire des temples'], ans: 1, exp: 'Épiméthée a distribué toutes les capacités aux animaux, laissant l\'homme nu et sans défenses. Prométhée vole alors le feu et les arts techniques pour compenser ce manque naturel.' },
-  { q: 'Quelle est la thèse principale de Rousseau dans le Discours sur les sciences et les arts (1750) ?', opts: ['Les sciences améliorent les mœurs', 'L\'artificiel compense les insuffisances naturelles', 'Les arts et sciences ont corrompu les mœurs naturelles', 'La technique libère l\'homme de la nature'], ans: 2, exp: 'Rousseau soutient que les arts et sciences ont CORROMPU les mœurs. Avant eux, les hommes étaient authentiques. Après : uniformité trompeuse, politesse hypocrite. « Nos mœurs étaient rustiques, mais naturelles. »' },
-  { q: 'Pour Descartes, à quoi doit servir la maîtrise de la nature ?', opts: ['À dominer les autres nations', 'À satisfaire les désirs personnels', 'À la conservation de la santé et au bien général de tous les hommes', 'À prouver l\'existence de Dieu'], ans: 2, exp: 'Dans le Discours de la méthode, Descartes affirme que la science permet de se rendre « maîtres et possesseurs de la nature » principalement pour la CONSERVATION DE LA SANTÉ, premier bien de la vie.' },
-  { q: 'Selon l\'impératif catégorique de Kant, comment doit-on agir ?', opts: ['Selon ses émotions', 'Comme si la maxime de son action devait devenir loi universelle', 'Pour maximiser le bonheur du plus grand nombre', 'En imitant les sages'], ans: 1, exp: 'L\'impératif catégorique kantien : « Agis comme si la maxime de ton action devait devenir loi universelle. » Il est catégorique (sans condition) et non hypothétique (si tu veux X, fais Y).' },
-  { q: 'Quelle est la formule existentialiste de Sartre ?', opts: ['L\'essence précède l\'existence', 'L\'existence précède l\'essence', 'L\'être précède le néant', 'La liberté précède la vérité'], ans: 1, exp: '« L\'existence précède l\'essence » : pour Sartre, l\'homme n\'a pas de nature prédéfinie. Il existe d\'abord, puis se définit par ses actes et ses choix. Cela implique une liberté et une responsabilité totales.' },
-  { q: 'Quelle est la question centrale de Montaigne dans les Essais ?', opts: ['Qu\'est-ce que la vérité ?', 'Que sais-je ?', 'Qu\'est-ce que la justice ?', 'Qui suis-je ?'], ans: 1, exp: '« Que sais-je ? » est la devise sceptique de Montaigne. Elle exprime un scepticisme doux : reconnaître les limites de notre savoir et s\'abstenir de jugements trop définitifs.' },
-  { q: 'Pour Spinoza, qu\'est-ce que la liberté ?', opts: ['Faire ce qu\'on veut sans contrainte', 'Comprendre la nécessité qui nous détermine', 'L\'absence de passions', 'L\'obéissance à la loi divine'], ans: 1, exp: 'Pour Spinoza, tout est déterminé (déterminisme). La liberté n\'est pas l\'absence de déterminisme, mais la COMPRÉHENSION de notre propre nécessité. Être libre = agir selon sa nature profonde.' },
-  { q: 'Quelle est la contribution principale de Lévi-Strauss à la philosophie ?', opts: ['Il a fondé la psychanalyse', 'Il a montré que les sociétés primitives ont une pensée aussi rigoureuse que la nôtre', 'Il a défini la vérité comme adéquation', 'Il a créé la méthode scientifique'], ans: 1, exp: 'Lévi-Strauss (anthropologie structurale) a montré que la « pensée sauvage » des sociétés sans écriture est aussi logique et rigoureuse que la pensée scientifique occidentale. Il critique l\'ethnocentrisme.' },
-  { q: 'Dans le mythe de Protagoras (Platon), qui distribue la Justice et la Vergogne ?', opts: ['Prométhée à quelques sages', 'Épiméthée à tous', 'Zeus à tous les hommes', 'Athéna aux artisans'], ans: 2, exp: 'Zeus ordonne à Hermès de distribuer la Justice et la Vergogne à TOUS les hommes (contrairement aux arts techniques réservés à des spécialistes). Sans elles, les cités ne peuvent exister.' },
-  // TEXTES
-  { q: 'Rousseau écrit que nos mœurs « rustiques » étaient « naturelles ». Que veut-il dire ?', opts: ['Elles étaient primitives et inférieures', 'Elles étaient authentiques et transparentes, sans hypocrisie', 'Elles étaient sauvages et violentes', 'Elles étaient imposées par la nature'], ans: 1, exp: 'Pour Rousseau, « rustique mais naturel » = AUTHENTIQUE. Les hommes avant la culture pouvaient se « pénétrer réciproquement » (se comprendre vraiment). L\'art et la politesse créent un masque social hypocrite.' },
-  { q: 'Dans le Discours de la méthode (Descartes), que signifie « maîtres et possesseurs de la nature » ?', opts: ['Détruire la nature pour s\'enrichir', 'Connaître les lois naturelles pour les utiliser au profit de l\'humanité', 'Imposer une dictature sur les ressources naturelles', 'Créer une nature artificielle'], ans: 1, exp: 'Descartes ne prône pas la destruction mais la CONNAISSANCE des lois naturelles (feu, eau, air, astres) pour « les employer à tous les usages auxquels ils sont propres ». L\'objectif : santé et bien-être humain.' },
+// ===== QCM =====
+const allQ=[
+  {q:'Quelle est la définition du bonheur au sens FORT en philosophie ?',o:['Satisfaction ponctuelle','État stable et durable','Absence de toute souffrance','Plaisir des sens'],a:1,e:'Le sens fort (eudaimonia chez Aristote) = état de satisfaction STABLE ET DURABLE. Le sens faible est juste une satisfaction ponctuelle.'},
+  {q:'En grec et en latin, quel mot désignait à la fois art et technique ?',o:['Logos / Ratio','Téchnê / Ars','Poiésis / Fabrica','Épistémê / Scientia'],a:1,e:'Téchnê (grec) / Ars (latin) désignaient les deux indifféremment. C\'est au XVIIIe s. que les Beaux-arts se distinguent.'},
+  {q:'Pour Kant, qu\'est-ce que la moralité (≠ légalité) ?',o:['Acte conforme au devoir','Acte accompli PAR devoir, par respect de la loi morale','Acte qui maximise le bonheur','Acte approuvé par la société'],a:1,e:'Légalité = acte conforme au devoir. Moralité = acte accompli PAR devoir (par pur respect de la loi). Un commerçant honnête par peur d\'être pris est légal, pas moral.'},
+  {q:'Quelle est la définition de la TECHNIQUE selon le cours ?',o:['Production d\'objet à effet esthétique','Organisation de moyens en vue d\'une fin qui augmente la puissance','Transformation de la nature pour les besoins','Connaissance rationnelle vérifiable'],a:1,e:'Technique = ensemble des entreprises qui augmentent la puissance par l\'organisation de MOYENS en vue d\'une FIN.'},
+  {q:'Pour Freud, quelle est la « voie royale vers l\'inconscient » ?',o:['Les lapsus','Les actes manqués','Les rêves','L\'hypnose'],a:2,e:'Freud appelle les rêves « la voie royale vers l\'inconscient ». Leur analyse révèle les désirs refoulés sous forme déguisée.'},
+  {q:'Quelle est la définition classique de la VÉRITÉ ?',o:['Ce que tout le monde accepte','Adéquation entre l\'énoncé et la réalité','Cohérence interne d\'un système','Ce qui est utile et fonctionne'],a:1,e:'Vérité-adéquation (définition classique d\'Aristote) : accord entre ce qui est dit et ce qui est réellement. ≠ cohérence (logique) ≠ pragmatique (utilité).'},
+  {q:'Pour Spinoza, en quoi consiste la LIBERTÉ ?',o:['Faire ce qu\'on veut sans contrainte','Comprendre la nécessité qui nous détermine','L\'absence de passions','Obéir à la loi divine'],a:1,e:'Spinoza est déterministe : tout est nécessaire. La liberté = COMPRENDRE sa propre nécessité (causes de ses passions), pas s\'en affranchir.'},
+  {q:'Quel critère Popper utilise-t-il pour définir une théorie SCIENTIFIQUE ?',o:['La vérifiabilité','La réfutabilité (falsifiabilité)','L\'utilité pratique','L\'accord des experts'],a:1,e:'Popper : une théorie est scientifique si elle peut être RÉFUTÉE par l\'expérience. La psychanalyse ou l\'astrologie ne le sont pas car elles expliquent tout.'},
+  {q:'Dans le mythe de Protagoras (Platon), pourquoi Prométhée vole-t-il le feu ?',o:['Pour punir Zeus','L\'homme n\'a reçu aucune capacité naturelle d\'Épiméthée','Pour créer la justice','Pour permettre des sacrifices'],a:1,e:'Épiméthée a distribué toutes les capacités aux animaux, oubliant l\'homme. Prométhée vole feu + arts techniques pour compenser ce manque naturel.'},
+  {q:'Quelle est la thèse de Rousseau dans le Discours de 1750 ?',o:['Les sciences améliorent les mœurs','Les arts et sciences corrompent les mœurs naturelles','La technique libère l\'homme','La culture perfectionne la nature humaine'],a:1,e:'Rousseau : avant la culture, mœurs rustiques mais authentiques. Après : uniformité trompeuse et hypocrisie sociale. Les arts corrompent.'},
+  {q:'Pour Descartes, à quoi doit principalement servir la maîtrise de la nature ?',o:['À dominer les autres nations','À satisfaire les désirs personnels','À la conservation de la santé','À prouver l\'existence de Dieu'],a:2,e:'Discours VI : Descartes veut maîtriser la nature principalement pour la CONSERVATION DE LA SANTÉ, premier bien de la vie.'},
+  {q:'Quelle formule résume l\'existentialisme de Sartre ?',o:['L\'essence précède l\'existence','L\'existence précède l\'essence','L\'être précède le néant','La liberté précède la vérité'],a:1,e:'« L\'existence précède l\'essence » : l\'homme n\'a pas de nature prédéfinie. Il existe d\'abord, puis se crée par ses actes et ses choix.'},
+  {q:'Selon Aristote, qu\'est-ce que la JUSTICE DISTRIBUTIVE ?',o:['Égalité stricte pour tous','Proportionnelle au mérite de chacun','Ce qui est conforme à la loi','Ce que le souverain décide'],a:1,e:'Justice distributive (Aristote) = proportionnelle au mérite (chacun selon sa contribution). ≠ justice corrective (égalité arithmétique stricte dans les échanges).'},
+  {q:'Qu\'est-ce que le GESTELL selon Heidegger ?',o:['Un simple outil technologique','L\'arraisonnement : la technique impose de voir le monde comme un fonds exploitable','La technique au service de la nature','Le progrès technique libérateur'],a:1,e:'Gestell (arraisonnement) : la technique moderne transforme tout — même la nature, l\'homme — en réserve exploitable (Bestand). Ce n\'est pas un outil neutre.'},
+  {q:'Quelle est la devise de Kant pour les Lumières ?',o:['Je pense, donc je suis','Que sais-je ?','Sapere aude !','L\'être, c\'est être perçu'],a:2,e:'« Sapere aude ! » = « Ose te servir de ton propre entendement ! » Kant, Qu\'est-ce que les Lumières ? (1784). C\'est la devise de l\'émancipation intellectuelle.'},
+  {q:'Pour Marx, qu\'est-ce que l\'ALIÉNATION du travail ?',o:['Le fait de travailler dur','L\'homme est séparé du produit de son travail, de son activité, de son genre et d\'autrui','Un sentiment de fatigue','Le chômage'],a:1,e:'4 formes d\'aliénation (Marx) : 1) du produit (ne lui appartient pas), 2) de l\'activité (contrôlée), 3) du genre humain (perd son humanité), 4) d\'autrui.'},
+  {q:'Qu\'est-ce que l\'impératif CATÉGORIQUE (≠ hypothétique) ?',o:['Un ordre conditionnel (si tu veux X, fais Y)','Un ordre inconditionnel valable pour tous et toujours','Un conseil pour être heureux','Une loi de l\'État'],a:1,e:'Catégorique = sans condition. « Agis comme si... » vaut inconditionnellement. ≠ hypothétique : « si tu veux être heureux, fais ceci ».'},
+  {q:'Pour Lévi-Strauss, que représente la prohibition de l\'inceste ?',o:['Une loi purement naturelle (instinct)','Une frontière universelle nature/culture : universelle dans sa forme mais culturelle dans son contenu','Un interdit purement culturel variable','Une règle récente'],a:1,e:'Prohibition de l\'inceste : UNIVERSELLE (présente partout = naturelle par sa forme) mais culturelle dans son contenu (qui est interdit varie). C\'est la frontière nature/culture.'},
+  {q:'Pour Bergson, quelle différence entre durée et temps ?',o:['Aucune, c\'est pareil','La durée est vécue qualitativement ; le temps est spatialisé et mesuré quantitativement','La durée est plus longue que le temps','Le temps est subjectif, la durée objective'],a:1,e:'Bergson : durée = temps vécu de l\'intérieur, continu, qualitatif. Temps spatialisé = découpage artificiel en instants mesurables. La science ne capture que le deuxième.'},
+  {q:'Qu\'est-ce que l\'eudaimonia selon Aristote ?',o:['Le plaisir des sens','L\'activité de l\'âme conforme à la vertu — le bonheur comme pratique','L\'absence de souffrance','La richesse matérielle'],a:1,e:'Eudaimonia ≠ hédoné (plaisir). C\'est une ACTIVITÉ de l\'âme selon la vertu, pas un état passif. Le bonheur se pratique, ne se reçoit pas.'}
 ];
 
-let qcmMode = 'all';
-let qcmQuestions = [];
-let qcmIdx = 0;
-let qcmScore = 0;
-let answered = false;
+let qMode='all', qPool=[], qIdx=0, qScore=0, qAnswered=false;
 
-function startQCM(mode) {
-  qcmMode = mode;
-  let pool;
-  if (mode === 'notions') pool = allQuestions.slice(0, 8);
-  else if (mode === 'auteurs') pool = allQuestions.slice(8, 16);
-  else if (mode === 'textes') pool = allQuestions.slice(16);
-  else pool = [...allQuestions];
-
-  // Shuffle and take up to 10
-  pool = pool.sort(() => Math.random() - 0.5).slice(0, Math.min(10, pool.length));
-  qcmQuestions = pool;
-  qcmIdx = 0;
-  qcmScore = 0;
-  answered = false;
-
-  document.getElementById('qcm-container').style.display = 'block';
-  document.getElementById('qcm-result').style.display = 'none';
-  renderQuestion();
+function startQCM(mode,btn){
+  qMode=mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  let pool=mode==='notions'?allQ.slice(0,8):mode==='auteurs'?allQ.slice(8,15):mode==='textes'?allQ.slice(10,14):[...allQ];
+  qPool=pool.sort(()=>Math.random()-.5).slice(0,10);
+  qIdx=0; qScore=0; qAnswered=false;
+  document.getElementById('qcm-play').style.display='block';
+  document.getElementById('qcm-result').style.display='none';
+  renderQ();
 }
 
-function renderQuestion() {
-  if (qcmIdx >= qcmQuestions.length) { showResult(); return; }
-  const q = qcmQuestions[qcmIdx];
-  answered = false;
-
-  document.getElementById('qcm-label').textContent = 'Question ' + (qcmIdx + 1) + '/' + qcmQuestions.length;
-  document.getElementById('qcm-score').textContent = 'Score : ' + qcmScore;
-  document.getElementById('qcm-progress').style.width = (qcmIdx / qcmQuestions.length * 100) + '%';
-  document.getElementById('qcm-question').textContent = q.q;
-  document.getElementById('qcm-next').disabled = true;
-
-  const optDiv = document.getElementById('qcm-options');
-  optDiv.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = opt;
-    btn.onclick = () => answer(i);
-    optDiv.appendChild(btn);
+function renderQ(){
+  if(qIdx>=qPool.length){showRes();return;}
+  qAnswered=false;
+  const q=qPool[qIdx];
+  document.getElementById('qcm-label').textContent='Question '+(qIdx+1)+'/'+qPool.length;
+  document.getElementById('qcm-score').textContent=qScore+' pts';
+  document.getElementById('qcm-prog').style.width=(qIdx/qPool.length*100)+'%';
+  document.getElementById('qcm-q').textContent=q.q;
+  document.getElementById('qcm-next').disabled=true;
+  const fb=document.getElementById('qcm-fb');
+  fb.className='feedback-box'; fb.textContent='';
+  const opts=document.getElementById('qcm-opts');
+  opts.innerHTML='';
+  q.o.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=o;
+    b.onclick=()=>answerQ(i,q);
+    opts.appendChild(b);
   });
-
-  const fb = document.getElementById('qcm-feedback');
-  fb.className = 'feedback';
-  fb.textContent = '';
 }
 
-function answer(i) {
-  if (answered) return;
-  answered = true;
-  const q = qcmQuestions[qcmIdx];
-  const btns = document.querySelectorAll('.option-btn');
-  btns.forEach(b => b.disabled = true);
-  btns[q.ans].classList.add('correct');
-  const fb = document.getElementById('qcm-feedback');
-  if (i === q.ans) {
-    qcmScore++;
-    document.getElementById('qcm-score').textContent = 'Score : ' + qcmScore;
-    fb.textContent = '✅ Correct ! ' + q.exp;
-    fb.className = 'feedback show ok';
-  } else {
-    btns[i].classList.add('wrong');
-    fb.textContent = '❌ Faux. ' + q.exp;
-    fb.className = 'feedback show ko';
-  }
-  document.getElementById('qcm-next').disabled = false;
+function answerQ(i,q){
+  if(qAnswered)return; qAnswered=true;
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.opt-btn')[q.a].classList.add('correct');
+  const fb=document.getElementById('qcm-fb');
+  if(i===q.a){qScore++;document.getElementById('qcm-score').textContent=qScore+' pts';fb.textContent='✅ Correct ! '+q.e;fb.className='feedback-box show ok';}
+  else{document.querySelectorAll('.opt-btn')[i].classList.add('wrong');fb.textContent='❌ Faux. '+q.e;fb.className='feedback-box show ko';}
+  document.getElementById('qcm-next').disabled=false;
 }
 
-function nextQuestion() {
-  qcmIdx++;
-  renderQuestion();
+function nextQ(){qIdx++;renderQ();}
+
+function showRes(){
+  document.getElementById('qcm-play').style.display='none';
+  document.getElementById('qcm-result').style.display='block';
+  const t=qPool.length, p=Math.round(qScore/t*100);
+  document.getElementById('res-score').textContent=qScore+'/'+t;
+  document.getElementById('res-msg').textContent=p>=90?'🏆 Excellent ! Tu maîtrises le cours !':p>=70?'👍 Bien ! Quelques points à revoir.':p>=50?'📚 Continue — relis les fiches.':'💪 Revois les notions et recommence !';
+  document.getElementById('res-sub').textContent=p+'% de réussite';
 }
 
-function showResult() {
-  document.getElementById('qcm-container').style.display = 'none';
-  document.getElementById('qcm-result').style.display = 'block';
-  const total = qcmQuestions.length;
-  const pct = Math.round(qcmScore / total * 100);
-  document.getElementById('final-score').textContent = qcmScore + '/' + total;
-  let msg, detail;
-  if (pct >= 90) { msg = '🏆 Excellent ! Tu maîtrises le cours !'; detail = 'Tu es prêt(e) pour le bac !'; }
-  else if (pct >= 70) { msg = '👍 Bien ! Quelques points à revoir.'; detail = 'Refais les flashcards sur les notions ratées.'; }
-  else if (pct >= 50) { msg = '📚 Moyen. Revois les fiches !'; detail = 'Relis les fiches Notions et Auteurs, puis retente.'; }
-  else { msg = '💪 Continue ! Tu progresses.'; detail = 'Commence par les flashcards avant de refaire le QCM.'; }
-  document.getElementById('final-msg').textContent = msg;
-  document.getElementById('final-detail').textContent = detail;
+function restartQCM(){startQCM(qMode);}
+
+// ===== JEUX =====
+let chronoT=null;
+
+function backMenu(){
+  document.getElementById('game-menu').style.display='block';
+  document.getElementById('game-area').style.display='none';
+  clearInterval(chronoT);
 }
 
-function restartQCM() {
-  startQCM(qcmMode);
+function launchGame(t){
+  document.getElementById('game-menu').style.display='none';
+  document.getElementById('game-area').style.display='block';
+  if(t==='assoc') renderAssoc();
+  else if(t==='def') renderDef();
+  else if(t==='vf') renderVF();
+  else if(t==='chrono') renderChrono();
 }
 
-// Init QCM
-startQCM('all');
-
-// ===================== JEUX =====================
-function backToMenu() {
-  document.getElementById('game-menu').style.display = 'block';
-  document.getElementById('game-area').style.display = 'none';
-  clearInterval(chronoTimer);
-}
-
-function startGame(type) {
-  document.getElementById('game-menu').style.display = 'none';
-  document.getElementById('game-area').style.display = 'block';
-  if (type === 'association') renderAssociation();
-  else if (type === 'definition') renderDefinition();
-  else if (type === 'vrai-faux') renderVraiFaux();
-  else if (type === 'chrono') renderChrono();
-}
-
-// --- ASSOCIATION ---
-const assocPairs = [
-  { left: 'PLATON', right: 'Technique = compensation naturelle' },
-  { left: 'ROUSSEAU', right: 'L\'artificiel corrompt les mœurs' },
-  { left: 'DESCARTES', right: 'Maîtres et possesseurs de la nature' },
-  { left: 'KANT', right: 'Impératif catégorique' },
-  { left: 'SARTRE', right: 'L\'existence précède l\'essence' },
-  { left: 'SPINOZA', right: 'Liberté = comprendre sa nécessité' },
+// ASSOCIATION
+const assocData=[
+  {l:'PLATON',r:'La technique compense les manques naturels'},
+  {l:'ROUSSEAU',r:'Les arts corrompent les mœurs naturelles'},
+  {l:'DESCARTES',r:'Maîtres et possesseurs de la nature'},
+  {l:'KANT',r:'Impératif catégorique'},
+  {l:'SARTRE',r:'L\'existence précède l\'essence'},
+  {l:'SPINOZA',r:'Liberté = comprendre sa nécessité'},
+  {l:'FREUD',r:'Le rêve, voie royale vers l\'inconscient'},
+  {l:'ARISTOTE',r:'L\'homme est un animal politique'},
 ];
+let assocSel=null, assocDone=[];
 
-let assocSelected = null;
-let assocMatched = [];
-
-function renderAssociation() {
-  assocSelected = null;
-  assocMatched = [];
-  const pairs = assocPairs.sort(() => Math.random() - 0.5);
-  const rights = [...pairs.map(p => p.right)].sort(() => Math.random() - 0.5);
-
-  let html = '<h3 style="color:#a78bfa;margin-bottom:16px">🔗 Association — Relie l\'auteur à sa thèse</h3>';
-  html += '<p style="color:#888;font-size:0.85rem;margin-bottom:16px">Clique sur un auteur, puis sur sa thèse correspondante.</p>';
-  html += '<div class="assoc-container"><div class="assoc-col" id="assoc-left">';
-  pairs.forEach((p, i) => {
-    html += `<div class="assoc-item" id="aL${i}" data-side="left" data-idx="${i}" onclick="selectAssoc(this)">${p.left}</div>`;
-  });
-  html += '</div><div class="assoc-col" id="assoc-right">';
-  rights.forEach((r, i) => {
-    const origIdx = pairs.findIndex(p => p.right === r);
-    html += `<div class="assoc-item" id="aR${i}" data-side="right" data-val="${r}" data-orig="${origIdx}" onclick="selectAssoc(this)">${r}</div>`;
-  });
-  html += '</div></div>';
-  html += '<div id="assoc-msg" style="margin-top:16px;text-align:center;font-size:0.9rem"></div>';
-  document.getElementById('game-content').innerHTML = html;
+function renderAssoc(){
+  assocSel=null; assocDone=[];
+  const pairs=assocData.sort(()=>Math.random()-.5).slice(0,6);
+  const rights=[...pairs.map(p=>p.r)].sort(()=>Math.random()-.5);
+  let h='<h3 style="color:#a78bfa;margin-bottom:8px">🔗 Association</h3><p style="color:#666;font-size:.82rem;margin-bottom:16px">Clique un auteur, puis sa thèse.</p>';
+  h+='<div class="assoc-grid"><div class="assoc-col">';
+  pairs.forEach((p,i)=>h+=`<div class="assoc-item" id="aL${i}" data-i="${i}" onclick="clickAssocL(this)">${p.l}</div>`);
+  h+='</div><div class="assoc-col">';
+  rights.forEach((r,i)=>{const oi=pairs.findIndex(p=>p.r===r);h+=`<div class="assoc-item" id="aR${i}" data-v="${r}" data-oi="${oi}" onclick="clickAssocR(this)">${r}</div>`;});
+  h+='</div></div><div id="assoc-msg" style="margin-top:16px;text-align:center;min-height:24px"></div>';
+  document.getElementById('game-content').innerHTML=h;
 }
 
-function selectAssoc(el) {
-  if (el.classList.contains('matched')) return;
-  if (el.dataset.side === 'left') {
-    document.querySelectorAll('.assoc-item[data-side="left"]').forEach(e => e.classList.remove('selected'));
-    el.classList.add('selected');
-    assocSelected = el;
+function clickAssocL(el){
+  if(el.classList.contains('matched'))return;
+  document.querySelectorAll('.assoc-item[data-i]').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected'); assocSel=el;
+}
+function clickAssocR(el){
+  if(!assocSel||el.classList.contains('matched'))return;
+  if(parseInt(assocSel.dataset.i)===parseInt(el.dataset.oi)){
+    assocSel.classList.remove('selected'); assocSel.classList.add('matched'); el.classList.add('matched');
+    assocDone.push(1); assocSel=null;
+    if(assocDone.length>=6) document.getElementById('assoc-msg').innerHTML='<span style="color:#34d399;font-size:1.1rem">🎉 Bravo ! Toutes les associations sont correctes !</span>';
   } else {
-    if (!assocSelected) return;
-    const leftIdx = parseInt(assocSelected.dataset.idx);
-    const rightOrig = parseInt(el.dataset.orig);
-    if (leftIdx === rightOrig) {
-      assocSelected.classList.remove('selected');
-      assocSelected.classList.add('matched');
-      el.classList.add('matched');
-      assocMatched.push(leftIdx);
-      assocSelected = null;
-      if (assocMatched.length === assocPairs.length) {
-        document.getElementById('assoc-msg').innerHTML = '<span style="color:#10b981;font-size:1.1rem">🎉 Bravo ! Toutes les associations sont correctes !</span>';
-      }
-    } else {
-      el.classList.add('wrong-flash');
-      assocSelected.classList.add('wrong-flash');
-      setTimeout(() => {
-        el.classList.remove('wrong-flash');
-        assocSelected && assocSelected.classList.remove('wrong-flash', 'selected');
-        assocSelected = null;
-      }, 600);
-    }
+    el.classList.add('error'); assocSel.classList.add('error');
+    const s=assocSel; setTimeout(()=>{el.classList.remove('error');s.classList.remove('error','selected');assocSel=null;},600);
   }
 }
 
-// --- DEVINE LA NOTION ---
-const defQuestions = [
-  { def: 'Faculté de raisonner, c\'est-à-dire d\'articuler des concepts entre eux.', ans: 'Raison', opts: ['Vérité', 'Raison', 'Science', 'Conscience'] },
-  { def: 'Transformation de la nature en vue de la satisfaction des besoins (≠ loisirs).', ans: 'Travail', opts: ['Technique', 'Art', 'Travail', 'Liberté'] },
-  { def: 'État de satisfaction stable et durable.', ans: 'Bonheur', opts: ['Plaisir', 'Liberté', 'Bonheur', 'Justice'] },
-  { def: 'Ce qui est conforme au droit, ce qui est équitable.', ans: 'Justice', opts: ['Devoir', 'Loi', 'Justice', 'Morale'] },
-  { def: 'Accord entre ce qui est dit et ce qui est.', ans: 'Vérité', opts: ['Science', 'Raison', 'Connaissance', 'Vérité'] },
-  { def: 'Ensemble des entreprises qui augmentent la puissance par l\'organisation de moyens en vue d\'une fin.', ans: 'Technique', opts: ['Art', 'Travail', 'Science', 'Technique'] },
-  { def: 'Institution sociale unie par des rites, une croyance absolue et un rapport à une puissance spirituelle.', ans: 'Religion', opts: ['Foi', 'Morale', 'Religion', 'Culture'] },
-  { def: 'Intuition qu\'a l\'esprit de ses propres états et actes.', ans: 'Conscience', opts: ['Inconscient', 'Conscience', 'Raison', 'Mémoire'] },
+// DEVINE LA NOTION
+const defData=[
+  {d:'Faculté de raisonner, c\'est-à-dire d\'articuler des concepts entre eux.',a:'Raison',o:['Vérité','Raison','Science','Conscience']},
+  {d:'Transformation de la nature en vue de la satisfaction des besoins.',a:'Travail',o:['Technique','Art','Travail','Liberté']},
+  {d:'État de satisfaction stable et durable.',a:'Bonheur',o:['Plaisir','Liberté','Bonheur','Justice']},
+  {d:'Accord entre ce qui est dit et ce qui est réellement.',a:'Vérité',o:['Science','Raison','Connaissance','Vérité']},
+  {d:'Organisation de moyens en vue d\'une fin qui augmente la puissance.',a:'Technique',o:['Art','Travail','Science','Technique']},
+  {d:'Institution sociale unie par des rites, une croyance absolue et un rapport à une puissance spirituelle.',a:'Religion',o:['Foi','Morale','Religion','Culture']},
+  {d:'Intuition qu\'a l\'esprit de ses propres états et actes (≠ sommeil, coma).',a:'Conscience',o:['Inconscient','Conscience','Raison','Mémoire']},
+  {d:'Ce qui est conforme au droit, ce qui est équitable.',a:'Justice',o:['Devoir','Loi','Justice','Morale']},
 ];
+let defIdx=0, defScore=0;
 
-let defIdx = 0;
-let defScore = 0;
-let defAnswered = false;
-
-function renderDefinition() {
-  defIdx = 0;
-  defScore = 0;
-  defAnswered = false;
-  const shuffled = defQuestions.sort(() => Math.random() - 0.5);
-  window._defQuestions = shuffled;
-  renderDefQuestion();
+function renderDef(){defIdx=0;defScore=0;window._def=[...defData].sort(()=>Math.random()-.5);renderDefQ();}
+function renderDefQ(){
+  if(defIdx>=window._def.length){document.getElementById('game-content').innerHTML=`<div class="result-screen"><div class="result-score">${defScore}/${window._def.length}</div><div class="result-msg">${defScore>=6?'🎉 Parfait !':defScore>=4?'👍 Bien !':'📚 Revois les définitions !'}</div><button class="btn-primary" style="margin-top:20px" onclick="renderDef()">Rejouer</button></div>`;return;}
+  const q=window._def[defIdx];
+  const opts=[...q.o].sort(()=>Math.random()-.5);
+  let h=`<h3 style="color:#a78bfa;margin-bottom:12px">📝 Devine la Notion (${defIdx+1}/${window._def.length}) — ${defScore} pts</h3>`;
+  h+=`<div style="background:#0f0f1c;border:1px solid #1e1e35;border-radius:12px;padding:20px;margin-bottom:16px;font-style:italic;font-size:.95rem;line-height:1.6;color:#e0e0f0">"${q.d}"</div>`;
+  h+='<div class="options">';
+  opts.forEach(o=>h+=`<button class="opt-btn" onclick="answerDef('${o}','${q.a}',this)">${o}</button>`);
+  h+='</div><div id="def-fb" class="feedback-box"></div>';
+  document.getElementById('game-content').innerHTML=h;
+}
+function answerDef(chosen,correct,btn){
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('def-fb');
+  if(chosen===correct){defScore++;btn.classList.add('correct');fb.textContent='✅ Bravo !';fb.className='feedback-box show ok';}
+  else{btn.classList.add('wrong');document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct');});fb.textContent='❌ Réponse : '+correct;fb.className='feedback-box show ko';}
+  defIdx++;setTimeout(renderDefQ,1500);
 }
 
-function renderDefQuestion() {
-  if (defIdx >= window._defQuestions.length) {
-    document.getElementById('game-content').innerHTML = `
-      <div class="result-box">
-        <div class="big-score">${defScore}/${window._defQuestions.length}</div>
-        <p>${defScore >= 6 ? '🎉 Excellent !' : defScore >= 4 ? '👍 Bien !' : '📚 Continue à réviser !'}</p>
-        <button onclick="renderDefinition()">Rejouer</button>
-      </div>`;
-    return;
-  }
-  defAnswered = false;
-  const q = window._defQuestions[defIdx];
-  const opts = [...q.opts].sort(() => Math.random() - 0.5);
-  let html = `<h3 style="color:#a78bfa;margin-bottom:16px">📝 Devine la Notion (${defIdx+1}/${window._defQuestions.length})</h3>`;
-  html += `<div style="background:#1a1a2e;padding:20px;border-radius:12px;margin-bottom:16px;font-size:1rem;line-height:1.6;font-style:italic;color:#e0e0f0">"${q.def}"</div>`;
-  html += '<div class="options">';
-  opts.forEach(opt => {
-    html += `<button class="option-btn" onclick="answerDef('${opt}', '${q.ans}', this)">${opt}</button>`;
-  });
-  html += '</div>';
-  html += `<div id="def-fb" class="feedback"></div>`;
-  html += `<div style="text-align:center;margin-top:16px;color:#6c63ff">Score : ${defScore}</div>`;
-  document.getElementById('game-content').innerHTML = html;
-}
-
-function answerDef(chosen, correct, btn) {
-  if (defAnswered) return;
-  defAnswered = true;
-  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-  const fb = document.getElementById('def-fb');
-  if (chosen === correct) {
-    defScore++;
-    btn.classList.add('correct');
-    fb.textContent = '✅ Bravo !';
-    fb.className = 'feedback show ok';
-  } else {
-    btn.classList.add('wrong');
-    document.querySelectorAll('.option-btn').forEach(b => { if (b.textContent === correct) b.classList.add('correct'); });
-    fb.textContent = '❌ La bonne réponse était : ' + correct;
-    fb.className = 'feedback show ko';
-  }
-  setTimeout(() => { defIdx++; renderDefQuestion(); }, 1500);
-}
-
-// --- VRAI / FAUX ---
-const vraiFaux = [
-  { stmt: 'Pour Rousseau, l\'artificiel améliore les mœurs humaines.', ans: false, exp: 'FAUX. Rousseau soutient le contraire : les arts et sciences CORROMPENT les mœurs. Les hommes naturels étaient authentiques.' },
-  { stmt: 'Platon, dans le Protagoras, explique que la technique compense les manques naturels de l\'homme.', ans: true, exp: 'VRAI. Épiméthée n\'a rien donné à l\'homme, donc Prométhée lui offre la technique pour survivre.' },
-  { stmt: 'Descartes veut que l\'homme domine la nature pour son seul profit économique.', ans: false, exp: 'FAUX. Descartes veut rendre les hommes « maîtres et possesseurs de la nature » principalement pour la conservation de la SANTÉ et le bien commun.' },
-  { stmt: 'Kant distingue la légalité (acte conforme au devoir) de la moralité (acte par devoir).', ans: true, exp: 'VRAI. Un acte est légal s\'il est conforme au devoir, moral s\'il est accompli PAR devoir (par respect de la loi morale).' },
-  { stmt: 'Pour Sartre, l\'essence de l\'homme est définie avant sa naissance.', ans: false, exp: 'FAUX. Sartre dit « L\'existence précède l\'essence ». L\'homme n\'a pas d\'essence prédéfinie : il se crée par ses actes.' },
-  { stmt: 'Spinoza pense que tout dans l\'univers est déterminé.', ans: true, exp: 'VRAI. Spinoza est déterministe strict : tout est nécessaire dans la Nature (= Dieu). La liberté n\'est pas l\'absence de détermination mais sa compréhension.' },
-  { stmt: 'La « vérité » au sens du cours est définie comme la cohérence interne d\'un discours.', ans: false, exp: 'FAUX. La vérité est définie comme ADÉQUATION : accord entre ce qui est dit et ce qui est réellement. La cohérence est une autre conception (vérité-cohérence).' },
-  { stmt: 'Dans le mythe de Protagoras, Zeus distribue la Justice et la Vergogne à TOUS les hommes.', ans: true, exp: 'VRAI. Contrairement aux arts techniques (réservés à des spécialistes), la Justice et la Vergogne sont données à tous pour permettre la vie en cité.' },
-  { stmt: 'Lévi-Strauss pense que les sociétés "primitives" ont une pensée inférieure.', ans: false, exp: 'FAUX. Lévi-Strauss défend au contraire que la pensée sauvage est aussi rigoureuse que la pensée scientifique occidentale. Il critique l\'ethnocentrisme.' },
-  { stmt: 'Aristote définit l\'homme comme un « animal politique ».', ans: true, exp: 'VRAI. Zôon politikon : l\'homme est naturellement fait pour vivre en cité (polis). La vie en société n\'est pas artificielle mais naturelle à l\'homme selon Aristote.' },
+// VRAI / FAUX
+const vfData=[
+  {s:'Pour Rousseau, l\'artificiel améliore les mœurs humaines.',a:false,e:'FAUX. Rousseau soutient le contraire : arts et sciences corrompent les mœurs. L\'état naturel = authenticité.'},
+  {s:'Platon explique dans le Protagoras que la technique compense les manques naturels de l\'homme.',a:true,e:'VRAI. Épiméthée a oublié l\'homme → Prométhée lui offre feu et arts techniques pour survivre.'},
+  {s:'Descartes veut maîtriser la nature pour son seul profit économique.',a:false,e:'FAUX. C\'est principalement pour la conservation de la SANTÉ et le bien général de tous les hommes.'},
+  {s:'Kant distingue légalité (acte conforme au devoir) et moralité (acte PAR devoir).',a:true,e:'VRAI. Un acte est moral seulement s\'il est accompli PAR devoir (par respect de la loi), pas par peur ou intérêt.'},
+  {s:'Pour Sartre, l\'essence de l\'homme est définie avant sa naissance.',a:false,e:'FAUX. « L\'existence précède l\'essence » : l\'homme n\'a pas de nature fixe prédéfinie.'},
+  {s:'Spinoza croit en un déterminisme strict : tout est nécessaire.',a:true,e:'VRAI. Pour Spinoza, tout dans la Nature (= Dieu) est nécessaire. Rien n\'est contingent ou libre au sens ordinaire.'},
+  {s:'La vérité au sens du cours = cohérence interne d\'un discours.',a:false,e:'FAUX. La définition minimale = ADÉQUATION entre ce qui est dit et ce qui est réellement (correspondance).'},
+  {s:'Dans le Protagoras, Zeus distribue la Justice et la Vergogne à TOUS les hommes.',a:true,e:'VRAI. ≠ arts techniques réservés à des spécialistes. La Justice et la Vergogne doivent être partagées par tous pour vivre en cité.'},
+  {s:'Lévi-Strauss pense que les sociétés primitives ont une pensée inférieure.',a:false,e:'FAUX. La pensée sauvage est aussi rigoureuse que la pensée scientifique. Il critique l\'ethnocentrisme occidental.'},
+  {s:'Aristote définit l\'homme comme un animal politique (zôon politikon).',a:true,e:'VRAI. La vie en cité est NATURELLE à l\'homme selon Aristote. ≠ Hobbes pour qui l\'état de nature est guerre.'},
+  {s:'Pour Freud, les rêves n\'ont pas de sens particulier.',a:false,e:'FAUX. Les rêves sont « la voie royale vers l\'inconscient ». Ils révèlent les désirs refoulés sous forme déguisée.'},
+  {s:'La technique selon Heidegger est un simple outil neutre.',a:false,e:'FAUX. Heidegger : l\'essence de la technique (Gestell) transforme notre rapport au monde. Rien de neutre là-dedans.'},
 ];
+let vfIdx=0, vfScore=0;
 
-let vfIdx = 0;
-let vfScore = 0;
-
-function renderVraiFaux() {
-  vfIdx = 0;
-  vfScore = 0;
-  window._vf = vraiFaux.sort(() => Math.random() - 0.5);
-  renderVFQuestion();
+function renderVF(){vfIdx=0;vfScore=0;window._vf=[...vfData].sort(()=>Math.random()-.5);renderVFQ();}
+function renderVFQ(){
+  if(vfIdx>=window._vf.length){document.getElementById('game-content').innerHTML=`<div class="result-screen"><div class="result-score">${vfScore}/${window._vf.length}</div><div class="result-msg">${vfScore>=10?'🏆 Parfait !':vfScore>=7?'👍 Bien !':'📚 Revois les notions !'}</div><button class="btn-primary" style="margin-top:20px" onclick="renderVF()">Rejouer</button></div>`;return;}
+  const q=window._vf[vfIdx];
+  let h=`<h3 style="color:#a78bfa;margin-bottom:12px">⚖️ Vrai ou Faux ? (${vfIdx+1}/${window._vf.length}) — ${vfScore} pts</h3>`;
+  h+=`<div style="background:#0f0f1c;border:1px solid #1e1e35;border-radius:12px;padding:24px;margin-bottom:20px;font-size:1rem;line-height:1.6">${q.s}</div>`;
+  h+=`<div style="display:flex;gap:16px;justify-content:center">
+    <button onclick="answerVF(true)" style="background:#06402222;border:2px solid #10b981;color:#34d399;padding:14px 36px;border-radius:12px;cursor:pointer;font-size:1rem;font-family:inherit;transition:all .2s">✅ VRAI</button>
+    <button onclick="answerVF(false)" style="background:#4c051922;border:2px solid #ef4444;color:#f87171;padding:14px 36px;border-radius:12px;cursor:pointer;font-size:1rem;font-family:inherit;transition:all .2s">❌ FAUX</button>
+  </div><div id="vf-fb" class="feedback-box" style="margin-top:16px"></div>`;
+  document.getElementById('game-content').innerHTML=h;
+}
+function answerVF(chosen){
+  const q=window._vf[vfIdx];
+  document.querySelectorAll('#game-content button:not([onclick])').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('vf-fb');
+  if(chosen===q.a){vfScore++;fb.textContent='✅ '+q.e;fb.className='feedback-box show ok';}
+  else{fb.textContent='❌ '+q.e;fb.className='feedback-box show ko';}
+  vfIdx++;setTimeout(renderVFQ,2200);
 }
 
-function renderVFQuestion() {
-  if (vfIdx >= window._vf.length) {
-    document.getElementById('game-content').innerHTML = `
-      <div class="result-box">
-        <div class="big-score">${vfScore}/${window._vf.length}</div>
-        <p>${vfScore >= 8 ? '🏆 Parfait !' : vfScore >= 6 ? '👍 Bien !' : '📚 Revois les notions !'}</p>
-        <button onclick="renderVraiFaux()">Rejouer</button>
-      </div>`;
-    return;
-  }
-  const q = window._vf[vfIdx];
-  let html = `<h3 style="color:#a78bfa;margin-bottom:16px">⚖️ Vrai ou Faux ? (${vfIdx+1}/${window._vf.length}) — Score : ${vfScore}</h3>`;
-  html += `<div style="background:#1a1a2e;padding:24px;border-radius:12px;margin-bottom:20px;font-size:1.05rem;line-height:1.6">${q.stmt}</div>`;
-  html += `<div style="display:flex;gap:16px;justify-content:center">`;
-  html += `<button onclick="answerVF(true)" style="background:#064e3b;border:2px solid #10b981;color:#6ee7b7;padding:16px 40px;border-radius:12px;cursor:pointer;font-size:1.1rem;transition:all 0.2s">✅ VRAI</button>`;
-  html += `<button onclick="answerVF(false)" style="background:#4c0519;border:2px solid #ef4444;color:#fca5a5;padding:16px 40px;border-radius:12px;cursor:pointer;font-size:1.1rem;transition:all 0.2s">❌ FAUX</button>`;
-  html += `</div><div id="vf-fb" class="feedback"></div>`;
-  document.getElementById('game-content').innerHTML = html;
+// CHRONO
+let chronoIdx=0, chronoScore=0, chronoQ=[], chronoTime=0, chronoAnswered=false;
+function renderChrono(){
+  chronoQ=[...allQ].sort(()=>Math.random()-.5).slice(0,10);
+  chronoIdx=0;chronoScore=0;renderChronoQ();
 }
-
-function answerVF(chosen) {
-  const q = window._vf[vfIdx];
-  const fb = document.getElementById('vf-fb');
-  document.querySelectorAll('#game-content button:not([onclick="renderVraiFaux()"])').forEach(b => b.disabled = true);
-  if (chosen === q.ans) {
-    vfScore++;
-    fb.textContent = '✅ ' + q.exp;
-    fb.className = 'feedback show ok';
-  } else {
-    fb.textContent = '❌ ' + q.exp;
-    fb.className = 'feedback show ko';
+function renderChronoQ(){
+  clearInterval(chronoT);
+  if(chronoIdx>=chronoQ.length){document.getElementById('game-content').innerHTML=`<div class="result-screen"><div class="result-score">${chronoScore}/10</div><div class="result-msg">${chronoScore>=8?'⚡ Impressionnant !':chronoScore>=5?'👍 Pas mal !':'📚 Entraîne-toi encore !'}</div><button class="btn-primary" style="margin-top:20px" onclick="renderChrono()">Rejouer</button></div>`;return;}
+  chronoAnswered=false; chronoTime=15;
+  const q=chronoQ[chronoIdx];
+  const opts=[...q.o].sort(()=>Math.random()-.5);
+  function draw(){
+    const col=chronoTime<=5?'#ef4444':chronoTime<=10?'#f59e0b':'#a78bfa';
+    let h=`<h3 style="color:#a78bfa;margin-bottom:12px">⏰ Chrono (${chronoIdx+1}/10) — ${chronoScore} pts</h3>`;
+    h+=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div class="progress-bar" style="flex:1;margin:0"><div class="progress-fill" style="width:${chronoIdx/10*100}%"></div></div><span id="ct" style="font-size:1.6rem;font-weight:800;color:${col};min-width:44px;text-align:right">${chronoTime}s</span></div>`;
+    h+=`<div style="background:#0f0f1c;border:1px solid #1e1e35;border-radius:12px;padding:18px;margin-bottom:14px;font-size:.98rem;line-height:1.5">${q.q}</div>`;
+    h+='<div class="options">';
+    opts.forEach(o=>h+=`<button class="opt-btn" onclick="answerChrono('${o.replace(/'/g,"\\'")}',${q.a},${q.o.indexOf(o)})">${o}</button>`);
+    h+='</div><div id="chrono-fb" class="feedback-box"></div>';
+    document.getElementById('game-content').innerHTML=h;
   }
-  vfIdx++;
-  setTimeout(renderVFQuestion, 2200);
-}
-
-// --- CHRONO ---
-let chronoTimer = null;
-let chronoTime = 0;
-let chronoIdx = 0;
-let chronoScore = 0;
-let chronoQuestions = [];
-let chronoAnswered = false;
-
-function renderChrono() {
-  chronoQuestions = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 10);
-  chronoIdx = 0;
-  chronoScore = 0;
-  renderChronoQuestion();
-}
-
-function renderChronoQuestion() {
-  if (chronoIdx >= chronoQuestions.length) {
-    clearInterval(chronoTimer);
-    document.getElementById('game-content').innerHTML = `
-      <div class="result-box">
-        <div class="big-score">${chronoScore}/10</div>
-        <p>${chronoScore >= 8 ? '⚡ Incroyable sous pression !' : chronoScore >= 5 ? '👍 Pas mal !' : '📚 Entraîne-toi encore !'}</p>
-        <button onclick="renderChrono()">Rejouer</button>
-      </div>`;
-    return;
-  }
-  chronoAnswered = false;
-  chronoTime = 15;
-  clearInterval(chronoTimer);
-
-  const q = chronoQuestions[chronoIdx];
-  const opts = [...q.opts].sort(() => Math.random() - 0.5);
-
-  function updateDisplay() {
-    const timerEl = document.getElementById('chrono-timer');
-    if (timerEl) {
-      timerEl.textContent = chronoTime + 's';
-      timerEl.style.color = chronoTime <= 5 ? '#ef4444' : '#6c63ff';
-    }
-  }
-
-  let html = `<h3 style="color:#a78bfa;margin-bottom:12px">⏰ Chrono Quiz (${chronoIdx+1}/10) — Score : ${chronoScore}</h3>`;
-  html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">`;
-  html += `<div class="progress-bar" style="flex:1;margin-right:16px"><div class="progress-fill" style="width:${(chronoIdx/10*100)}%"></div></div>`;
-  html += `<span id="chrono-timer" style="font-size:1.5rem;font-weight:bold;color:#6c63ff;min-width:40px">${chronoTime}s</span>`;
-  html += `</div>`;
-  html += `<div style="background:#1a1a2e;padding:18px;border-radius:12px;margin-bottom:16px;font-size:1rem;line-height:1.5">${q.q}</div>`;
-  html += '<div class="options">';
-  opts.forEach(opt => {
-    html += `<button class="option-btn" onclick="answerchrono(${q.opts.indexOf(opt)}, ${q.ans})">${opt}</button>`;
-  });
-  html += '</div><div id="chrono-fb" class="feedback"></div>';
-  document.getElementById('game-content').innerHTML = html;
-
-  chronoTimer = setInterval(() => {
+  draw();
+  chronoT=setInterval(()=>{
     chronoTime--;
-    updateDisplay();
-    if (chronoTime <= 0) {
-      clearInterval(chronoTimer);
-      if (!chronoAnswered) {
-        chronoAnswered = true;
-        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-        const fb = document.getElementById('chrono-fb');
-        fb.textContent = '⏰ Temps écoulé ! ' + q.exp;
-        fb.className = 'feedback show ko';
-        chronoIdx++;
-        setTimeout(renderChronoQuestion, 2000);
-      }
-    }
-  }, 1000);
+    const ct=document.getElementById('ct');
+    if(ct){ct.textContent=chronoTime+'s';ct.style.color=chronoTime<=5?'#ef4444':chronoTime<=10?'#f59e0b':'#a78bfa';}
+    if(chronoTime<=0){clearInterval(chronoT);if(!chronoAnswered){chronoAnswered=true;document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);const fb=document.getElementById('chrono-fb');if(fb){fb.textContent='⏰ Temps écoulé ! '+q.e;fb.className='feedback-box show ko';}chronoIdx++;setTimeout(renderChronoQ,2000);}}
+  },1000);
+}
+function answerChrono(chosen,correctIdx,chosenIdx){
+  if(chronoAnswered)return;chronoAnswered=true;clearInterval(chronoT);
+  document.querySelectorAll('.opt-btn').forEach((b,i)=>{b.disabled=true;if(i===correctIdx)b.classList.add('correct');});
+  const fb=document.getElementById('chrono-fb');
+  const q=chronoQ[chronoIdx];
+  if(chosenIdx===correctIdx){chronoScore++;if(fb){fb.textContent='✅ '+q.e;fb.className='feedback-box show ok';}}
+  else{if(fb){fb.textContent='❌ '+q.e;fb.className='feedback-box show ko';}}
+  chronoIdx++;setTimeout(renderChronoQ,2000);
 }
 
-function answerchrono(chosen, correct) {
-  if (chronoAnswered) return;
-  chronoAnswered = true;
-  clearInterval(chronoTimer);
-  document.querySelectorAll('.option-btn').forEach((b, i) => {
-    b.disabled = true;
-    if (i === correct) b.classList.add('correct');
-  });
-  const q = chronoQuestions[chronoIdx];
-  const fb = document.getElementById('chrono-fb');
-  if (chosen === correct) {
-    chronoScore++;
-    fb.textContent = '✅ Correct ! ' + (chronoTime > 10 ? '⚡ Rapide !' : '');
-    fb.className = 'feedback show ok';
-  } else {
-    document.querySelectorAll('.option-btn')[chosen] && document.querySelectorAll('.option-btn')[chosen].classList.add('wrong');
-    fb.textContent = '❌ ' + q.exp;
-    fb.className = 'feedback show ko';
-  }
-  chronoIdx++;
-  setTimeout(renderChronoQuestion, 2000);
-}
+startQCM('all');
 </script>
 </body>
 </html>
