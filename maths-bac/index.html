@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths BAC Terminale Specialite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#080d14;color:#e0e8f0;display:flex;min-height:100vh;overflow-x:hidden}
+#sidebar{width:240px;min-height:100vh;background:#0c1220;border-right:1px solid #1a2535;display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:200}
+.sl{padding:22px 20px 16px;border-bottom:1px solid #1a2535}
+.sl h1{font-size:1.05rem;font-weight:700;background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sl p{font-size:.72rem;color:#4a5568;margin-top:2px}
+.snav{flex:1;padding:12px 0;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;transition:all .2s;color:#6b7280;font-size:.86rem;border-left:3px solid transparent}
+.ni:hover{color:#c0d0e0;background:#ffffff06}
+.ni.active{color:#38bdf8;background:linear-gradient(90deg,#38bdf816,transparent);border-left-color:#38bdf8}
+.ni .ico{font-size:1rem;width:20px;text-align:center}
+.nb{margin-left:auto;background:#38bdf811;color:#38bdf8;font-size:.68rem;padding:1px 7px;border-radius:10px}
+.sf{padding:14px 20px;border-top:1px solid #1a2535;font-size:.72rem;color:#374151}
+#main{margin-left:240px;flex:1}
+.section{display:none;padding:28px 32px;max-width:1060px;animation:fi .3s ease}
+.section.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ph{margin-bottom:26px}
+.ph h2{font-size:1.7rem;font-weight:700;background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ph p{color:#4b5563;font-size:.88rem;margin-top:5px}
+.card{background:#0c1220;border:1px solid #1a2535;border-radius:14px;padding:22px;margin-bottom:14px;transition:all .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);opacity:0;transition:.2s}
+.card:hover{border-color:#38bdf833}
+.card:hover::before{opacity:1}
+.ch-hdr{display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none}
+.ch-ico{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#38bdf8,#818cf8);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:white;flex-shrink:0}
+.ch-t{font-size:1.05rem;font-weight:600;color:#e0e8f0}
+.ch-s{font-size:.78rem;color:#4b5563;margin-top:2px}
+.ch-a{margin-left:auto;color:#374151;transition:transform .3s;font-size:.85rem}
+.ch-body{display:none;margin-top:18px;padding-top:18px;border-top:1px solid #1a2535}
+.ch-body.open{display:block;animation:fi .2s}
+.sb{margin-bottom:16px}
+.sb h4{font-size:.78rem;font-weight:600;color:#38bdf8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.fm{background:#060b12;border:1px solid #1a2535;border-radius:10px;padding:14px}
+.fm-t{font-size:.76rem;color:#818cf8;font-weight:600;margin-bottom:8px}
+.fm-c{font-size:.88rem;color:#e0e8f0;line-height:1.8;font-family:'Courier New',monospace}
+.hl{color:#38bdf8;font-weight:600}
+.imp{color:#f472b6;font-weight:600}
+.thm{background:linear-gradient(135deg,#38bdf808,#818cf808);border:1px solid #38bdf822;border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.thm-t{font-size:.76rem;color:#38bdf8;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.thm-b{font-size:.85rem;color:#c0d0e0;line-height:1.7}
+.attn{background:#f472b611;border:1px solid #f472b633;border-radius:10px;padding:12px 14px;font-size:.83rem;color:#fda4af;line-height:1.6;margin-top:10px}
+.tip{background:#38bdf811;border:1px solid #38bdf833;border-radius:10px;padding:12px 14px;font-size:.83rem;color:#7dd3fc;line-height:1.6;margin-top:10px}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.sc{background:#0c1220;border:1px solid #1a2535;border-radius:14px;padding:18px;text-align:center}
+.sn{font-size:2rem;font-weight:700;background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sl2{font-size:.76rem;color:#4b5563;margin-top:4px}
+.qls{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.ql{background:#0c1220;border:1px solid #1a2535;border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s}
+.ql:hover{border-color:#38bdf844}
+.qi{font-size:1.7rem}
+.ql h4{font-size:.86rem;color:#e0e8f0;margin-bottom:2px}
+.ql p{font-size:.72rem;color:#4b5563}
+.qcm-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.sp{background:linear-gradient(135deg,#38bdf8,#818cf8);color:white;padding:5px 16px;border-radius:18px;font-weight:600;font-size:.88rem}
+.pb{height:4px;background:#1a2535;border-radius:2px;margin-bottom:18px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,#38bdf8,#818cf8);border-radius:2px;transition:width .4s}
+.qcard{background:#0c1220;border:1px solid #1a2535;border-radius:14px;padding:24px}
+.qt{font-size:1rem;line-height:1.6;margin-bottom:20px;color:#e0e8f0}
+.opts{display:flex;flex-direction:column;gap:9px}
+.obtn{background:#060b12;border:1px solid #1a2535;color:#c0d0e0;padding:12px 16px;border-radius:10px;cursor:pointer;text-align:left;font-size:.87rem;transition:all .2s;font-family:'Courier New',monospace}
+.obtn:hover:not(:disabled){border-color:#38bdf8;background:#38bdf811}
+.obtn.correct{background:#06402211;border-color:#10b981;color:#34d399}
+.obtn.wrong{background:#4c051911;border-color:#ef4444;color:#f87171}
+.fb{margin-top:14px;padding:13px;border-radius:10px;font-size:.83rem;line-height:1.6;display:none}
+.fb.show{display:block}
+.fb.ok{background:#06402211;border:1px solid #10b98133;color:#6ee7b7}
+.fb.ko{background:#4c051911;border:1px solid #ef444433;color:#fca5a5}
+.bp{background:linear-gradient(135deg,#38bdf8,#818cf8);border:none;color:white;padding:10px 26px;border-radius:22px;cursor:pointer;font-size:.88rem;font-family:inherit;transition:opacity .2s}
+.bp:hover{opacity:.85}
+.bp:disabled{background:#1a2535;cursor:default;opacity:1}
+.bs{background:#0c1220;border:1px solid #1a2535;color:#6b7280;padding:8px 18px;border-radius:18px;cursor:pointer;font-size:.81rem;font-family:inherit;transition:all .2s}
+.bs:hover{border-color:#38bdf8;color:#38bdf8}
+.msel{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.mb{background:#0c1220;border:1px solid #1a2535;color:#6b7280;padding:7px 16px;border-radius:16px;cursor:pointer;font-size:.79rem;font-family:inherit;transition:all .2s}
+.mb.active,.mb:hover{background:#38bdf811;border-color:#38bdf8;color:#38bdf8}
+.dsel{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+.db{background:#0c1220;border:1px solid #1a2535;color:#6b7280;padding:8px 18px;border-radius:18px;cursor:pointer;font-size:.81rem;transition:all .2s;font-family:inherit}
+.db.active{background:linear-gradient(135deg,#38bdf8,#818cf8);border-color:transparent;color:white}
+.fcw{perspective:1200px;max-width:520px;margin:0 auto;height:220px;cursor:pointer}
+.flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s}
+.flashcard.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:16px;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;line-height:1.6}
+.fc-front{background:linear-gradient(135deg,#0c1220,#111c2e);border:2px solid #38bdf844;font-size:1rem;font-weight:600;color:#7dd3fc}
+.fc-back{background:linear-gradient(135deg,#0c1a20,#111830);border:2px solid #818cf844;transform:rotateY(180deg);font-size:.84rem;color:#c0d8f0;font-family:'Courier New',monospace}
+.fc-hint{text-align:center;color:#374151;font-size:.75rem;margin-top:9px}
+.fc-ctr{text-align:center;color:#38bdf8;font-size:.82rem;margin-top:7px;font-weight:500}
+.fc-ctrl{display:flex;justify-content:center;gap:11px;margin-top:14px}
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:24px}
+.gt{background:#0c1220;border:1px solid #1a2535;border-radius:14px;padding:22px;cursor:pointer;text-align:center;transition:all .25s}
+.gt:hover{border-color:#38bdf8;transform:translateY(-2px);box-shadow:0 8px 28px #38bdf810}
+.gt .gi{font-size:2.4rem;margin-bottom:10px}
+.gt h4{color:#e0e8f0;font-size:.9rem;margin-bottom:5px}
+.gt p{color:#4b5563;font-size:.75rem;line-height:1.4}
+.back-btn{background:#0c1220;border:1px solid #1a2535;color:#6b7280;padding:7px 16px;border-radius:18px;cursor:pointer;font-size:.79rem;margin-bottom:18px;font-family:inherit;transition:all .2s}
+.back-btn:hover{color:#38bdf8;border-color:#38bdf8}
+.rsc{text-align:center;padding:44px 20px}
+.rsn{font-size:4.5rem;font-weight:800;background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.rsm{font-size:1.1rem;margin:14px 0 6px;color:#e0e8f0}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.acol{display:flex;flex-direction:column;gap:8px}
+.ai{background:#0c1220;border:2px solid #1a2535;border-radius:10px;padding:10px 13px;cursor:pointer;font-size:.8rem;transition:all .2s;color:#c0d0e0;font-family:'Courier New',monospace;line-height:1.4}
+.ai:hover{border-color:#38bdf855}
+.ai.sel{border-color:#38bdf8;background:#38bdf811}
+.ai.mat{border-color:#10b981;background:#06402211;color:#34d399;cursor:default}
+.ai.err{animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(max-width:680px){#sidebar{width:54px}#sidebar span:not(.ico),.sl p,.sl h1,.nb,.sf{display:none}#main{margin-left:54px}.section{padding:16px 12px}.fg,.agrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sl"><h1>📐 Maths BAC</h1><p>Terminale Specialite</p></div>
+  <nav class="snav">
+    <div class="ni active" onclick="show('home',this)"><span class="ico">🏠</span><span>Accueil</span></div>
+    <div class="ni" onclick="show('analyse',this)"><span class="ico">📈</span><span>Analyse</span><span class="nb">6</span></div>
+    <div class="ni" onclick="show('suites',this)"><span class="ico">🔢</span><span>Suites</span></div>
+    <div class="ni" onclick="show('complexes',this)"><span class="ico">🌀</span><span>Complexes</span></div>
+    <div class="ni" onclick="show('proba',this)"><span class="ico">🎲</span><span>Probabilites</span></div>
+    <div class="ni" onclick="show('geo',this)"><span class="ico">📦</span><span>Geometrie 3D</span></div>
+    <div class="ni" onclick="show('flashcards',this)"><span class="ico">🃏</span><span>Flashcards</span></div>
+    <div class="ni" onclick="show('qcm',this)"><span class="ico">✏️</span><span>QCM</span></div>
+    <div class="ni" onclick="show('jeux',this)"><span class="ico">🎮</span><span>Jeux</span></div>
+  </nav>
+  <div class="sf">Terminale · 2025-2026</div>
+</div>
+<div id="main">
+<div id="home" class="section active">
+  <div class="ph"><h2>Maths Terminale Specialite</h2><p>Toutes les fiches, formules et exercices interactifs pour le BAC</p></div>
+  <div class="home-grid">
+    <div class="sc"><div class="sn">6</div><div class="sl2">Chapitres</div></div>
+    <div class="sc"><div class="sn">50+</div><div class="sl2">Formules</div></div>
+    <div class="sc"><div class="sn">30+</div><div class="sl2">Questions QCM</div></div>
+    <div class="sc"><div class="sn">4</div><div class="sl2">Jeux</div></div>
+  </div>
+  <div class="ph" style="margin-top:4px"><h2 style="font-size:1.15rem">Acces rapide</h2></div>
+  <div class="qls">
+    <div class="ql" onclick="show('analyse',document.querySelectorAll('.ni')[1])"><div class="qi">📈</div><div><h4>Analyse</h4><p>Derivees, integrales, limites, ln, exp, eq. diff.</p></div></div>
+    <div class="ql" onclick="show('suites',document.querySelectorAll('.ni')[2])"><div class="qi">🔢</div><div><h4>Suites</h4><p>Arithmetiques, geometriques, recurrence</p></div></div>
+    <div class="ql" onclick="show('complexes',document.querySelectorAll('.ni')[3])"><div class="qi">🌀</div><div><h4>Complexes</h4><p>Module, argument, forme exponentielle</p></div></div>
+    <div class="ql" onclick="show('proba',document.querySelectorAll('.ni')[4])"><div class="qi">🎲</div><div><h4>Probabilites</h4><p>Loi normale, intervalles de confiance, tests</p></div></div>
+    <div class="ql" onclick="show('geo',document.querySelectorAll('.ni')[5])"><div class="qi">📦</div><div><h4>Geometrie 3D</h4><p>Vecteurs, droites, plans, produit scalaire</p></div></div>
+    <div class="ql" onclick="show('qcm',document.querySelectorAll('.ni')[7])"><div class="qi">✏️</div><div><h4>QCM</h4><p>30+ questions sur tout le programme</p></div></div>
+  </div>
+</div>
+
+<div id="analyse" class="section">
+  <div class="ph"><h2>📈 Analyse</h2><p>Derivees, integrales, limites, logarithme, exponentielle, equations differentielles</p></div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a1')"><div class="ch-ico">∂</div><div><div class="ch-t">Derivation</div><div class="ch-s">Formules, regles, applications</div></div><div class="ch-a" id="ar-a1">▼</div></div>
+    <div class="ch-body" id="a1">
+      <div class="sb"><h4>Formules de base</h4>
+        <div class="fg">
+          <div class="fm"><div class="fm-t">Fonctions usuelles</div><div class="fm-c">(x^n)' = <span class="hl">n·x^(n-1)</span><br>(sqrt(x))' = <span class="hl">1/(2sqrt(x))</span><br>(e^x)' = <span class="hl">e^x</span><br>(ln x)' = <span class="hl">1/x</span><br>(sin x)' = <span class="hl">cos x</span><br>(cos x)' = <span class="hl">-sin x</span></div></div>
+          <div class="fm"><div class="fm-t">Regles de calcul</div><div class="fm-c">(u+v)' = <span class="hl">u' + v'</span><br>(ku)' = <span class="hl">k·u'</span><br>(uv)' = <span class="hl">u'v + uv'</span><br>(u/v)' = <span class="hl">(u'v - uv')/v²</span><br>(u∘v)' = <span class="hl">v'·u'(v)</span></div></div>
+          <div class="fm"><div class="fm-t">Derivees composees</div><div class="fm-c">(e^u)' = <span class="hl">u'·e^u</span><br>(ln u)' = <span class="hl">u'/u</span><br>(u^n)' = <span class="hl">n·u'·u^(n-1)</span><br>(sqrt(u))' = <span class="hl">u'/(2sqrt(u))</span></div></div>
+        </div>
+      </div>
+      <div class="sb"><h4>Theoremes fondamentaux</h4>
+        <div class="thm"><div class="thm-t">TVI — Theoreme des valeurs intermediaires</div><div class="thm-b">Si f est continue sur [a,b] et k est compris entre f(a) et f(b), alors il existe c dans [a,b] tel que f(c) = k. Utile pour montrer qu'une equation a une solution.</div></div>
+        <div class="thm"><div class="thm-t">Sens de variation</div><div class="thm-b">f'(x) > 0 sur I → f croissante · f'(x) &lt; 0 → f decroissante · f'(a) = 0 avec changement de signe → extremum en a</div></div>
+      </div>
+      <div class="attn">• Ne pas confondre (uv)' = u'v+uv' et (u∘v)' = v'×u'(v(x))<br>• (ln u)' = u'/u et NON 1/u si u != x<br>• (e^(2x))' = 2e^(2x), pas e^(2x)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a2')"><div class="ch-ico">∫</div><div><div class="ch-t">Integration</div><div class="ch-s">Primitives, calcul d'aires, proprietes</div></div><div class="ch-a" id="ar-a2">▼</div></div>
+    <div class="ch-body" id="a2">
+      <div class="sb"><h4>Primitives usuelles</h4>
+        <div class="fg">
+          <div class="fm"><div class="fm-t">Fonctions de base</div><div class="fm-c">∫x^n dx = <span class="hl">x^(n+1)/(n+1)</span> (n≠-1)<br>∫(1/x) dx = <span class="hl">ln|x|</span><br>∫e^x dx = <span class="hl">e^x</span><br>∫cos x dx = <span class="hl">sin x</span><br>∫sin x dx = <span class="hl">-cos x</span><br>∫(1/sqrt(x)) dx = <span class="hl">2sqrt(x)</span></div></div>
+          <div class="fm"><div class="fm-t">Formes composees</div><div class="fm-c">∫u'e^u dx = <span class="hl">e^u</span><br>∫u'/u dx = <span class="hl">ln|u|</span><br>∫u'·u^n dx = <span class="hl">u^(n+1)/(n+1)</span><br>∫u'/sqrt(u) dx = <span class="hl">2sqrt(u)</span></div></div>
+          <div class="fm"><div class="fm-t">Proprietes</div><div class="fm-c">∫[a,b] f = <span class="hl">-∫[b,a] f</span><br>∫[a,a] f = <span class="hl">0</span><br>∫[a,c] f = <span class="hl">∫[a,b]+∫[b,c]</span><br>Aire = <span class="hl">|∫[a,b] f(x)dx|</span><br>Val. moy. = <span class="hl">(1/(b-a))∫[a,b]f</span></div></div>
+        </div>
+      </div>
+      <div class="thm"><div class="thm-t">Aire entre 2 courbes</div><div class="thm-b">Si f(x) ≥ g(x) sur [a,b] : Aire = ∫[a,b] [f(x)-g(x)] dx. Si signe variable : decouper aux points d'intersection et sommer les valeurs absolues.</div></div>
+      <div class="attn">• Aire toujours positive → valeur absolue ou decomposition<br>• Bien reperer quelle courbe est au-dessus de l'autre</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a3')"><div class="ch-ico">lim</div><div><div class="ch-t">Limites</div><div class="ch-s">Croissances comparees, formes indeterminees</div></div><div class="ch-a" id="ar-a3">▼</div></div>
+    <div class="ch-body" id="a3">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">e^x domine les polynomes</div><div class="fm-c">lim(x→+∞) e^x/x^n = <span class="hl">+∞</span><br>lim(x→+∞) x^n/e^x = <span class="hl">0</span><br>lim(x→-∞) x^n·e^x = <span class="hl">0</span></div></div>
+        <div class="fm"><div class="fm-t">ln domine par x^n</div><div class="fm-c">lim(x→+∞) ln(x)/x^n = <span class="hl">0</span><br>lim(x→0+) x·ln(x) = <span class="hl">0</span><br>lim(x→0+) x^n·ln(x) = <span class="hl">0</span></div></div>
+        <div class="fm"><div class="fm-t">Limites remarquables</div><div class="fm-c">lim(x→0) sin(x)/x = <span class="hl">1</span><br>lim(x→0) (e^x-1)/x = <span class="hl">1</span><br>lim(x→0) ln(1+x)/x = <span class="hl">1</span></div></div>
+      </div>
+      <div class="tip">💡 Formes indeterminees : ∞/∞ → factoriser par terme dominant · 0×∞ → transformer · ∞-∞ → factoriser ou conjugue</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a4')"><div class="ch-ico">ln</div><div><div class="ch-t">Fonction ln</div><div class="ch-s">Proprietes, derivee, etude</div></div><div class="ch-a" id="ar-a4">▼</div></div>
+    <div class="ch-body" id="a4">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Proprietes algebriques</div><div class="fm-c">ln(ab) = <span class="hl">ln a + ln b</span><br>ln(a/b) = <span class="hl">ln a - ln b</span><br>ln(a^n) = <span class="hl">n·ln a</span><br>ln(1) = <span class="hl">0</span> · ln(e) = <span class="hl">1</span><br>ln(e^x) = <span class="hl">x</span> · e^(ln x) = <span class="hl">x</span></div></div>
+        <div class="fm"><div class="fm-t">Variation et limites</div><div class="fm-c">Domaine : <span class="hl">]0 ; +∞[</span><br>Croissante sur ]0;+∞[<br>lim(x→0+) ln x = <span class="hl">-∞</span><br>lim(x→+∞) ln x = <span class="hl">+∞</span><br>(ln x)' = <span class="hl">1/x</span><br>(ln u)' = <span class="hl">u'/u</span></div></div>
+      </div>
+      <div class="attn">• ln non defini pour x ≤ 0 → toujours preciser le domaine<br>• ln(a+b) ≠ ln a + ln b (erreur tres frequente !)<br>• ln(x²) = 2ln|x| et non 2ln(x)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a5')"><div class="ch-ico">e^x</div><div><div class="ch-t">Fonction Exponentielle</div><div class="ch-s">Proprietes, derivee, equations</div></div><div class="ch-a" id="ar-a5">▼</div></div>
+    <div class="ch-body" id="a5">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Proprietes</div><div class="fm-c">e^(a+b) = <span class="hl">e^a × e^b</span><br>e^(a-b) = <span class="hl">e^a / e^b</span><br>(e^a)^n = <span class="hl">e^(na)</span><br>1/e^x = <span class="hl">e^(-x)</span><br>e^x > 0 pour tout x ∈ R</div></div>
+        <div class="fm"><div class="fm-t">Derivee et variation</div><div class="fm-c">(e^x)' = <span class="hl">e^x</span><br>(e^(ax))' = <span class="hl">a·e^(ax)</span><br>(e^u)' = <span class="hl">u'·e^u</span><br>Domaine : R · Croissante<br>lim(x→-∞) e^x = <span class="hl">0</span></div></div>
+      </div>
+      <div class="attn">• e^x > 0 toujours → utile pour tableaux de signe<br>• e^x = k (k>0) → x = ln(k)<br>• e^(x+2) = e²×e^x (factorisable)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('a6')"><div class="ch-ico">y'</div><div><div class="ch-t">Equations Differentielles</div><div class="ch-s">y'=ay et y'=ay+b</div></div><div class="ch-a" id="ar-a6">▼</div></div>
+    <div class="ch-body" id="a6">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Equation y' = ay</div><div class="fm-c">Solutions : <span class="hl">y = C·e^(ax)</span> (C∈R)<br>Avec y(0)=y₀ :<br>→ <span class="imp">y = y₀·e^(ax)</span><br>a>0 : croissante<br>a&lt;0 : decroissante → 0</div></div>
+        <div class="fm"><div class="fm-t">Equation y' = ay + b</div><div class="fm-c">Sol. part. : <span class="hl">y* = -b/a</span><br>Sol. generale :<br><span class="imp">y = C·e^(ax) - b/a</span><br>C = y(0) + b/a</div></div>
+      </div>
+      <div class="thm"><div class="thm-t">Methode</div><div class="thm-b">1. Trouver la solution generale avec C · 2. Condition initiale → trouver C · 3. Ecrire la solution particuliere · 4. Verifier en derivant</div></div>
+      <div class="tip">💡 Applications : croissance radioactive, refroidissement (Newton), interets composes continus.</div>
+    </div>
+  </div>
+</div>
+
+<div id="suites" class="section">
+  <div class="ph"><h2>🔢 Suites Numeriques</h2><p>Arithmetiques, geometriques, recurrence, convergence</p></div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('s1')"><div class="ch-ico">+d</div><div><div class="ch-t">Suite Arithmetique</div><div class="ch-s">u_(n+1) = u_n + r</div></div><div class="ch-a" id="ar-s1">▼</div></div>
+    <div class="ch-body" id="s1">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Terme general</div><div class="fm-c">u_n = <span class="hl">u_0 + n·r</span><br>u_n = <span class="hl">u_1 + (n-1)·r</span><br>u_n = <span class="hl">u_p + (n-p)·r</span></div></div>
+        <div class="fm"><div class="fm-t">Somme des termes</div><div class="fm-c">S = u_0+u_1+...+u_n<br>S = <span class="hl">(n+1)×(u_0+u_n)/2</span><br>= nb_termes × (1er+der)/2<br><br>1+2+...+n = <span class="hl">n(n+1)/2</span></div></div>
+        <div class="fm"><div class="fm-t">Proprietes</div><div class="fm-c">r = u_(n+1) - u_n = cst<br>r > 0 → croissante<br>r &lt; 0 → decroissante<br>r = 0 → constante</div></div>
+      </div>
+      <div class="attn">• De u_0 a u_n → n+1 termes · De u_1 a u_n → n termes (piege classique !)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('s2')"><div class="ch-ico">×q</div><div><div class="ch-t">Suite Geometrique</div><div class="ch-s">u_(n+1) = q·u_n</div></div><div class="ch-a" id="ar-s2">▼</div></div>
+    <div class="ch-body" id="s2">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Terme general</div><div class="fm-c">u_n = <span class="hl">u_0 × q^n</span><br>u_n = <span class="hl">u_1 × q^(n-1)</span><br>u_n = <span class="hl">u_p × q^(n-p)</span></div></div>
+        <div class="fm"><div class="fm-t">Somme (q≠1)</div><div class="fm-c">S = u_0+...+u_n<br>S = <span class="hl">u_0×(1-q^(n+1))/(1-q)</span><br><br>1+q+...+q^n =<br><span class="hl">(1-q^(n+1))/(1-q)</span></div></div>
+        <div class="fm"><div class="fm-t">Convergence</div><div class="fm-c">|q| &lt; 1 → u_n → <span class="hl">0</span><br>q = 1 → u_n = u_0 (cst)<br>|q| > 1 → u_n → <span class="hl">±∞</span><br>q = -1 → <span class="hl">diverge</span></div></div>
+      </div>
+      <div class="tip">💡 Interets composes : C_n = C_0 × (1+t)^n avec t le taux annuel.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('s3')"><div class="ch-ico">→L</div><div><div class="ch-t">Convergence & Recurrence</div><div class="ch-s">Limites, encadrement, demonstration</div></div><div class="ch-a" id="ar-s3">▼</div></div>
+    <div class="ch-body" id="s3">
+      <div class="thm"><div class="thm-t">Suites monotones bornees</div><div class="thm-b">Toute suite monotone et bornee est convergente.<br>Croissante et majoree → converge. Decroissante et minoree → converge.</div></div>
+      <div class="thm"><div class="thm-t">Theoreme des gendarmes</div><div class="thm-b">Si u_n ≤ v_n ≤ w_n et lim u_n = lim w_n = L, alors lim v_n = L.</div></div>
+      <div class="thm"><div class="thm-t">Raisonnement par recurrence</div><div class="thm-b">1. Initialisation : verifier P(0) ou P(1)<br>2. Heredite : supposer P(n) vraie (H.R.) et montrer P(n+1)<br>3. Conclusion : P(n) vraie pour tout n par le principe de recurrence</div></div>
+      <div class="attn">• Pour la limite d'une suite recurrente u_(n+1)=f(u_n) : si elle converge vers L, alors L=f(L). Resoudre l'equation !</div>
+    </div>
+  </div>
+</div>
+
+<div id="complexes" class="section">
+  <div class="ph"><h2>🌀 Nombres Complexes</h2><p>Formes algebrique, trigonometrique et exponentielle, geometrie</p></div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('c1')"><div class="ch-ico">a+ib</div><div><div class="ch-t">Formes des Complexes</div><div class="ch-s">Algebrique, trigo, exponentielle</div></div><div class="ch-a" id="ar-c1">▼</div></div>
+    <div class="ch-body" id="c1">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Forme algebrique</div><div class="fm-c">z = <span class="hl">a + ib</span><br>i² = <span class="imp">-1</span><br>Re(z) = a · Im(z) = b<br>Conjugue : z̄ = <span class="hl">a - ib</span><br>z·z̄ = <span class="hl">a²+b² = |z|²</span></div></div>
+        <div class="fm"><div class="fm-t">Module et argument</div><div class="fm-c">|z| = <span class="hl">sqrt(a²+b²)</span><br>arg(z) = θ (mod 2π)<br>|z₁z₂| = <span class="hl">|z₁|·|z₂|</span><br>arg(z₁z₂) = <span class="hl">arg z₁+arg z₂</span><br>|z₁/z₂| = <span class="hl">|z₁|/|z₂|</span></div></div>
+        <div class="fm"><div class="fm-t">Forme exponentielle (Euler)</div><div class="fm-c">z = <span class="hl">r·e^(iθ)</span><br>= r(cos θ + i sin θ)<br><br>Formule d'Euler :<br><span class="imp">e^(iθ) = cos θ + i sin θ</span><br>e^(iπ) + 1 = 0</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('c2')"><div class="ch-ico">z^n</div><div><div class="ch-t">Formules et Geometrie</div><div class="ch-s">Moivre, Euler, plan complexe</div></div><div class="ch-a" id="ar-c2">▼</div></div>
+    <div class="ch-body" id="c2">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Formule de Moivre</div><div class="fm-c">(cos θ+i sin θ)^n =<br><span class="hl">cos(nθ)+i sin(nθ)</span><br><br>(r·e^(iθ))^n = <span class="hl">r^n·e^(inθ)</span></div></div>
+        <div class="fm"><div class="fm-t">Formules d'Euler</div><div class="fm-c">cos θ = <span class="hl">(e^(iθ)+e^(-iθ))/2</span><br>sin θ = <span class="hl">(e^(iθ)-e^(-iθ))/(2i)</span></div></div>
+        <div class="fm"><div class="fm-t">Geometrie dans le plan</div><div class="fm-c">|z_B - z_A| = <span class="hl">AB</span><br>arg(z_B-z_A) = angle(AB)<br>Milieu : <span class="hl">(z_A+z_B)/2</span><br>Delta&lt;0 → z = (-b±i√|Δ|)/(2a)</div></div>
+      </div>
+      <div class="attn">• arg(z) : trouver θ avec cos θ=a/r et sin θ=b/r → choisir θ dans ]-π;π]<br>• z/z̄ = e^(2iθ) et |z|² = z·z̄</div>
+    </div>
+  </div>
+</div>
+
+<div id="proba" class="section">
+  <div class="ph"><h2>🎲 Probabilites et Statistiques</h2><p>Variables aleatoires, loi normale, intervalles de confiance, tests d'hypotheses</p></div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('p1')"><div class="ch-ico">E(X)</div><div><div class="ch-t">Variables Aleatoires</div><div class="ch-s">Esperance, variance, loi binomiale</div></div><div class="ch-a" id="ar-p1">▼</div></div>
+    <div class="ch-body" id="p1">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Esperance</div><div class="fm-c">E(X) = <span class="hl">Σ xᵢ·P(X=xᵢ)</span><br>E(aX+b) = <span class="hl">aE(X)+b</span><br>E(X+Y) = <span class="hl">E(X)+E(Y)</span></div></div>
+        <div class="fm"><div class="fm-t">Variance et ecart-type</div><div class="fm-c">V(X) = <span class="hl">E(X²)-[E(X)]²</span><br>V(aX+b) = <span class="hl">a²V(X)</span><br>σ(X) = <span class="hl">sqrt(V(X))</span></div></div>
+        <div class="fm"><div class="fm-t">Loi binomiale B(n,p)</div><div class="fm-c">P(X=k) = <span class="hl">C(n,k)p^k(1-p)^(n-k)</span><br>E(X) = <span class="hl">np</span><br>V(X) = <span class="hl">np(1-p)</span><br>σ = <span class="hl">sqrt(np(1-p))</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('p2')"><div class="ch-ico">N(μ,σ)</div><div><div class="ch-t">Loi Normale</div><div class="ch-s">Loi de Gauss, standardisation, approximation</div></div><div class="ch-a" id="ar-p2">▼</div></div>
+    <div class="ch-body" id="p2">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">N(0,1) — Valeurs a connaitre</div><div class="fm-c">P(-1,96 ≤ Z ≤ 1,96) ≈ <span class="hl">0,95</span><br>P(-2,58 ≤ Z ≤ 2,58) ≈ <span class="hl">0,99</span><br>P(-1 ≤ Z ≤ 1) ≈ <span class="hl">0,68</span><br>P(-1,645 ≤ Z ≤ 1,645) ≈ <span class="hl">0,90</span></div></div>
+        <div class="fm"><div class="fm-t">Standardisation</div><div class="fm-c">Si X ~ N(μ,σ²) :<br>Z = <span class="hl">(X-μ)/σ</span> ~ N(0,1)<br><br>Symetrie :<br>P(Z ≤ -a) = <span class="hl">1-P(Z ≤ a)</span></div></div>
+        <div class="fm"><div class="fm-t">Approximation binomiale</div><div class="fm-c">Si np ≥ 5 et n(1-p) ≥ 5 :<br>B(n,p) ≈ <span class="hl">N(np, np(1-p))</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('p3')"><div class="ch-ico">IC</div><div><div class="ch-t">Intervalles de Confiance et Tests</div><div class="ch-s">IC 95%, intervalle de fluctuation, test d'hypothese</div></div><div class="ch-a" id="ar-p3">▼</div></div>
+    <div class="ch-body" id="p3">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Intervalle de confiance (95%)</div><div class="fm-c">Frequence f, taille n :<br>IC = <span class="hl">[f-1/sqrt(n) ; f+1/sqrt(n)]</span><br><br>Formule exacte :<br>[f-1,96·sqrt(f(1-f)/n) ;<br> f+1,96·sqrt(f(1-f)/n)]</div></div>
+        <div class="fm"><div class="fm-t">Intervalle de fluctuation (95%)</div><div class="fm-c">p connu, taille n :<br>IF = <span class="hl">[p-1/sqrt(n) ; p+1/sqrt(n)]</span><br><br>f ∈ IF → ne pas rejeter H₀<br>f ∉ IF → rejeter H₀</div></div>
+      </div>
+      <div class="thm"><div class="thm-t">Demarche du test d'hypothese</div><div class="thm-b">1. Poser H₀ (ex: p=0,5) et H₁ (ex: p≠0,5) · 2. Fixer le seuil α (souvent 5%) · 3. Calculer l'intervalle de fluctuation · 4. Observer la frequence f · 5. Conclure : f ∉ IF → rejeter H₀ au seuil α</div></div>
+      <div class="attn">• "Ne pas rejeter H₀" ≠ "H₀ est vraie" — nuance obligatoire dans la redaction !<br>• La formule 1/sqrt(n) est une approximation valable pour n ≥ 30</div>
+    </div>
+  </div>
+</div>
+
+<div id="geo" class="section">
+  <div class="ph"><h2>📦 Geometrie dans l'Espace</h2><p>Vecteurs, droites, plans, produit scalaire, distances</p></div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('g1')"><div class="ch-ico">v⃗</div><div><div class="ch-t">Vecteurs dans l'espace</div><div class="ch-s">Coordonnees, norme, produit scalaire</div></div><div class="ch-a" id="ar-g1">▼</div></div>
+    <div class="ch-body" id="g1">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Coordonnees et norme</div><div class="fm-c">AB = B-A = <span class="hl">(xB-xA, yB-yA, zB-zA)</span><br>|AB| = <span class="hl">sqrt((xB-xA)²+(yB-yA)²+(zB-zA)²)</span><br>Milieu M = <span class="hl">((xA+xB)/2,...)</span></div></div>
+        <div class="fm"><div class="fm-t">Produit scalaire</div><div class="fm-c">u·v = <span class="hl">xx'+yy'+zz'</span><br>u·v = <span class="hl">|u||v|cos θ</span><br>u⊥v ⟺ <span class="hl">u·v = 0</span><br>|u|² = <span class="hl">x²+y²+z²</span></div></div>
+        <div class="fm"><div class="fm-t">Colinearite</div><div class="fm-c">u et v colineaires ⟺<br>∃k : u = k·v<br>⟺ coordonnees proportionnelles</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch-hdr" onclick="tog('g2')"><div class="ch-ico">plan</div><div><div class="ch-t">Droites et Plans</div><div class="ch-s">Equations, positions relatives, distances</div></div><div class="ch-a" id="ar-g2">▼</div></div>
+    <div class="ch-body" id="g2">
+      <div class="fg">
+        <div class="fm"><div class="fm-t">Rep. parametrique d'une droite</div><div class="fm-c">Par A(a,b,c), dir. u(l,m,n) :<br>x = a+tl<br>y = b+tm  (t∈R)<br>z = c+tn</div></div>
+        <div class="fm"><div class="fm-t">Equation d'un plan</div><div class="fm-c"><span class="hl">ax+by+cz+d = 0</span><br>Vecteur normal : n=(a,b,c)<br>Par A(x₀,y₀,z₀) :<br>a(x-x₀)+b(y-y₀)+c(z-z₀)=0</div></div>
+        <div class="fm"><div class="fm-t">Distance point-plan</div><div class="fm-c">d(M, ax+by+cz+d=0) =<br><span class="hl">|ax₀+by₀+cz₀+d|/sqrt(a²+b²+c²)</span></div></div>
+      </div>
+      <div class="thm"><div class="thm-t">Positions relatives</div><div class="thm-b">Droite // plan : vecteur directeur ⊥ vecteur normal · Droite dans plan : dir⊥n ET un point du plan · Plans paralleles : vecteurs normaux colineaires · Plans secants : resoudre le systeme 2 equations</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="flashcards" class="section">
+  <div class="ph"><h2>🃏 Flashcards Maths</h2><p>Clique sur la carte pour voir la reponse</p></div>
+  <div class="dsel">
+    <button class="db active" onclick="setDeck('formules',this)">📐 Formules</button>
+    <button class="db" onclick="setDeck('theoremes',this)">📜 Theoremes</button>
+    <button class="db" onclick="setDeck('suites',this)">🔢 Suites</button>
+    <button class="db" onclick="setDeck('proba',this)">🎲 Probas</button>
+  </div>
+  <div class="fcw" onclick="flipCard()">
+    <div class="flashcard" id="flashcard"><div class="fc-face fc-front" id="fc-front"></div><div class="fc-face fc-back" id="fc-back"></div></div>
+  </div>
+  <div class="fc-hint">Clique pour retourner</div>
+  <div class="fc-ctr" id="fc-ctr">1 / 1</div>
+  <div class="fc-ctrl">
+    <button class="bs" onclick="prevCard()">◀ Prec.</button>
+    <button class="bs" onclick="shuffleCards()">🔀 Melanger</button>
+    <button class="bs" onclick="nextCard()">Suiv. ▶</button>
+  </div>
+</div>
+
+<div id="qcm" class="section">
+  <div class="ph"><h2>✏️ QCM Maths</h2><p>Teste tes connaissances sur tout le programme</p></div>
+  <div class="msel">
+    <button class="mb active" onclick="startQCM('all',this)">Tout</button>
+    <button class="mb" onclick="startQCM('analyse',this)">Analyse</button>
+    <button class="mb" onclick="startQCM('suites',this)">Suites</button>
+    <button class="mb" onclick="startQCM('proba',this)">Probas</button>
+    <button class="mb" onclick="startQCM('complexes',this)">Complexes</button>
+  </div>
+  <div id="qcm-play">
+    <div class="qcm-top"><span id="ql" style="color:#4b5563;font-size:.86rem">Q 1/10</span><span class="sp" id="qs">0 pts</span></div>
+    <div class="pb"><div class="pf" id="qp" style="width:0%"></div></div>
+    <div class="qcard">
+      <div class="qt" id="qq">Choisis un mode !</div>
+      <div class="opts" id="qo"></div>
+      <div class="fb" id="qf"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="bp" id="qn" onclick="nextQ()" disabled>Suivante →</button></div>
+  </div>
+  <div id="qcm-result" style="display:none">
+    <div class="rsc"><div class="rsn" id="rs">0/10</div><div class="rsm" id="rm"></div><button class="bp" style="margin-top:22px" onclick="restartQCM()">Recommencer</button></div>
+  </div>
+</div>
+
+<div id="jeux" class="section">
+  <div class="ph"><h2>🎮 Jeux de Revision</h2><p>Apprends les maths en jouant</p></div>
+  <div id="game-menu">
+    <div class="gg">
+      <div class="gt" onclick="launchGame('assoc')"><div class="gi">🔗</div><h4>Association</h4><p>Relie la formule a son nom</p></div>
+      <div class="gt" onclick="launchGame('vf')"><div class="gi">⚖️</div><h4>Vrai ou Faux</h4><p>Affirmations sur les formules et theoremes</p></div>
+      <div class="gt" onclick="launchGame('complete')"><div class="gi">✍️</div><h4>Complete la formule</h4><p>Trouve le terme manquant</p></div>
+      <div class="gt" onclick="launchGame('chrono')"><div class="gi">⏰</div><h4>Chrono Quiz</h4><p>15 secondes par question !</p></div>
+    </div>
+  </div>
+  <div id="game-area" style="display:none">
+    <button class="back-btn" onclick="backMenu()">← Retour</button>
+    <div id="game-content"></div>
+  </div>
+</div>
+</div>
+
+<script>
+function show(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+}
+function tog(id){
+  const b=document.getElementById(id);
+  const a=document.getElementById('ar-'+id);
+  b.classList.toggle('open');
+  if(a) a.style.transform=b.classList.contains('open')?'rotate(180deg)':'';
+}
+
+// FLASHCARDS
+const decks={
+  formules:[
+    {f:"(uv)' = ?",b:"u'v + uv'  (regle du produit)\nAttention : different de la composee !"},
+    {f:"(ln u)' = ?",b:"u'/u\n(pas 1/u si u != x)"},
+    {f:"(e^u)' = ?",b:"u' × e^u\nEx: (e^(2x))' = 2e^(2x)"},
+    {f:"∫u'/u dx = ?",b:"ln|u| + C\nFormed composee du logarithme"},
+    {f:"∫u'e^u dx = ?",b:"e^u + C\nFormed composee de l'exponentielle"},
+    {f:"Derivee de sqrt(u)",b:"u' / (2sqrt(u))\nEx: (sqrt(3x+1))' = 3/(2sqrt(3x+1))"},
+    {f:"Primitive de x^n (n≠-1)",b:"x^(n+1)/(n+1) + C\nAttention au +1 au denominateur !"},
+    {f:"Primitive de cos(x)",b:"sin(x) + C\nAttention: primitive de sin = -cos"},
+    {f:"lim(x→+∞) x^n/e^x",b:"0\ne^x domine TOUT polynome en +∞"},
+    {f:"lim(x→0+) x·ln(x)",b:"0\nPas -∞ ! ln tend vers -∞ mais x tend vers 0 plus vite"},
+    {f:"Equation differentielle y' = ay",b:"Solutions : y = C·e^(ax)\nAvec y(0)=y₀ : y = y₀·e^(ax)"},
+    {f:"Distance point M(x₀,y₀,z₀) au plan ax+by+cz+d=0",b:"|ax₀+by₀+cz₀+d| / sqrt(a²+b²+c²)"},
+    {f:"Formule d'Euler",b:"e^(iθ) = cos θ + i sin θ\nIdentite remarquable : e^(iπ)+1=0"},
+    {f:"Formule de Moivre",b:"(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)\n(re^(iθ))^n = r^n · e^(inθ)"},
+  ],
+  theoremes:[
+    {f:"Theoreme des valeurs intermediaires (TVI)",b:"f continue sur [a,b], k entre f(a) et f(b)\n→ il existe c∈[a,b] tel que f(c)=k"},
+    {f:"Theoreme des gendarmes",b:"u_n ≤ v_n ≤ w_n\net lim u_n = lim w_n = L\n→ lim v_n = L"},
+    {f:"Suite monotone bornee",b:"Toute suite monotone ET bornee est convergente.\nCroissante + majoree → converge"},
+    {f:"Structure d'une preuve par recurrence",b:"1. Initialisation (n=0 ou n=1)\n2. Heredite : HR puis montrer P(n+1)\n3. Conclusion"},
+    {f:"Sens de variation via la derivee",b:"f'(x) > 0 → croissante\nf'(x) < 0 → decroissante\nf'(a)=0 + changement signe → extremum"},
+    {f:"Critere de convergence d'une suite geometrique",b:"|q| < 1 → u_n → 0\n|q| > 1 → u_n → ±∞\nq = 1 → constante · q=-1 → diverge"},
+  ],
+  suites:[
+    {f:"Terme general d'une suite arithmetique",b:"u_n = u_0 + n·r\nou u_n = u_p + (n-p)·r"},
+    {f:"Somme u_0 + u_1 + ... + u_n (arithmetique)",b:"(n+1) × (u_0 + u_n) / 2\n= nb_termes × (premier + dernier) / 2"},
+    {f:"Terme general d'une suite geometrique",b:"u_n = u_0 × q^n\nou u_n = u_p × q^(n-p)"},
+    {f:"Somme u_0 + ... + u_n (geometrique, q≠1)",b:"u_0 × (1 - q^(n+1)) / (1 - q)"},
+    {f:"Combien de termes de u_0 a u_n ?",b:"n+1 termes\n(piege classique : penser a compter u_0)"},
+    {f:"1 + 2 + 3 + ... + n = ?",b:"n(n+1)/2\nEx: 1+2+...+100 = 100×101/2 = 5050"},
+    {f:"Suite recurrente : trouver la limite",b:"Si la suite converge vers L :\nalors L = f(L) (point fixe)\nResoudre cette equation puis verifier"},
+    {f:"Interets composes : formule",b:"C_n = C_0 × (1+t)^n\nt = taux annuel, n = nb annees\nSuite geometrique de raison (1+t)"},
+  ],
+  proba:[
+    {f:"Esperance de B(n,p)",b:"E(X) = np\nVariance V(X) = np(1-p)\nEcart-type σ = sqrt(np(1-p))"},
+    {f:"P(X=k) pour X ~ B(n,p)",b:"C(n,k) × p^k × (1-p)^(n-k)\nC(n,k) = n! / (k!(n-k)!)"},
+    {f:"P(-1,96 ≤ Z ≤ 1,96) = ?",b:"≈ 0,95 (95%)\nA connaitre absolument pour les IC et IF !"},
+    {f:"Intervalle de fluctuation au seuil 95%",b:"[p - 1/sqrt(n) ; p + 1/sqrt(n)]\n(approximation valable si n ≥ 30)"},
+    {f:"Intervalle de confiance au seuil 95%",b:"[f - 1/sqrt(n) ; f + 1/sqrt(n)]\nf = frequence observee, n = taille echantillon"},
+    {f:"Standardisation : X ~ N(μ,σ²)",b:"Z = (X - μ) / σ ~ N(0,1)\nPermet d'utiliser la table N(0,1)"},
+    {f:"Approximation normale de la binomiale",b:"Si np ≥ 5 et n(1-p) ≥ 5 :\nB(n,p) ≈ N(np, np(1-p))"},
+    {f:"P(Z ≤ -a) par symetrie",b:"P(Z ≤ -a) = 1 - P(Z ≤ a)\nLa loi N(0,1) est symetrique en 0"},
+  ]
+};
+
+let curDeck='formules', curCards=[], curIdx=0, isFlipped=false;
+function setDeck(name,btn){
+  curDeck=name; curCards=[...decks[name]]; curIdx=0; isFlipped=false;
+  document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  updateFC();
+}
+function updateFC(){
+  const c=curCards[curIdx];
+  document.getElementById('fc-front').textContent=c.f;
+  document.getElementById('fc-back').textContent=c.b;
+  document.getElementById('fc-ctr').textContent=(curIdx+1)+' / '+curCards.length;
+  document.getElementById('flashcard').classList.remove('flipped');
+  isFlipped=false;
+}
+function flipCard(){isFlipped=!isFlipped;document.getElementById('flashcard').classList.toggle('flipped',isFlipped);}
+function nextCard(){if(curIdx<curCards.length-1){curIdx++;updateFC();}}
+function prevCard(){if(curIdx>0){curIdx--;updateFC();}}
+function shuffleCards(){for(let i=curCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[curCards[i],curCards[j]]=[curCards[j],curCards[i]];}curIdx=0;updateFC();}
+setDeck('formules');
+
+// QCM
+const allQ=[
+  {q:"Quelle est la derivee de (uv) ?",o:["u'v'","u'v + uv'","(u'v - uv')/v²","u' + v'"],a:1,e:"Regle du produit : (uv)' = u'v + uv'. A ne pas confondre avec la derivee d'une composee."},
+  {q:"Quelle est la primitive de 1/x ?",o:["x²/2","1/x²","-1/x","ln|x|"],a:3,e:"∫(1/x)dx = ln|x| + C. Attention : valable pour x>0 et x<0 (valeur absolue)."},
+  {q:"lim(x→+∞) x^100 / e^x = ?",o:["+∞","100","1","0"],a:3,e:"e^x domine tout polynome en +∞. Quelle que soit la puissance de x, e^x 'gagne' toujours."},
+  {q:"lim(x→0+) x·ln(x) = ?",o:["-∞","0","1","+∞"],a:1,e:"C'est une forme 0×(-∞). x tend vers 0 plus vite que ln(x) tend vers -∞, donc le produit tend vers 0."},
+  {q:"Solutions de y' = -2y avec y(0)=3",o:["y=3e^(2x)","y=3e^(-2x)","y=-2e^(3x)","y=3-2x"],a:1,e:"y'=ay → y=C·e^(ax). Ici a=-2, y(0)=3 → C=3. Donc y=3e^(-2x)."},
+  {q:"Quelle est la somme 1+q+q²+...+q^n (q≠1) ?",o:["n×q","(1-q^n)/(1-q)","(1-q^(n+1))/(1-q)","q^n-1"],a:2,e:"Formule de la somme geometrique : (1-q^(n+1))/(1-q). Attention au n+1 a l'exposant !"},
+  {q:"De u_1 a u_n dans une suite, combien de termes ?",o:["n-1","n","n+1","2n"],a:1,e:"n termes (de u_1 a u_n inclus). Si c'etait de u_0 a u_n, ce serait n+1 termes."},
+  {q:"Pour B(n,p), V(X) = ?",o:["np","np²","np(1-p)","sqrt(np(1-p))"],a:2,e:"Variance de la loi binomiale : V(X) = np(1-p). L'ecart-type est sqrt(np(1-p))."},
+  {q:"P(-1,96 ≤ Z ≤ 1,96) pour Z~N(0,1) vaut environ :",o:["0,68","0,90","0,95","0,99"],a:2,e:"Valeur fondamentale a connaitre : P(-1,96 ≤ Z ≤ 1,96) ≈ 0,95 = 95%. Sert pour les IC et IF."},
+  {q:"L'intervalle de confiance au niveau 95% est :",o:["[f-2/n ; f+2/n]","[p-1/sqrt(n) ; p+1/sqrt(n)]","[f-1/sqrt(n) ; f+1/sqrt(n)]","[f-0,05 ; f+0,05]"],a:2,e:"IC a 95% : [f - 1/sqrt(n) ; f + 1/sqrt(n)]. C'est f (frequence observee) et non p qui est utilise."},
+  {q:"i² = ?",o:["1","-1","i","-i"],a:1,e:"Par definition, i est tel que i² = -1. C'est la propriete fondamentale de l'unite imaginaire."},
+  {q:"Module de z = 3 + 4i",o:["7","5","25","sqrt(7)"],a:1,e:"|z| = sqrt(3²+4²) = sqrt(9+16) = sqrt(25) = 5. Triangle 3-4-5 a connaitre !"},
+  {q:"La formule d'Euler donne e^(iπ) = ?",o:["1","-1","i","0"],a:1,e:"e^(iπ) = cos(π) + i·sin(π) = -1 + 0 = -1. D'ou la celebre identite e^(iπ)+1=0."},
+  {q:"Le vecteur normal au plan 2x-3y+z+5=0 est :",o:["(5,0,0)","(2,-3,1)","(-3,2,1)","(2,3,-1)"],a:1,e:"Le vecteur normal au plan ax+by+cz+d=0 est n=(a,b,c) = (2,-3,1)."},
+  {q:"u⃗·v⃗ = 0 signifie que les vecteurs sont :",o:["Colineaires","Perpendiculaires","Paralleles","Egaux"],a:1,e:"Produit scalaire nul ⟺ vecteurs perpendiculaires (orthogonaux). C'est la condition d'orthogonalite."},
+  {q:"lim(x→+∞) ln(x)/x = ?",o:["+∞","1","0","-∞"],a:2,e:"x domine ln(x) : lim ln(x)/x^n = 0 pour tout n>0. Ici n=1 donc lim = 0."},
+  {q:"Critere de Popper pour la convergence geometrique",o:["|q|>1","q>0","|q|<1","q≠0"],a:2,e:"Une suite geometrique converge (vers 0) ssi |q|<1. Si |q|>1, elle diverge vers l'infini."},
+  {q:"Forme de la solution generale de y'=ay+b",o:["y=Ce^(ax)","y=Ce^(ax)+b/a","y=Ce^(ax)-b/a","y=b/a·e^(ax)"],a:2,e:"y'=ay+b : solution particuliere y*=-b/a, solution generale y=Ce^(ax)-b/a (C∈R)."},
+  {q:"(cos θ + i sin θ)^n = ?",o:["cos(θ/n)+i sin(θ/n)","n(cos θ+i sin θ)","cos(nθ)+i sin(nθ)","e^(iθ/n)"],a:2,e:"Formule de Moivre : (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)."},
+  {q:"E(aX+b) = ?",o:["aE(X)","E(X)+b","aE(X)+b","a²E(X)+b"],a:2,e:"Linearite de l'esperance : E(aX+b) = aE(X)+b. Mais V(aX+b) = a²V(X) (le b disparait !)."},
+  {q:"Pour la suite u_(n+1)=f(u_n), si elle converge vers L, alors :",o:["L=u_0","L=f(0)","L=f(L)","L=0"],a:2,e:"Si la suite converge vers L, alors en passant a la limite dans la relation u_(n+1)=f(u_n), on obtient L=f(L)."},
+  {q:"Quelle condition pour approx. binomiale par normale ?",o:["n>100","np>5 et n(1-p)>5","p<0,5","n>30 seulement"],a:1,e:"Approximation valide si np ≥ 5 ET n(1-p) ≥ 5. Ces deux conditions garantissent que la loi n'est pas trop asymetrique."},
+];
+
+let qMode='all', qPool=[], qIdx=0, qScore=0, qAns=false;
+function startQCM(mode,btn){
+  qMode=mode;
+  document.querySelectorAll('.mb').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  let pool=mode==='analyse'?allQ.slice(0,8):mode==='suites'?allQ.slice(5,11):mode==='proba'?allQ.slice(7,14):mode==='complexes'?allQ.slice(10,16):[...allQ];
+  qPool=pool.sort(()=>Math.random()-.5).slice(0,10);
+  qIdx=0; qScore=0; qAns=false;
+  document.getElementById('qcm-play').style.display='block';
+  document.getElementById('qcm-result').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  if(qIdx>=qPool.length){showRes();return;}
+  qAns=false;
+  const q=qPool[qIdx];
+  document.getElementById('ql').textContent='Q '+(qIdx+1)+'/'+qPool.length;
+  document.getElementById('qs').textContent=qScore+' pts';
+  document.getElementById('qp').style.width=(qIdx/qPool.length*100)+'%';
+  document.getElementById('qq').textContent=q.q;
+  document.getElementById('qn').disabled=true;
+  const fb=document.getElementById('qf'); fb.className='fb'; fb.textContent='';
+  const opts=document.getElementById('qo'); opts.innerHTML='';
+  q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='obtn';b.textContent=o;b.onclick=()=>ansQ(i,q);opts.appendChild(b);});
+}
+function ansQ(i,q){
+  if(qAns)return; qAns=true;
+  document.querySelectorAll('.obtn').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.obtn')[q.a].classList.add('correct');
+  const fb=document.getElementById('qf');
+  if(i===q.a){qScore++;document.getElementById('qs').textContent=qScore+' pts';fb.textContent='✅ Correct ! '+q.e;fb.className='fb show ok';}
+  else{document.querySelectorAll('.obtn')[i].classList.add('wrong');fb.textContent='❌ Faux. '+q.e;fb.className='fb show ko';}
+  document.getElementById('qn').disabled=false;
+}
+function nextQ(){qIdx++;renderQ();}
+function showRes(){
+  document.getElementById('qcm-play').style.display='none';
+  document.getElementById('qcm-result').style.display='block';
+  const t=qPool.length, p=Math.round(qScore/t*100);
+  document.getElementById('rs').textContent=qScore+'/'+t;
+  document.getElementById('rm').textContent=p>=90?'🏆 Excellent !':p>=70?'👍 Bien !':p>=50?'📚 Continue, revois les formules.':'💪 Relis les fiches et recommence !';
+}
+function restartQCM(){startQCM(qMode);}
+
+// JEUX
+let chronoT=null;
+function backMenu(){document.getElementById('game-menu').style.display='block';document.getElementById('game-area').style.display='none';clearInterval(chronoT);}
+function launchGame(t){document.getElementById('game-menu').style.display='none';document.getElementById('game-area').style.display='block';if(t==='assoc')renderAssoc();else if(t==='vf')renderVF();else if(t==='complete')renderComplete();else if(t==='chrono')renderChrono();}
+
+// ASSOCIATION
+const assocData=[
+  {l:"(uv)'",r:"u'v + uv'"},
+  {l:"(u/v)'",r:"(u'v - uv') / v²"},
+  {l:"(ln u)'",r:"u' / u"},
+  {l:"(e^u)'",r:"u' · e^u"},
+  {l:"∫u'/u dx",r:"ln|u|"},
+  {l:"∫u'e^u dx",r:"e^u"},
+  {l:"u_n (arithm.)",r:"u_0 + n·r"},
+  {l:"u_n (geom.)",r:"u_0 × q^n"},
+];
+let aSel=null, aDone=[];
+function renderAssoc(){
+  aSel=null; aDone=[];
+  const pairs=assocData.sort(()=>Math.random()-.5).slice(0,6);
+  const rights=[...pairs.map(p=>p.r)].sort(()=>Math.random()-.5);
+  let h='<h3 style="color:#38bdf8;margin-bottom:8px">🔗 Association Formules</h3><p style="color:#4b5563;font-size:.8rem;margin-bottom:14px">Clique sur la formule puis son resultat.</p>';
+  h+='<div class="agrid"><div class="acol">';
+  pairs.forEach((p,i)=>h+=`<div class="ai" id="aL${i}" data-i="${i}" onclick="clickL(this)">${p.l}</div>`);
+  h+='</div><div class="acol">';
+  rights.forEach((r,i)=>{const oi=pairs.findIndex(p=>p.r===r);h+=`<div class="ai" id="aR${i}" data-v="${r}" data-oi="${oi}" onclick="clickR(this)">${r}</div>`;});
+  h+='</div></div><div id="amsg" style="margin-top:14px;text-align:center;min-height:22px"></div>';
+  document.getElementById('game-content').innerHTML=h;
+}
+function clickL(el){if(el.classList.contains('mat'))return;document.querySelectorAll('.ai[data-i]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');aSel=el;}
+function clickR(el){
+  if(!aSel||el.classList.contains('mat'))return;
+  if(parseInt(aSel.dataset.i)===parseInt(el.dataset.oi)){
+    aSel.classList.remove('sel');aSel.classList.add('mat');el.classList.add('mat');aDone.push(1);aSel=null;
+    if(aDone.length>=6) document.getElementById('amsg').innerHTML='<span style="color:#34d399;font-size:1.05rem">🎉 Parfait ! Toutes les formules associees !</span>';
+  } else {
+    el.classList.add('err');aSel.classList.add('err');
+    const s=aSel;setTimeout(()=>{el.classList.remove('err');s.classList.remove('err','sel');aSel=null;},500);
+  }
+}
+
+// VRAI FAUX
+const vfData=[
+  {s:"(uv)' = u'·v'",a:false,e:"FAUX ! (uv)' = u'v + uv' (regle du PRODUIT). u'·v' serait la derivee du produit des derivees, ca n'existe pas."},
+  {s:"∫e^x dx = e^x + C",a:true,e:"VRAI. La primitive de e^x est e^x (c'est la seule fonction egale a sa propre derivee)."},
+  {s:"ln(a+b) = ln(a) + ln(b)",a:false,e:"FAUX ! ln(ab) = ln(a)+ln(b). Il faut un produit, pas une somme. C'est l'erreur la plus frequente avec ln."},
+  {s:"Une suite geometrique de raison |q|<1 converge vers 0",a:true,e:"VRAI. Si |q|<1, q^n → 0, donc u_n = u_0·q^n → 0."},
+  {s:"i² = 1",a:false,e:"FAUX ! i² = -1 par definition de l'unite imaginaire."},
+  {s:"P(-1,96 ≤ Z ≤ 1,96) ≈ 0,95 pour Z~N(0,1)",a:true,e:"VRAI. Valeur fondamentale a connaitre pour le bac."},
+  {s:"E(aX+b) = aE(X)+b",a:true,e:"VRAI. Linearite de l'esperance. Mais attention : V(aX+b) = a²V(X), le b disparait !"},
+  {s:"V(aX+b) = a²V(X)+b",a:false,e:"FAUX ! V(aX+b) = a²V(X). La translation par b ne change pas la dispersion, seulement la puissance de a."},
+  {s:"lim(x→+∞) e^x/x^1000 = 0",a:false,e:"FAUX ! C'est l'inverse : e^x domine tout polynome, donc e^x/x^1000 → +∞."},
+  {s:"La solution de y'=ay+b est y=Ce^(ax)-b/a",a:true,e:"VRAI. La solution particuliere est y*=-b/a, la solution generale est y=Ce^(ax)-b/a."},
+  {s:"Le module de (3+4i) est 7",a:false,e:"FAUX ! |3+4i| = sqrt(3²+4²) = sqrt(25) = 5. Ne pas additionner 3+4 directement !"},
+  {s:"Pour une suite recurrente u_(n+1)=f(u_n) qui converge vers L, on a L=f(L)",a:true,e:"VRAI. En passant a la limite dans la relation de recurrence : L=f(L). C'est l'equation du point fixe."},
+];
+let vfIdx=0, vfScore=0;
+function renderVF(){vfIdx=0;vfScore=0;window._vf=[...vfData].sort(()=>Math.random()-.5);renderVFQ();}
+function renderVFQ(){
+  if(vfIdx>=window._vf.length){document.getElementById('game-content').innerHTML=`<div class="rsc"><div class="rsn">${vfScore}/${window._vf.length}</div><div class="rsm">${vfScore>=10?'🏆 Parfait !':vfScore>=7?'👍 Bien !':'📚 Revois les formules !'}</div><button class="bp" style="margin-top:20px" onclick="renderVF()">Rejouer</button></div>`;return;}
+  const q=window._vf[vfIdx];
+  let h=`<h3 style="color:#38bdf8;margin-bottom:12px">⚖️ Vrai ou Faux ? (${vfIdx+1}/${window._vf.length}) — ${vfScore} pts</h3>`;
+  h+=`<div style="background:#0c1220;border:1px solid #1a2535;border-radius:12px;padding:20px;margin-bottom:18px;font-size:.95rem;line-height:1.5;font-family:'Courier New',monospace">${q.s}</div>`;
+  h+=`<div style="display:flex;gap:14px;justify-content:center"><button onclick="ansVF(true)" style="background:#06402211;border:2px solid #10b981;color:#34d399;padding:13px 34px;border-radius:10px;cursor:pointer;font-size:1rem;font-family:inherit">✅ VRAI</button><button onclick="ansVF(false)" style="background:#4c051911;border:2px solid #ef4444;color:#f87171;padding:13px 34px;border-radius:10px;cursor:pointer;font-size:1rem;font-family:inherit">❌ FAUX</button></div><div id="vf-fb" class="fb" style="margin-top:14px"></div>`;
+  document.getElementById('game-content').innerHTML=h;
+}
+function ansVF(chosen){
+  const q=window._vf[vfIdx];
+  document.querySelectorAll('#game-content button:not([onclick])').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('vf-fb');
+  if(chosen===q.a){vfScore++;fb.textContent='✅ '+q.e;fb.className='fb show ok';}
+  else{fb.textContent='❌ '+q.e;fb.className='fb show ko';}
+  vfIdx++;setTimeout(renderVFQ,2300);
+}
+
+// COMPLETE LA FORMULE
+const completeData=[
+  {q:"(uv)' = u'v + ___",ans:"uv'",opts:["uv'","v'u'","u'v'","vu"]},
+  {q:"u_n (arithm.) = u_0 + ___",ans:"n·r",opts:["n·r","r·n²","(n+1)r","nr²"]},
+  {q:"u_n (geom.) = u_0 × ___",ans:"q^n",opts:["q^n","n^q","q·n","nq"]},
+  {q:"∫(1/x) dx = ___",ans:"ln|x|",opts:["ln|x|","x ln x","-1/x²","1/x²"]},
+  {q:"E(X) pour B(n,p) = ___",ans:"np",opts:["np","n/p","p/n","np²"]},
+  {q:"V(aX+b) = ___",ans:"a²V(X)",opts:["a²V(X)","aV(X)+b","a²V(X)+b","aV(X)"]},
+  {q:"lim(x→+∞) x^n/e^x = ___",ans:"0",opts:["0","+∞","n","1"]},
+  {q:"e^(iπ) = ___",ans:"-1",opts:["-1","1","i","-i"]},
+];
+let compIdx=0, compScore=0;
+function renderComplete(){compIdx=0;compScore=0;window._comp=[...completeData].sort(()=>Math.random()-.5);renderCompQ();}
+function renderCompQ(){
+  if(compIdx>=window._comp.length){document.getElementById('game-content').innerHTML=`<div class="rsc"><div class="rsn">${compScore}/${window._comp.length}</div><div class="rsm">${compScore>=7?'🎉 Excellent !':compScore>=5?'👍 Bien !':'📚 Revois les formules !'}</div><button class="bp" style="margin-top:20px" onclick="renderComplete()">Rejouer</button></div>`;return;}
+  const q=window._comp[compIdx];
+  const opts=[...q.opts].sort(()=>Math.random()-.5);
+  let h=`<h3 style="color:#38bdf8;margin-bottom:12px">✍️ Complete la formule (${compIdx+1}/${window._comp.length}) — ${compScore} pts</h3>`;
+  h+=`<div style="background:#0c1220;border:1px solid #38bdf844;border-radius:12px;padding:20px;margin-bottom:16px;font-size:1.1rem;font-family:'Courier New',monospace;color:#7dd3fc">${q.q}</div>`;
+  h+='<div class="opts">';
+  opts.forEach(o=>h+=`<button class="obtn" onclick="ansComp('${o}','${q.ans}',this)">${o}</button>`);
+  h+='</div><div id="comp-fb" class="fb"></div>';
+  document.getElementById('game-content').innerHTML=h;
+}
+function ansComp(chosen,correct,btn){
+  document.querySelectorAll('.obtn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('comp-fb');
+  if(chosen===correct){compScore++;btn.classList.add('correct');fb.textContent='✅ Bravo !';fb.className='fb show ok';}
+  else{btn.classList.add('wrong');document.querySelectorAll('.obtn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct');});fb.textContent='❌ Reponse : '+correct;fb.className='fb show ko';}
+  compIdx++;setTimeout(renderCompQ,1500);
+}
+
+// CHRONO
+let chronoIdx=0,chronoScore=0,chronoQ=[],chronoTime=0,chronoAns=false;
+function renderChrono(){chronoQ=[...allQ].sort(()=>Math.random()-.5).slice(0,10);chronoIdx=0;chronoScore=0;renderChronoQ();}
+function renderChronoQ(){
+  clearInterval(chronoT);
+  if(chronoIdx>=chronoQ.length){document.getElementById('game-content').innerHTML=`<div class="rsc"><div class="rsn">${chronoScore}/10</div><div class="rsm">${chronoScore>=8?'⚡ Impressionnant !':chronoScore>=5?'👍 Pas mal !':'📚 Entraine-toi !'}</div><button class="bp" style="margin-top:20px" onclick="renderChrono()">Rejouer</button></div>`;return;}
+  chronoAns=false; chronoTime=15;
+  const q=chronoQ[chronoIdx];
+  const opts=[...q.o].sort(()=>Math.random()-.5);
+  function draw(){
+    const col=chronoTime<=5?'#ef4444':chronoTime<=10?'#f59e0b':'#38bdf8';
+    let h=`<h3 style="color:#38bdf8;margin-bottom:10px">⏰ Chrono (${chronoIdx+1}/10) — ${chronoScore} pts</h3>`;
+    h+=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div class="pb" style="flex:1;margin:0"><div class="pf" style="width:${chronoIdx/10*100}%"></div></div><span id="ct" style="font-size:1.5rem;font-weight:800;color:${col};min-width:40px;text-align:right">${chronoTime}s</span></div>`;
+    h+=`<div class="qcard" style="margin-bottom:12px"><div class="qt">${q.q}</div><div class="opts">`;
+    opts.forEach(o=>h+=`<button class="obtn" onclick="ansChrono('${o.replace(/'/g,"\\'")}',${q.a},${q.o.indexOf(o)})">${o}</button>`);
+    h+=`</div><div id="chrono-fb" class="fb"></div></div>`;
+    document.getElementById('game-content').innerHTML=h;
+  }
+  draw();
+  chronoT=setInterval(()=>{
+    chronoTime--;
+    const ct=document.getElementById('ct');
+    if(ct){ct.textContent=chronoTime+'s';ct.style.color=chronoTime<=5?'#ef4444':chronoTime<=10?'#f59e0b':'#38bdf8';}
+    if(chronoTime<=0){clearInterval(chronoT);if(!chronoAns){chronoAns=true;document.querySelectorAll('.obtn').forEach(b=>b.disabled=true);const fb=document.getElementById('chrono-fb');if(fb){fb.textContent='⏰ Temps ! '+chronoQ[chronoIdx].e;fb.className='fb show ko';}chronoIdx++;setTimeout(renderChronoQ,2000);}}
+  },1000);
+}
+function ansChrono(chosen,corrIdx,chIdx){
+  if(chronoAns)return;chronoAns=true;clearInterval(chronoT);
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.disabled=true;if(i===corrIdx)b.classList.add('correct');});
+  const fb=document.getElementById('chrono-fb');
+  if(chIdx===corrIdx){chronoScore++;if(fb){fb.textContent='✅ '+chronoQ[chronoIdx].e;fb.className='fb show ok';}}
+  else{if(fb){fb.textContent='❌ '+chronoQ[chronoIdx].e;fb.className='fb show ko';}}
+  chronoIdx++;setTimeout(renderChronoQ,2000);
+}
+
+startQCM('all');
+</script>
+</body>
+</html>
